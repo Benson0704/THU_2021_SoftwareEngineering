@@ -13,4 +13,4 @@ EXPOSE 80
 
 ENV PYTHONUNBUFFERED=true
 
-CMD ["run.sh"]
+CMD ["chmod a+x *","./run.sh"]
