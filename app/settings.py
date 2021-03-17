@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kuaishou', # 数据库名称，
-        'HOST': 'mysql.FullHouse.secoder.local', # 主机地址
-        'USER': 'root', # 数据库用户
-        'PASSWORD': 'kuaishou', # 密码
-        'PORT': 3306 # mysql的端口默认3306
+        'NAME': 'kuaishou',   # 数据库名称，
+        'HOST': 'mysql.FullHouse.secoder.local',   # 主机地址
+        'USER': 'root',   # 数据库用户
+        'PASSWORD': 'kuaishou',   # 密码
+        'PORT': 3306   # mysql的端口默认3306
     }
 }
 
@@ -90,16 +90,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': （'django.contrib.auth.password_validation.'
+        'UserAttributeSimilarityValidator'),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': ('django.contrib.auth.password_validation.'
+        'MinimumLengthValidator'),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': ('django.contrib.auth.password_validation.'
+        'CommonPasswordValidator'),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': ('django.contrib.auth.password_validation.'
+        'NumericPasswordValidator'),
     },
 ]
 
