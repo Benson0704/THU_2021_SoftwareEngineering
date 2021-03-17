@@ -1,6 +1,6 @@
 FROM python:3.8.3
 
-ENV HOME=/opt/Backend
+ENV HOME=/opt/app
 
 WORKDIR $HOME
 
