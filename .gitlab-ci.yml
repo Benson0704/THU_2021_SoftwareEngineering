@@ -1,4 +1,5 @@
 image: registry.secoder.net/tool/deployer
+allow_failure: true
 
 stages:
   - build
