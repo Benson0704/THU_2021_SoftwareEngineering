@@ -2,6 +2,7 @@ import pymysql
 
 def insertData():
     #输出文件作为测试
+    print("Hello World!")
     file= open('testMysql.txt','w')
     file.write("Hello world!")
     file.close()
