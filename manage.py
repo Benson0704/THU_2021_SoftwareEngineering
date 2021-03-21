@@ -3,10 +3,12 @@
 import os
 import sys
 import pymysql
+import test
 pymysql.install_as_MySQLdb()
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
+    test.insertData()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
