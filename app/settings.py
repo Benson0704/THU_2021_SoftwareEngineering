@@ -44,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -75,7 +75,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kuaishou',  # 数据库名称，
         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
+        # 'HOST': '116.62.155.162'
         'USER': 'root',  # 数据库用户
+        # 'USER': 'brisa',  # 数据库用户
         'PASSWORD': 'kuaishou',  # 密码
         'PORT': 3306  # mysql的端口默认3306
     }
