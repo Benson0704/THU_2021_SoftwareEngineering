@@ -1,11 +1,13 @@
 from django.db import models
 
+
 class User(models.Model):
     open_id = models.CharField(max_length=50, primary_key=True)
     public_count = models.IntegerField(default=0)
     friend_count = models.IntegerField(default=0)
     private_count = models.IntegerField(default=0)
     all_count = models.IntegerField(default=0)
+
 
 class Video(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
