@@ -17,6 +17,6 @@ venv.bak/
 .pytest_cache/
 coverage-reports/
 xunit-reports/
-
+.DS_Store
 **/.DS_Store
 .idea
