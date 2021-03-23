@@ -13,6 +13,7 @@ class User(models.Model):
     _friend_count = models.IntegerField(default=0)  # 仅好友可见的视频数量
     _private_count = models.IntegerField(default=0)  # 仅自己可见的视频数量
     _all_count = models.IntegerField(default=0)  # 视频总量
+    _registerTime = models.DateTimeField()
 
 
 class Video(models.Model):
