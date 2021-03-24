@@ -152,6 +152,9 @@ class TestLogin(unittest.TestCase):
         User.objects.filter(open_id="todayisagoodday").delete()
 
 
+def test():
+    unittest.main()
+    
 
 if __name__ == '__main__':
     unittest.main()
