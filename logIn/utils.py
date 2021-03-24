@@ -24,7 +24,7 @@ def get_registered_user(open_id):
     3.24: untest
     '''
     user = User.objects.get(open_id=open_id)
-    video_list = Video.objects.filter(user=user.open_id)
+    video_list = Video.objects.filter(user=open_id)
     res_video_list = []
     for video in video_list:
         video_dictionary = {}
@@ -58,7 +58,7 @@ def update_registered_user(open_id, video_list, count_dictionary):
     user.private_count = count_dictionary['private_count']
     user.all_count = count_dictionary['all_count']
     new_video_list = []
-    old_video_list = Video.objects.filter(user=user.open_id)
+    old_video_list = Video.objects.filter(user=open_id)
     for video in video_list:
         new_video_list.append(video['photo_id'])
     for video in old_video_list:
@@ -66,7 +66,7 @@ def update_registered_user(open_id, video_list, count_dictionary):
             video.delete()
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
-            video = Video(user=user.open_id,
+            video = Video(user=open_id,
                           photo_id=video_list[i]['photo_id'],
                           caption=video_list[i]['caption'],
                           cover=video_list[i]['cover'],
@@ -92,7 +92,7 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                     all_count=count_dictionary['all_count'])
     new_user.save()
     for video in video_list:
-        new_video = Video(user=new_user.open_id,
+        new_video = Video(user=open_id,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
                           cover=['cover'],
