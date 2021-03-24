@@ -156,5 +156,5 @@ class TestLogin(unittest.TestCase):
         self.assertTrue(utils.is_registered("todayisagoodday")
     
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
