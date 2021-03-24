@@ -5,12 +5,9 @@ this file should be a .py file as tests for login
 import sys
 import os
 import django
-import logIn.utils
 import unittest
+import logIn.utils
 from datetime import datetime
-sys.path.append('..')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
-django.setup()
 from app.models import User, Video
 
 
