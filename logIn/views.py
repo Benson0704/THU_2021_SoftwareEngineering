@@ -23,8 +23,7 @@ def oauth(response):
     state = client.state_generator()
     auth_url = client.prepare_request_uri(OAUTH["auth_url"],
                                           OAUTH["redirect_uri"],
-                                          OAUTH["scope"],
-                                          state)
+                                          OAUTH["scope"], state)
     session["oauth_state"] = state
     return redirect(auth_url)
 
@@ -34,11 +33,12 @@ def oauth_callback(response):
     print("Successfully authorize")
     code = response.GET.get("code")
     print(code)
-    body = {"app_id": OAUTH["app_id"],
-            "app_secret": OAUTH["app_secret"],
-            "code": code,
-            "grant_type": "authorization_code"
-            }
+    body = {
+        "app_id": OAUTH["app_id"],
+        "app_secret": OAUTH["app_secret"],
+        "code": code,
+        "grant_type": "authorization_code"
+    }
     r = requests.post(OAUTH["token_url"], body)
     access_token = r.json().get("access_token")
 
@@ -52,7 +52,11 @@ def oauth_callback(response):
     # 通过info接口得到单个video信息
     photo_url = "https://open.kuaishou.com/openapi/tsinghua/photo/info"
     for video in session["video_list"]:
-        params = {"access_token": access_token, "app_id": OAUTH["app_id"], "photo_id": video["photo_id"]}
+        params = {
+            "access_token": access_token,
+            "app_id": OAUTH["app_id"],
+            "photo_id": video["photo_id"]
+        }
         r = requests.get(photo_url, params=params)
         photo_data = r.json()
 

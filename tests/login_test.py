@@ -4,18 +4,14 @@ this file should be a .py file as tests for login
 
 import sys
 import os
-sys.path.append('..')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
 import django
-django.setup()
-#from logIn.tests import test_logIn
-'''
-this file should be a .py file as tests for login
-'''
-from app.models import User, Video
 import logIn.utils
 import unittest
 from datetime import datetime
+sys.path.append('..')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
+django.setup()
+from app.models import User, Video
 
 
 class TestLogin(unittest.TestCase):
