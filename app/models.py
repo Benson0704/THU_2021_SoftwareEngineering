@@ -13,7 +13,7 @@ class User(models.Model):
     _friend_count = models.IntegerField(default=0)  # 仅好友可见的视频数量
     _private_count = models.IntegerField(default=0)  # 仅自己可见的视频数量
     _all_count = models.IntegerField(default=0)  # 视频总量
-    _registerTime = models.DateTimeField()
+    _registerTime = models.DateTimeField(auto_now_add=True)
 
 
 class Video(models.Model):
@@ -25,7 +25,7 @@ class Video(models.Model):
     _caption = models.CharField(max_length=500, default="NULL CAPTION")  # 作品标题
     _cover = models.CharField(max_length=500, default="NULL COVER")  # 作品封面
     _play_url = models.CharField(max_length=500)  # 作品播放链接
-    _create_time = models.DateTimeField()  # 作品创建时间
+    _create_time = models.DateTimeField(auto_now_add=True)  # 作品创建时间
     _like_count = models.IntegerField(default=0)  # 作品点赞数
     _comment_count = models.IntegerField(default=0)  # 作品评论数
     _view_count = models.IntegerField(default=0)  # 作品观看数
