@@ -43,6 +43,10 @@ class TestLogin(unittest.TestCase):
         new_video.save()
 
 
+    def tearDown(self):
+        User.objects.filter(open_id="todayisagoodday").delete()
+
+
     def test_initialize_new_user(self):
         open_id = "Test open_id"
         video_list = []
@@ -147,9 +151,6 @@ class TestLogin(unittest.TestCase):
     def test_is_registered(self):
         self.assertTrue(utils.is_registered("todayisagoodday")
 
-
-    def tearDown(self):
-        User.objects.filter(open_id="todayisagoodday").delete()
 
 
 def test():
