@@ -1,7 +1,7 @@
 '''
 this file should be a .py file as tests for login
 '''
-import login.utils
+from login import utils
 from app.models import User,Video
 import unittest
 from datetime import datetime
