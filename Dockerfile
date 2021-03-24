@@ -1,6 +1,6 @@
 FROM python:3.8.3
 
-ENV HOME=/opt/app
+ENV HOME=/opt/app DJANGO_SETTINGS_MODULE=app.settings
 
 WORKDIR $HOME
 
