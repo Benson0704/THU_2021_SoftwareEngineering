@@ -7,10 +7,62 @@ from app.models import User
 from app.models import Video
 
 
-def initialize_new_customer(open_id, video_list, count_dictionary):
+def is_registered(open_id):
+    '''
+    this fuction should check if a user registered by openID
+    return: 1:yes 0:no
+    3.24: untest
+    '''
+    user = User.objects.filter(_open_id=open_id)
+    return bool(user)
+
+
+def get_registered_user(open_id):
+    '''
+    this fuction should a registered user's video list and count
+    return: list, dic
+    3.24: untest
+    '''
+    user = User.objects.get(_open_id=open_id)
+    video_list = Video.objects.filter(_user=user)
+    res_video_list = []
+    for video in video_list:
+        video_dictionary = {}
+        video_dictionary['photo_id'] = video._photo_id
+        video_dictionary['caption'] = video._caption
+        video_dictionary['cover'] = video._cover
+        video_dictionary['play_url'] = video._play_url
+        video_dictionary['create_time'] = video._create_time
+        video_dictionary['like_count'] = video._like_count
+        video_dictionary['comment_count'] = video._comment_count
+        video_dictionary['view_count'] = video._view_count
+        video_dictionary['pending'] = video._pending
+        res_video_list.append(video_dictionary)
+    res_count_dictionary = {}
+    res_count_dictionary['open_id'] = open_id
+    res_count_dictionary['public_count'] = user._public_count
+    res_count_dictionary['friend_count'] = user._friend_count
+    res_count_dictionary['private_count'] = user._private_count
+    res_count_dictionary['all_count'] = user._all_count
+    return res_video_list, res_count_dictionary
+
+
+def update_registered_user(open_id, video_list, count_dictionary):
+    '''
+    this fuction should update a registered user
+    3.24: untest
+    '''
+    user = User.objects.get(_open_id=open_id)
+    user._public_count = count_dictionary['public_count']
+    user._friend_count = count_dictionary['friend_count']
+    user._private_count = count_dictionary['private_count']
+    user._all_count = count_dictionary['all_count']
+
+
+def initialize_new_user(open_id, video_list, count_dictionary):
     '''
     this function should create a user in User model and his works in Video
-    untest: 3.24
+    3.24: untest
     '''
     new_user = User(_open_id=open_id,
                     _public_count=count_dictionary['public_count'],
