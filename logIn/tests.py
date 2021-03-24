@@ -1,7 +1,7 @@
 '''
 this file should be a .py file as tests for login
 '''
-import utils
+import logIn.utils
 from app.models import User, Video
 import unittest
 from datetime import datetime
@@ -65,15 +65,15 @@ class TestLogin(unittest.TestCase):
             'all_count': 1
         }
 
-        utils.initialize_new_user(open_id=open_id,
-                                  video_list=video_list,
-                                  count_dictionary=count_dictionary)
+        logIn.utils.initialize_new_user(open_id=open_id,
+                                        video_list=video_list,
+                                        count_dictionary=count_dictionary)
         self.assertTrue(User.objects.filter(open_id=open_id).exists())
         self.assertTrue(
             Video.objects.filter(photo_id="Test photo_id").exists())
 
     def test_get_registered_user(self):
-        res_video_list, res_count_dictionary = utils.get_registered_user(
+        res_video_list, res_count_dictionary = logIn.utils.get_registered_user(
             "todayisagoodday")
         expected_video_list = [
             {
@@ -138,9 +138,9 @@ class TestLogin(unittest.TestCase):
             'private_count': 0,
             'all_count': 2
         }
-        utils.update_registered_user(open_id="todayisagoodday",
-                                     video_list=video_list,
-                                     count_dictionary=count_dictionary)
+        logIn.utils.update_registered_user(open_id="todayisagoodday",
+                                           video_list=video_list,
+                                           count_dictionary=count_dictionary)
         self.assertFalse(
             Video.objects.filter(photo_id="this is a photo on Mars").exists())
         self.assertTrue(
@@ -148,7 +148,7 @@ class TestLogin(unittest.TestCase):
                 photo_id="this is a dog in New Zealand").exists())
 
     def test_is_registered(self):
-        self.assertTrue(utils.is_registered("todayisagoodday"))
+        self.assertTrue(logIn.utils.is_registered("todayisagoodday"))
 
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
