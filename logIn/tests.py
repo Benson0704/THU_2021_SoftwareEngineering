@@ -1,5 +1,5 @@
 '''
-this file should be a .py file empty as tests for login
+this file should be a .py file as tests for login
 '''
 import utils
 from app.models import User,Video
