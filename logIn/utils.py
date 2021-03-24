@@ -3,6 +3,7 @@ this module provides necessary functions and auxiliary functions
 WARNING:
 all fucntions not used to handle frontend request DIRECTLY should write here
 '''
+from django.db import models
 from app.models import User
 from app.models import Video
 
@@ -71,7 +72,7 @@ def update_registered_user(open_id, video_list, count_dictionary):
                           _caption=video_list[i]['caption'],
                           _cover=video_list[i]['cover'],
                           _play_url=video_list[i]['play_url'],
-                          _create_time=video_list[i]['create_time'],
+                          _create_time=video_list[i]['create_time'].strftime(("%Y-%m-%d %H:%M:%S")),
                           _like_count=video_list[i]['like_count'],
                           _comment_count=video_list[i]['comment_count'],
                           _view_count=video_list[i]['view_count'],
