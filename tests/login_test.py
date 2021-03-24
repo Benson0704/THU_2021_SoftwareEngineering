@@ -7,6 +7,10 @@ import unittest
 from datetime import datetime
 
 
+def test():
+    unittest.main()
+
+
 class TestLogin(unittest.TestCase):
     '''
     This is a unittest for User
@@ -150,11 +154,6 @@ class TestLogin(unittest.TestCase):
 
     def test_is_registered(self):
         self.assertTrue(utils.is_registered("todayisagoodday")
-
-
-
-def test():
-    unittest.main()
     
 
 if __name__ == '__main__':
