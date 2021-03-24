@@ -57,6 +57,26 @@ def update_registered_user(open_id, video_list, count_dictionary):
     user._friend_count = count_dictionary['friend_count']
     user._private_count = count_dictionary['private_count']
     user._all_count = count_dictionary['all_count']
+    new_video_list = []
+    old_video_list = Video.objects.filter(_user=user)
+    for video in video_list:
+        new_video_list.append(video['photo_id'])
+    for video in old_video_list:
+        if str(video._photo_id) not in new_video_list:
+            video.delete()
+    for i, _ in enumerate(new_video_list):
+        if not bool(Video.objects.filter(_photo_id=new_video_list[i])):
+            video = Video(_user=user,
+                          _photo_id=video_list[i]['photo_id'],
+                          _caption=video_list[i]['caption'],
+                          _cover=video_list[i]['cover'],
+                          _play_url=video_list[i]['play_url'],
+                          _create_time=video_list[i]['create_time'],
+                          _like_count=video_list[i]['like_count'],
+                          _comment_count=video_list[i]['comment_count'],
+                          _view_count=video_list[i]['view_count'],
+                          _pending=video_list[i]['pending'])
+            video.save()
 
 
 def initialize_new_user(open_id, video_list, count_dictionary):
