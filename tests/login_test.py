@@ -6,4 +6,7 @@ from logIn.tests import test_logIn
 
 def test():
     test_logIn()
-    assert True
+
+
+if __name__ == '__main__':
+    test()
