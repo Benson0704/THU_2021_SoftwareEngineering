@@ -7,9 +7,9 @@ from app.models import User
 from app.models import Video
 
 
-def create_user(open_id, video_list, count_dictionary):
+def initialize_new_customer(open_id, video_list, count_dictionary):
     '''
-    this function should create a user in User model
+    this function should create a user in User model and his works in Video
     untest: 3.24
     '''
     new_user = User(_open_id=open_id,
@@ -18,3 +18,15 @@ def create_user(open_id, video_list, count_dictionary):
                     _private_count=count_dictionary['private_count'],
                     _all_count=count_dictionary['all_count'])
     new_user.save()
+    for video in video_list:
+        new_video = Video(_user=new_user,
+                          _photo_id=video['photo_id'],
+                          _caption=video['caption'],
+                          _cover=['cover'],
+                          _play_url=['play_url'],
+                          _create_time=video['create_time'],
+                          _like_count=video['like_count'],
+                          _comment_count=video['comment_count'],
+                          _view_count=video['view_count'],
+                          _pending=video['pending'])
+        new_video.save()
