@@ -1,8 +1,8 @@
 '''
 this file should be a .py file as tests for login
 '''
-import logIn.utils
 from app.models import User, Video
+import logIn.utils
 import unittest
 from datetime import datetime
 

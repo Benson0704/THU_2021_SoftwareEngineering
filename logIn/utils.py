@@ -4,8 +4,7 @@ WARNING:
 all fucntions not used to handle frontend request DIRECTLY should write here
 '''
 from django.db import models
-from app.models import User
-from app.models import Video
+from app.models import User, Video
 
 
 def is_registered(open_id):
@@ -72,7 +71,8 @@ def update_registered_user(open_id, video_list, count_dictionary):
                           caption=video_list[i]['caption'],
                           cover=video_list[i]['cover'],
                           play_url=video_list[i]['play_url'],
-                          create_time=video_list[i]['create_time'].strftime(("%Y-%m-%d %H:%M:%S")),
+                          create_time=video_list[i]['create_time'].strftime(
+                              ("%Y-%m-%d %H:%M:%S")),
                           like_count=video_list[i]['like_count'],
                           comment_count=video_list[i]['comment_count'],
                           view_count=video_list[i]['view_count'],
