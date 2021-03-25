@@ -35,7 +35,8 @@ def get_registered_user(open_id):
         video_dictionary['cover'] = video.cover
         video_dictionary['play_url'] = video.play_url
         video_dictionary['create_time'] = time.mktime(
-            time.strptime(video.create_time, '%Y-%m-%d %H:%M:%S'))
+            time.strptime(video.create_time.strftime("%Y-%m-%d %H:%M:%S"),
+                          '%Y-%m-%d %H:%M:%S'))
         video_dictionary['like_count'] = video.like_count
         video_dictionary['comment_count'] = video.comment_count
         video_dictionary['view_count'] = video.view_count
@@ -103,7 +104,7 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                           play_url=['play_url'],
                           create_time=time.strftime(
                               '%Y-%m-%d %H:%M:%S',
-                              time.localtime(video.create_time)),
+                              time.localtime(video[create_time])),
                           like_count=video['like_count'],
                           comment_count=video['comment_count'],
                           view_count=video['view_count'],
