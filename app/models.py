@@ -13,9 +13,8 @@ class User(models.Model):
     '''
     用户类
     '''
-    id = models.AutoField()
-    open_id = models.CharField(max_length=50, 
-                               unique=True)  # 用户id，用户唯一标志
+    id = models.AutoField(primary_key=True)
+    open_id = models.CharField(max_length=50, unique=True)  # 用户id，用户唯一标志
     public_count = models.IntegerField(default=0)  # 公开视频数量
     friend_count = models.IntegerField(default=0)  # 仅好友可见的视频数量
     private_count = models.IntegerField(default=0)  # 仅自己可见的视频数量
