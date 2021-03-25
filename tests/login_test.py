@@ -98,8 +98,10 @@ class TestLogin(unittest.TestCase):
                 "https://PlayHogwardsSunset",
                 'create_time':
                 time.mktime(
-                    datetime.strptime('2021-03-07 12:13:14',
-                                      "%Y-%m-%d %H:%M:%S").timetuple()),
+                    time.strptime(
+                        datetime(2021, 3, 7, 12, 13,
+                                 14).strftime("%Y-%m-%d %H:%M:%S"),
+                        '%Y-%m-%d %H:%M:%S')),
                 'like_count':
                 2021,
                 'comment_count':
@@ -120,8 +122,10 @@ class TestLogin(unittest.TestCase):
                 "https://PlayMarsView",
                 'create_time':
                 time.mktime(
-                    datetime.strptime('2021-03-07 12:13:14',
-                                      "%Y-%m-%d %H:%M:%S").timetuple()),
+                    time.strptime(
+                        datetime(2021, 3, 7, 12, 13,
+                                 14).strftime("%Y-%m-%d %H:%M:%S"),
+                        '%Y-%m-%d %H:%M:%S')),
                 'like_count':
                 2021,
                 'comment_count':
