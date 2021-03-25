@@ -7,7 +7,7 @@ this file should be a .py file as tests for login
 # import django
 import unittest
 import logIn.utils
-from datetime import datetime
+# from datetime import datetime
 from app.models import User, Video
 
 
@@ -123,7 +123,6 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for update_registered_user
         '''
-        open_id = "todayisagoodday"
         video_list = [{
             'photo_id': "this is a sunset photo in Hogwards",
             'caption': "hogwards sunset",
