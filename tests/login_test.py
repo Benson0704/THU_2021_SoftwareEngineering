@@ -88,26 +88,50 @@ class TestLogin(unittest.TestCase):
             "todayisagoodday")
         expected_video_list = [
             {
-                'photo_id': "this is a sunset photo in Hogwards",
-                'caption': "hogwards sunset",
-                'cover': "https://HogwardsSunset",
-                'play_url': "https://PlayHogwardsSunset",
-                'create_time': '2021-03-07 12:13:14',
-                'like_count': 2021,
-                'comment_count': 74,
-                'view_count': 200074,
-                'pending': False
+                'photo_id':
+                "this is a sunset photo in Hogwards",
+                'caption':
+                "hogwards sunset",
+                'cover':
+                "https://HogwardsSunset",
+                'play_url':
+                "https://PlayHogwardsSunset",
+                'create_time':
+                time.mktime(
+                    datetime.strptime('2021-03-07 12:13:14'
+                                      "%Y-%m-%d %H:%M:%S"),
+                    '%Y-%m-%d %H:%M:%S'),
+                'like_count':
+                2021,
+                'comment_count':
+                74,
+                'view_count':
+                200074,
+                'pending':
+                False
             },
             {
-                'photo_id': "this is a photo on Mars",
-                'caption': "Mars view",
-                'cover': "https://MarsView",
-                'play_url': "https://PlayMarsView",
-                'create_time': '2021-03-07 12:13:14',
-                'like_count': 2021,
-                'comment_count': 74,
-                'view_count': 200074,
-                'pending': False
+                'photo_id':
+                "this is a photo on Mars",
+                'caption':
+                "Mars view",
+                'cover':
+                "https://MarsView",
+                'play_url':
+                "https://PlayMarsView",
+                'create_time':
+                time.mktime(
+                    datetime.strptime('2021-03-07 12:13:14'
+                                      "%Y-%m-%d %H:%M:%S"),
+                    '%Y-%m-%d %H:%M:%S'),
+                'like_count':
+                2021,
+                'comment_count':
+                74,
+                'view_count':
+                200074,
+                'pending':
+                False
             },
         ]
         expected_count_dictionary = {

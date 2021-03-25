@@ -100,9 +100,9 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                     all_count=count_dictionary['all_count'])
     new_user.save()
     for video in video_list:
-        create_time = video_list[i]['create_time'][:10]
-            if len(create_time) > 10:
-                create_time = create_time[:10]
+        create_time = video['create_time'][:10]
+        if len(create_time) > 10:
+            create_time = create_time[:10]
         new_video = Video(user=open_id,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
