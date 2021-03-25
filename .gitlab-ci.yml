@@ -43,7 +43,7 @@ style-test:
   script:
     - pycodestyle logIn tests
     - PYCODESTYLE_RET=$?
-    - pylint logIn tests
+    - pylint logIn tests --disable=C0103,E1101,C0411
     - PYLINT_RET=$?
     - if [ $PYCODESTYLE_RET \> 0 ]; then exit $PYCODESTYLE_RET; fi;
     - exit $PYLINT_RET
