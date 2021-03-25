@@ -34,9 +34,7 @@ def oauth():
 
 def oauth_callback(response):
     """用户同意授权后，会被重定向回到这个URL"""
-    print("Successfully authorize")
     code = response.GET.get("code")
-    print(code)
     body = {
         "app_id": OAUTH["app_id"],
         "app_secret": OAUTH["app_secret"],
