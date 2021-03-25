@@ -70,6 +70,9 @@ def update_registered_user(open_id, video_list, count_dictionary):
             video.delete()
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
+            create_time = video_list[i]['create_time'][:10]
+            if len(create_time) > 10:
+                create_time = create_time[:10]
             video = Video(user=open_id,
                           photo_id=video_list[i]['photo_id'],
                           caption=video_list[i]['caption'],
@@ -77,7 +80,7 @@ def update_registered_user(open_id, video_list, count_dictionary):
                           play_url=video_list[i]['play_url'],
                           create_time=time.strftime(
                               '%Y-%m-%d %H:%M:%S',
-                              time.localtime(video_list[i]['create_time'])),
+                              time.localtime(create_time)),
                           like_count=video_list[i]['like_count'],
                           comment_count=video_list[i]['comment_count'],
                           view_count=video_list[i]['view_count'],
@@ -97,6 +100,9 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                     all_count=count_dictionary['all_count'])
     new_user.save()
     for video in video_list:
+        create_time = video_list[i]['create_time'][:10]
+            if len(create_time) > 10:
+                create_time = create_time[:10]
         new_video = Video(user=open_id,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
@@ -104,7 +110,7 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                           play_url=['play_url'],
                           create_time=time.strftime(
                               '%Y-%m-%d %H:%M:%S',
-                              time.localtime(video['create_time'])),
+                              time.localtime(create_time)),
                           like_count=video['like_count'],
                           comment_count=video['comment_count'],
                           view_count=video['view_count'],
