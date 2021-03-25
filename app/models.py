@@ -13,8 +13,8 @@ class User(models.Model):
     '''
     用户类
     '''
-    id = models.AutoField(primary_key=True)
-    open_id = models.CharField(max_length=50, unique=True)  # 用户id，用户唯一标志
+    open_id = models.CharField(max_length=50, unique=True,
+                               primary_key=True)  # 用户id，用户唯一标志
     public_count = models.IntegerField(default=0)  # 公开视频数量
     friend_count = models.IntegerField(default=0)  # 仅好友可见的视频数量
     private_count = models.IntegerField(default=0)  # 仅自己可见的视频数量
@@ -26,7 +26,7 @@ class Video(models.Model):
     视频类
     '''
     user = models.CharField(max_length=50)  # 用户open_id
-    photo_id = models.CharField(max_length=50)  # 作品id
+    photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
     caption = models.CharField(max_length=500, default="NULL CAPTION")  # 作品标题
     cover = models.CharField(max_length=500, default="NULL COVER")  # 作品封面
     play_url = models.CharField(max_length=500)  # 作品播放链接
