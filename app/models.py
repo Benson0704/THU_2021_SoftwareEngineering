@@ -13,6 +13,7 @@ class User(models.Model):
     '''
     用户类
     '''
+    id = models.AutoField()
     open_id = models.CharField(max_length=50, 
                                unique=True)  # 用户id，用户唯一标志
     public_count = models.IntegerField(default=0)  # 公开视频数量
