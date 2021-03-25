@@ -7,7 +7,7 @@ this file should be a .py file as tests for login
 # import django
 import unittest
 import logIn.utils
-# from datetime import datetime
+from datetime import datetime
 from app.models import User, Video
 
 
@@ -29,7 +29,7 @@ class TestLogin(unittest.TestCase):
             caption="hogwards sunset",
             cover="https://HogwardsSunset",
             play_url="https://PlayHogwardsSunset",
-            create_time="20210307191817",
+            create_time=datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
             like_count=2021,
             comment_count=74,
             view_count=200074,
@@ -40,7 +40,7 @@ class TestLogin(unittest.TestCase):
                                          caption="Mars view",
                                          cover="https://MarsView",
                                          play_url="https://PlayMarsView",
-                                         create_time="20210307191817",
+                                         create_time=datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
                                          like_count=2021,
                                          comment_count=74,
                                          view_count=200074,
@@ -58,7 +58,7 @@ class TestLogin(unittest.TestCase):
             'caption': "Test caption",
             'cover': "https://TestCover",
             'play_url': "https://TestPlayUrl",
-            'create_time': "20210307191817",
+            'create_time': 1203001010,
             'like_count': 100,
             'comment_count': 100,
             'view_count': 1000,
@@ -91,7 +91,7 @@ class TestLogin(unittest.TestCase):
                 'caption': "hogwards sunset",
                 'cover': "https://HogwardsSunset",
                 'play_url': "https://PlayHogwardsSunset",
-                'create_time': "20210307191817",
+                'create_time': datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
                 'like_count': 2021,
                 'comment_count': 74,
                 'view_count': 200074,
@@ -102,7 +102,7 @@ class TestLogin(unittest.TestCase):
                 'caption': "Mars view",
                 'cover': "https://MarsView",
                 'play_url': "https://PlayMarsView",
-                'create_time': "20210307191817",
+                'create_time': datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
                 'like_count': 2021,
                 'comment_count': 74,
                 'view_count': 200074,
@@ -123,12 +123,13 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for update_registered_user
         '''
+        
         video_list = [{
             'photo_id': "this is a sunset photo in Hogwards",
             'caption': "hogwards sunset",
             'cover': "https://HogwardsSunset",
             'play_url': "https://PlayHogwardsSunset",
-            'create_time': "20210307191817",
+            'create_time': 2021030719,
             'like_count': 2021,
             'comment_count': 74,
             'view_count': 200074,
@@ -138,7 +139,7 @@ class TestLogin(unittest.TestCase):
             'caption': "New Zealand dog",
             'cover': "https://NewZealanddog",
             'play_url': "https://PlayNewZealanddog",
-            'create_time': "20210307191817",
+            'create_time': 2021030719,
             'like_count': 2021,
             'comment_count': 74,
             'view_count': 200074,
