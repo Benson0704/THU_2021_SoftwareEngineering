@@ -26,7 +26,7 @@ def get_registered_user(open_id):
     3.24: untest
     '''
     user = User.objects.get(open_id=open_id)
-    video_list = Video.objects.filter(user=open_id)
+    video_list = Video.objects.filter(user=open_id).order_by('-pk')
     res_video_list = []
     for video in video_list:
         video_dictionary = {}
@@ -104,7 +104,7 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                           play_url=['play_url'],
                           create_time=time.strftime(
                               '%Y-%m-%d %H:%M:%S',
-                              time.localtime(video[create_time])),
+                              time.localtime(video['create_time'])),
                           like_count=video['like_count'],
                           comment_count=video['comment_count'],
                           view_count=video['view_count'],
