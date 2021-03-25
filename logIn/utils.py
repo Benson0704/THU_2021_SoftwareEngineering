@@ -70,7 +70,7 @@ def update_registered_user(open_id, video_list, count_dictionary):
             video.delete()
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
-            create_time = video_list[i]['create_time'][:10]
+            create_time = str(video_list[i]['create_time'])[:10]
             if len(create_time) > 10:
                 create_time = create_time[:10]
             video = Video(user=open_id,
@@ -100,7 +100,7 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                     all_count=count_dictionary['all_count'])
     new_user.save()
     for video in video_list:
-        create_time = video['create_time'][:10]
+        create_time = str(video['create_time'])[:10]
         if len(create_time) > 10:
             create_time = create_time[:10]
         new_video = Video(user=open_id,
