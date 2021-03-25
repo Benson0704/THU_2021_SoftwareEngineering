@@ -1,3 +1,7 @@
+'''
+this is a module for getting the information of users and videos
+'''
+
 import os
 import requests
 from django.shortcuts import redirect
@@ -17,7 +21,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 session = {}
 
 
-def oauth(response):
+def oauth():
     """用户点击链接时，把用户定向到OAuth2的登陆界面"""
     client = oauth2.WebApplicationClient(OAUTH["app_id"])
     state = client.state_generator()
@@ -39,14 +43,14 @@ def oauth_callback(response):
         "code": code,
         "grant_type": "authorization_code"
     }
-    r = requests.post(OAUTH["token_url"], body)
-    access_token = r.json().get("access_token")
+    res = requests.post(OAUTH["token_url"], body)
+    access_token = res.json().get("access_token")
 
     # 通过list接口得到用户的全部video_list信息
     url = "https://open.kuaishou.com/openapi/tsinghua/photo/list"
     params = {"access_token": access_token, "app_id": OAUTH["app_id"]}
-    r = requests.get(url=url, params=params)
-    data = r.json()
+    res = requests.get(url=url, params=params)
+    data = res.json()
     session["video_list"] = data.get("video_list")
 
     # 通过info接口得到单个video信息
@@ -57,13 +61,13 @@ def oauth_callback(response):
             "app_id": OAUTH["app_id"],
             "photo_id": video["photo_id"]
         }
-        r = requests.get(photo_url, params=params)
-        photo_data = r.json()
+        res = requests.get(photo_url, params=params)
+        photo_data = res.json()
 
     # 通过count接口得到用户的视频数量统计信息
     count_url = "https://open.kuaishou.com/openapi/photo/count"
-    r = requests.get(url=count_url, params=params)
-    count_data = r.json()
+    res = requests.get(url=count_url, params=params)
+    count_data = res.json()
     session["all_count"] = count_data["all_count"]
     session["private_count"] = count_data["private_count"]
     session["public_count"] = count_data["public_count"]

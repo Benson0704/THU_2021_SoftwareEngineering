@@ -2,9 +2,9 @@
 this file should be a .py file as tests for login
 '''
 
-import sys
-import os
-import django
+# import sys
+# import os
+# import django
 import unittest
 import logIn.utils
 from datetime import datetime
@@ -48,6 +48,9 @@ class TestLogin(unittest.TestCase):
         new_video.save()
 
     def test_initialize_new_user(self):
+        '''
+        this is a test for initialize_registered_user
+        '''
         open_id = "Test open_id"
         video_list = []
         video = {
@@ -61,7 +64,7 @@ class TestLogin(unittest.TestCase):
             'view_count': 1000,
             'pending': False
         }
-        video_list.append(Video)
+        video_list.append(video)
         count_dictionary = {
             'public_count': 1,
             'friend_count': 0,
@@ -77,6 +80,9 @@ class TestLogin(unittest.TestCase):
             Video.objects.filter(photo_id="Test photo_id").exists())
 
     def test_get_registered_user(self):
+        '''
+        this is a test for get_registered_user
+        '''
         res_video_list, res_count_dictionary = logIn.utils.get_registered_user(
             "todayisagoodday")
         expected_video_list = [
@@ -114,6 +120,9 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(res_count_dictionary, expected_count_dictionary)
 
     def test_update_registered_user(self):
+        '''
+        this is a test for update_registered_user
+        '''
         open_id = "todayisagoodday"
         video_list = [{
             'photo_id': "this is a sunset photo in Hogwards",
@@ -152,6 +161,9 @@ class TestLogin(unittest.TestCase):
                 photo_id="this is a dog in New Zealand").exists())
 
     def test_is_registered(self):
+        '''
+        this is a test for is_registered
+        '''
         self.assertTrue(logIn.utils.is_registered("todayisagoodday"))
 
     def tearDown(self):
