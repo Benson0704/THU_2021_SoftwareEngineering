@@ -72,7 +72,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kuaishou',  # 数据库名称，
-        'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
+        # 'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
         'HOST': '116.62.155.162'
         # 'USER': 'root',  # 数据库用户
         'USER': 'brisa',  # 数据库用户
