@@ -22,7 +22,7 @@ unit-test:
   before_script:
     - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements_dev.txt
   script:
-    - coverage run --source app -m pytest --junit-xml=xunit-reports/xunit-result.xml
+    - coverage run --source logIn -m pytest --junit-xml=xunit-reports/xunit-result.xml
     - ret=$?
     - coverage xml -o coverage-reports/coverage.xml
     - coverage report
@@ -41,9 +41,9 @@ style-test:
   before_script:
     - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements_dev.txt
   script:
-    - pycodestyle app tests
+    - pycodestyle logIn tests
     - PYCODESTYLE_RET=$?
-    - pylint app tests
+    - pylint logIn tests --disable=C0103,E1101,C0411
     - PYLINT_RET=$?
     - if [ $PYCODESTYLE_RET \> 0 ]; then exit $PYCODESTYLE_RET; fi;
     - exit $PYLINT_RET

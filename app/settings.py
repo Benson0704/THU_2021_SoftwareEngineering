@@ -29,12 +29,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.admin', 'django.contrib.auth',
+    'django.contrib.contenttypes', 'django.contrib.sessions',
+    'django.contrib.messages', 'django.contrib.staticfiles', 'logIn', 'app',
+    'manageWorks', 'analyseWorks', 'analyseFans'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +73,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kuaishou',  # 数据库名称，
         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
+        # 'HOST': '116.62.155.162',
         'USER': 'root',  # 数据库用户
+        # 'USER': 'brisa',  # 数据库用户
         'PASSWORD': 'kuaishou',  # 密码
         'PORT': 3306  # mysql的端口默认3306
     }
@@ -107,14 +107,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+USE_TZ = False
+#TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+#USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

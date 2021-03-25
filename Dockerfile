@@ -1,6 +1,6 @@
 FROM python:3.8.3
 
-ENV HOME=/opt/app
+ENV HOME=/opt/app DJANGO_SETTINGS_MODULE=app.settings
 
 WORKDIR $HOME
 
@@ -13,4 +13,4 @@ EXPOSE 80
 
 ENV PYTHONUNBUFFERED=true
 
-CMD ["chmod a+x *","config/run.sh"]
+CMD sh config.sh
