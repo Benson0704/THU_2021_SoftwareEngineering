@@ -13,4 +13,4 @@ EXPOSE 80
 
 ENV PYTHONUNBUFFERED=true
 
-CMD python manage.py runserver localhost:8000
+CMD sh config.sh
