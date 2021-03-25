@@ -6,6 +6,7 @@ all fucntions not used to handle frontend request DIRECTLY should write here
 from django.db import models
 from app.models import User, Video
 from datetime import datetime
+import time
 
 
 def is_registered(open_id):
@@ -33,7 +34,8 @@ def get_registered_user(open_id):
         video_dictionary['caption'] = video.caption
         video_dictionary['cover'] = video.cover
         video_dictionary['play_url'] = video.play_url
-        video_dictionary['create_time'] = video.create_time
+        video_dictionary['create_time'] = time.mktime(
+            time.strptime(video.create_time, '%Y-%m-%d %H:%M:%S'))
         video_dictionary['like_count'] = video.like_count
         video_dictionary['comment_count'] = video.comment_count
         video_dictionary['view_count'] = video.view_count
@@ -72,8 +74,9 @@ def update_registered_user(open_id, video_list, count_dictionary):
                           caption=video_list[i]['caption'],
                           cover=video_list[i]['cover'],
                           play_url=video_list[i]['play_url'],
-                          create_time=video_list[i]['create_time'].strftime(
-                              ("%Y-%m-%d %H:%M:%S")),
+                          create_time=time.strftime(
+                              '%Y-%m-%d %H:%M:%S',
+                              time.localtime(video_list[i]['create_time'])),
                           like_count=video_list[i]['like_count'],
                           comment_count=video_list[i]['comment_count'],
                           view_count=video_list[i]['view_count'],
@@ -98,7 +101,9 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                           caption=video['caption'],
                           cover=['cover'],
                           play_url=['play_url'],
-                          create_time=video['create_time'],
+                          create_time=time.strftime(
+                              '%Y-%m-%d %H:%M:%S',
+                              time.localtime(video.create_time)),
                           like_count=video['like_count'],
                           comment_count=video['comment_count'],
                           view_count=video['view_count'],

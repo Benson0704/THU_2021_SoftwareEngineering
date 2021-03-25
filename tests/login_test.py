@@ -9,6 +9,7 @@ import unittest
 import logIn.utils
 from datetime import datetime
 from app.models import User, Video
+import time
 
 
 class TestLogin(unittest.TestCase):
@@ -29,7 +30,7 @@ class TestLogin(unittest.TestCase):
             caption="hogwards sunset",
             cover="https://HogwardsSunset",
             play_url="https://PlayHogwardsSunset",
-            create_time=datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
+            create_time='2021-03-07 12:13:14',
             like_count=2021,
             comment_count=74,
             view_count=200074,
@@ -40,7 +41,7 @@ class TestLogin(unittest.TestCase):
                                          caption="Mars view",
                                          cover="https://MarsView",
                                          play_url="https://PlayMarsView",
-                                         create_time=datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
+                                         create_time='2021-03-07 12:13:14',
                                          like_count=2021,
                                          comment_count=74,
                                          view_count=200074,
@@ -58,7 +59,7 @@ class TestLogin(unittest.TestCase):
             'caption': "Test caption",
             'cover': "https://TestCover",
             'play_url': "https://TestPlayUrl",
-            'create_time': 1203001010,
+            'create_time': 1203011101010,
             'like_count': 100,
             'comment_count': 100,
             'view_count': 1000,
@@ -91,7 +92,7 @@ class TestLogin(unittest.TestCase):
                 'caption': "hogwards sunset",
                 'cover': "https://HogwardsSunset",
                 'play_url': "https://PlayHogwardsSunset",
-                'create_time': datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
+                'create_time': '2021-03-07 12:13:14',
                 'like_count': 2021,
                 'comment_count': 74,
                 'view_count': 200074,
@@ -102,7 +103,7 @@ class TestLogin(unittest.TestCase):
                 'caption': "Mars view",
                 'cover': "https://MarsView",
                 'play_url': "https://PlayMarsView",
-                'create_time': datetime(2021,3,7,12,13,14).strftime(("%Y-%m-%d %H:%M:%S")),
+                'create_time': '2021-03-07 12:13:14',
                 'like_count': 2021,
                 'comment_count': 74,
                 'view_count': 200074,
@@ -123,13 +124,13 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for update_registered_user
         '''
-        
+
         video_list = [{
             'photo_id': "this is a sunset photo in Hogwards",
             'caption': "hogwards sunset",
             'cover': "https://HogwardsSunset",
             'play_url': "https://PlayHogwardsSunset",
-            'create_time': 2021030719,
+            'create_time': 0000000000000,
             'like_count': 2021,
             'comment_count': 74,
             'view_count': 200074,
@@ -139,7 +140,7 @@ class TestLogin(unittest.TestCase):
             'caption': "New Zealand dog",
             'cover': "https://NewZealanddog",
             'play_url': "https://PlayNewZealanddog",
-            'create_time': 2021030719,
+            'create_time': 0000000000000,
             'like_count': 2021,
             'comment_count': 74,
             'view_count': 200074,
@@ -169,17 +170,18 @@ class TestLogin(unittest.TestCase):
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
         new_user = User.objects.filter(open_id="Test open_id")
-        if(new_user):
+        if (new_user):
             new_user.delete()
-        Video.objects.filter(photo_id="this is a sunset photo in Hogwards").delete()
+        Video.objects.filter(
+            photo_id="this is a sunset photo in Hogwards").delete()
         Video.objects.filter(photo_id="this is a photo on Mars").delete()
-        new_video = Video.objects.filter(photo_id="this is a dog in New Zealand")
-        if(new_video):
+        new_video = Video.objects.filter(
+            photo_id="this is a dog in New Zealand")
+        if (new_video):
             new_video.delete()
         new_video = Video.objects.filter(photo_id="Test photo_id")
-        if(new_video):
+        if (new_video):
             new_video.delete()
-        
 
 
 if __name__ == '__main__':
