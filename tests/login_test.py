@@ -99,8 +99,7 @@ class TestLogin(unittest.TestCase):
                 'create_time':
                 time.mktime(
                     datetime.strptime('2021-03-07 12:13:14',
-                                      "%Y-%m-%d %H:%M:%S"),
-                    '%Y-%m-%d %H:%M:%S'),
+                                      "%Y-%m-%d %H:%M:%S")),
                 'like_count':
                 2021,
                 'comment_count':
@@ -122,8 +121,7 @@ class TestLogin(unittest.TestCase):
                 'create_time':
                 time.mktime(
                     datetime.strptime('2021-03-07 12:13:14',
-                                      "%Y-%m-%d %H:%M:%S"),
-                    '%Y-%m-%d %H:%M:%S'),
+                                      "%Y-%m-%d %H:%M:%S")),
                 'like_count':
                 2021,
                 'comment_count':
