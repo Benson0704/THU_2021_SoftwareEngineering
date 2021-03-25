@@ -3,10 +3,8 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all fucntions not used to handle frontend request DIRECTLY should write here
 '''
-from django.db import models
-from app.models import User, Video
-from datetime import datetime
 import time
+from app.models import User, Video
 
 
 def is_registered(open_id):

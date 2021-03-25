@@ -62,7 +62,6 @@ def oauth_callback(response):
             "photo_id": video["photo_id"]
         }
         res = requests.get(photo_url, params=params)
-        photo_data = res.json()
 
     # 通过count接口得到用户的视频数量统计信息
     count_url = "https://open.kuaishou.com/openapi/photo/count"
@@ -72,5 +71,4 @@ def oauth_callback(response):
     session["private_count"] = count_data["private_count"]
     session["public_count"] = count_data["public_count"]
     session["friend_count"] = count_data["friend_count"]
-    print(session)
     return redirect("/")  # 得到首页的接口后需要修改
