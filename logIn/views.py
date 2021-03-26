@@ -45,11 +45,11 @@ def oauth_callback(request):
         result = response.get("result")
         if result != '1':
             return gen_response(404, response.get("error_msg"))
-        else:
-            access_token = response.get("access_token")
-            open_id = response.get("open_id")
-            expires_in = response.get("expires_in")
-            refresh_token = response.get("refresh_token")
+
+        access_token = response.get("access_token")
+        open_id = response.get("open_id")
+        expires_in = response.get("expires_in")
+        refresh_token = response.get("refresh_token")
 
         # 通过user_info接口得到用户的快手公开资料
         user_url = "https://open.kuaishou.com/openapi/user_info"
@@ -109,6 +109,6 @@ def oauth_callback(request):
                 }
             }
         ])
-    else:
-        return gen_response(405, 'method {} not allowed'.
-                            format(request.method))
+
+    return gen_response(405, 'method {} not allowed'.
+                        format(request.method))
