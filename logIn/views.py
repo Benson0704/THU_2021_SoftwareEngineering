@@ -5,8 +5,9 @@ this is a module for getting the information of users and videos
 import os
 import requests
 from django.http import JsonResponse
-from logIn.utils import is_registered, update_registered_user, initialize_new_user,\
-    get_total_like_count, get_total_comment_count, get_total_view_count
+from logIn.utils import is_registered, update_registered_user, \
+    initialize_new_user,get_total_like_count, \
+    get_total_comment_count, get_total_view_count
 
 OAUTH = {
     "app_id": "ks692991395583662522",
