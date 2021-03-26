@@ -58,7 +58,7 @@ class TestAppTimes(unittest.TestCase):
             '1970-01-01 00:00:00'
         }, {
             'timestamp':
-            app.times.datetime2string(self.test_result[1]['datetime']),
+            app.times.datetime2timestamp(self.test_result[1]['datetime']),
             'datetime':
             datetime(2181, 4, 4, 11, 51, 6),
             'string':
