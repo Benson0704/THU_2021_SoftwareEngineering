@@ -49,7 +49,7 @@ def get_registered_user(open_id):
     return res_video_list, res_count_dictionary
 
 
-def update_registered_user(open_id, video_list, count_dictionary):
+def update_registered_user(open_id, user_data, video_list, count_dictionary):  # 数据库还需要更新user_data，本函数需要更新一下
     '''
     this fuction should update a registered user
     3.24: untest
@@ -85,7 +85,7 @@ def update_registered_user(open_id, video_list, count_dictionary):
             video.save()
 
 
-def initialize_new_user(open_id, video_list, count_dictionary):
+def initialize_new_user(open_id, user_data, video_list, count_dictionary):  # 还需要向数据库中存入user_data，本函数需要更新一下
     '''
     this function should create a user in User model and his works in Video
     3.24: untest
@@ -111,3 +111,22 @@ def initialize_new_user(open_id, video_list, count_dictionary):
                           view_count=video['view_count'],
                           pending=video['pending'])
         new_video.save()
+
+
+def get_total_like_count(open_id):
+    """
+    this function should return the total_like_count of the user
+    return: total_like_count
+    """
+
+def get_total_comment_count(open_id):
+    """
+    this function should return the total_comment_count of the user
+    return: total_comment_count
+    """
+
+def get_total_view_count(open_id):
+    """
+    this function should return the total_view_count of the user
+    return: total_view_count
+    """
