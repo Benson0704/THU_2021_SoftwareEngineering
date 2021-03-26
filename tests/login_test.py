@@ -14,7 +14,7 @@ from app.models import User, Video
 
 class TestLogin(unittest.TestCase):
     '''
-    This is a unittest for User
+    This is a unittest for logIn
     '''
     def setUp(self):
         User.objects.all().delete()

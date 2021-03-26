@@ -3,6 +3,9 @@ this module meanly contains 6 functions for:
     datetime-string-timestamp(length=10) transfrom
 
 Mention: django.models.dateTimeField is a datetime.datetime object
+
+WARNING:
+    all timestamps and datetimes are based on UTC
 '''
 import time
 import datetime
