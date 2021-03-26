@@ -6,7 +6,7 @@ from datetime import datetime
 import app.times
 
 
-class TestLogin(unittest.TestCase):
+class TestAppTimes(unittest.TestCase):
     '''
     This is a unittest for app.times
     '''
@@ -51,14 +51,14 @@ class TestLogin(unittest.TestCase):
         '''
         function_result = [{
             'timestamp':
-            app.times.datetime2string(self.test_result[0]['timestamp']),
+            app.times.datetime2string(self.test_result[0]['datetime']),
             'datetime':
             datetime(1970, 1, 1, 0, 0, 0),
             'string':
             '1970-01-01 00:00:00'
         }, {
             'timestamp':
-            app.times.datetime2string(self.test_result[1]['timestamp']),
+            app.times.datetime2string(self.test_result[1]['datetime']),
             'datetime':
             datetime(2181, 4, 4, 11, 51, 6),
             'string':
