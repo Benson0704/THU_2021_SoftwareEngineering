@@ -73,7 +73,8 @@ def update_registered_user(open_id, video_list, count_dictionary):
                 caption=video_list[i]['caption'],
                 cover=video_list[i]['cover'],
                 play_url=video_list[i]['play_url'],
-                create_time=app.times.timestamp2string,  # timestamp2str
+                create_time=app.times.timestamp2string(
+                    video_list[i]['create_time']),  # timestamp2str
                 like_count=video_list[i]['like_count'],
                 comment_count=video_list[i]['comment_count'],
                 view_count=video_list[i]['view_count'],
