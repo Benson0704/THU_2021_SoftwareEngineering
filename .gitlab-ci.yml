@@ -31,7 +31,7 @@ unit-test:
     - SUFFIX=$RANDOM
     - curl "http://10.0.0.11/sonar-scanner.tar.gz" -s -o "/tmp/sonar-$SUFFIX.tar.gz"
     - tar -xf "/tmp/sonar-$SUFFIX.tar.gz"  -C /opt
-    - /opt/sonar-scanner/bin/sonar-scanner
+    - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.scm.provider=git
 
 style-test:
   image: python:3.8.3
