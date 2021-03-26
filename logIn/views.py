@@ -6,7 +6,7 @@ import os
 import requests
 from django.http import JsonResponse
 from logIn.utils import is_registered, update_registered_user, \
-    initialize_new_user,get_total_like_count, \
+    initialize_new_user, get_total_like_count, \
     get_total_comment_count, get_total_view_count
 
 OAUTH = {
