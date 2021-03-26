@@ -6,9 +6,9 @@ this file should be a .py file as tests for login
 # import os
 # import django
 import unittest
-import time
 from datetime import datetime
 import logIn.utils
+import app.times
 from app.models import User, Video
 
 
@@ -97,11 +97,7 @@ class TestLogin(unittest.TestCase):
                 'play_url':
                 "https://PlayHogwardsSunset",
                 'create_time':
-                time.mktime(
-                    time.strptime(
-                        datetime(2021, 3, 7, 12, 13,
-                                 14).strftime("%Y-%m-%d %H:%M:%S"),
-                        '%Y-%m-%d %H:%M:%S')),
+                app.times.datetime2timestamp(datetime(2021, 3, 7, 12, 13, 14)),
                 'like_count':
                 2021,
                 'comment_count':
@@ -121,11 +117,7 @@ class TestLogin(unittest.TestCase):
                 'play_url':
                 "https://PlayMarsView",
                 'create_time':
-                time.mktime(
-                    time.strptime(
-                        datetime(2021, 3, 7, 12, 13,
-                                 14).strftime("%Y-%m-%d %H:%M:%S"),
-                        '%Y-%m-%d %H:%M:%S')),
+                app.times.datetime2timestamp(datetime(2021, 3, 7, 12, 13, 14)),
                 'like_count':
                 2021,
                 'comment_count':
