@@ -31,12 +31,13 @@ unit-test:
     - SUFFIX=$RANDOM
     - curl "http://10.0.0.11/sonar-scanner.tar.gz" -s -o "/tmp/sonar-$SUFFIX.tar.gz"
     - tar -xf "/tmp/sonar-$SUFFIX.tar.gz"  -C /opt
-    - /opt/sonar-scanner/bin/sonar-scanner -Dsonar.scm.provider=git
+    - /opt/sonar-scanner/bin/sonar-scanner
 
 style-test:
   image: python:3.8.3
   stage: test
   # allow_failure: true
+  # pylint disables are: cant found methods, import orders and module names
 
   before_script:
     - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements_dev.txt
