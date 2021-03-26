@@ -17,6 +17,8 @@ class TestLogin(unittest.TestCase):
     This is a unittest for User
     '''
     def setUp(self):
+        User.objects.all().delete()
+        Video.objects.all().delete()  # this two lines only for test
         brisa = User.objects.create(open_id="todayisagoodday",
                                     public_count=2,
                                     friend_count=0,
