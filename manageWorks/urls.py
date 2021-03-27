@@ -7,5 +7,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('home', views.oauth_callback),
+    path('time', views.video),
+    path('label', views.label),
 ]
