@@ -15,23 +15,43 @@ class User(models.Model):
     '''
     open_id = models.CharField(max_length=50, unique=True,
                                primary_key=True)  # 用户id，用户唯一标志
+    name = models.CharField(max_length=50, unique=True)  # 用户昵称
+    sex = models.BooleanField(null=True)  # 性别设置为bool，1为F，0为M，可空
+    head = models.CharField(max_length=500, null=True)  # 头像地址
+    bigHead = models.CharField(max_length=500, null=True)  # 大头像地址
+    city = models.CharField(max_length=50, null=True)  # 用户地区
+    fan = models.IntegerField(default=0)  # 粉丝数
+    follow = models.IntegerField(default=0)  # 关注数
+    video_count = models.IntegerField(default=0)  # 视频总量
     public_count = models.IntegerField(default=0)  # 公开视频数量
     friend_count = models.IntegerField(default=0)  # 仅好友可见的视频数量
     private_count = models.IntegerField(default=0)  # 仅自己可见的视频数量
-    all_count = models.IntegerField(default=0)  # 视频总量
+    total_like_count = models.IntegerField(default=0)  # 总点赞数
+    total_view_count = models.IntegerField(default=0)  # 总播放数
+   
 
 
 class Video(models.Model):
     '''
     视频类
     '''
-    user = models.CharField(max_length=50)  # 用户open_id
+    user = models.ForeignKey('User', on_delete=models.CASCADE)  # 用户open_id
     photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
-    caption = models.CharField(max_length=500, default="NULL CAPTION")  # 作品标题
-    cover = models.CharField(max_length=500, default="NULL COVER")  # 作品封面
+    caption = models.CharField(max_length=500, default="Default Caption")  # 作品标题
+    cover = models.CharField(max_length=500, default="Default Cover")  # 作品封面
     play_url = models.CharField(max_length=500)  # 作品播放链接
     create_time = models.DateTimeField(default=0)  # 作品创建时间
     like_count = models.IntegerField(default=0)  # 作品点赞数
     comment_count = models.IntegerField(default=0)  # 作品评论数
     view_count = models.IntegerField(default=0)  # 作品观看数
     pending = models.BooleanField()  # 作品状态（是否正在处理，不能观看）
+    labels = models.CharField(max_length=100)  # 标签
+
+
+class Label(models.Model):
+    '''
+    标签类
+    '''
+    id = models.AutoField()
+    label_name = models.CharField(max_length=50)  # 标签名
+    num = models.IntegerField(default=0)  # 该标签的video数
