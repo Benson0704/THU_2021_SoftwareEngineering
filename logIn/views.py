@@ -1,5 +1,5 @@
 '''
-this is a module for getting the information of users and videos
+this is a module for getting the information of users and videos in the login process
 '''
 
 import os
@@ -19,12 +19,12 @@ OAUTH = {
     "redirect_uri": "http://127.0.0.1:8000/logIn/oauth/callback"
 }
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-session = {}
 
 
 def oauth_callback(request):
     """
-    this function get the request from the
+    this function get the request from frontend
+    return: code, data
     """
 
     def gen_response(code: int, data: str):

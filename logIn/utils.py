@@ -1,7 +1,7 @@
 '''
 this module provides necessary functions and auxiliary functions
 WARNING!:
-all fucntions not used to handle frontend request DIRECTLY should write here
+all functions not used to handle frontend request DIRECTLY should write here
 '''
 import time
 from app.models import User, Video
@@ -133,4 +133,18 @@ def get_total_view_count(open_id):
     """
     this function should return the total_view_count of the user
     return: total_view_count
+    """
+
+
+def store_token(open_id, access_token, refresh_token, expire_time):
+    """
+    this function should store the access and refresh token and the correspond expire_time of refresh_token
+    (regardless of initialize or update)
+    """
+
+
+def get_token(open_id):
+    """
+    this function should return the user's access_token
+    return: access_token
     """
