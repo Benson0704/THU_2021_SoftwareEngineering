@@ -52,6 +52,5 @@ class Label(models.Model):
     '''
     标签类
     '''
-    id = models.AutoField()
     label_name = models.CharField(max_length=50)  # 标签名
     num = models.IntegerField(default=0)  # 该标签的video数
