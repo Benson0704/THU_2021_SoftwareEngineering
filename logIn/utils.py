@@ -3,7 +3,7 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
-from app.models import User, Video
+from app.models import *
 import app.times
 
 

@@ -5,8 +5,8 @@
 from django.db import models
 import os
 import django
-os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
-django.setup()
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
+# django.setup()
 
 
 class User(models.Model):
@@ -27,15 +27,30 @@ class User(models.Model):
     friend_count = models.IntegerField(default=0)  # 仅好友可见的视频数量
     private_count = models.IntegerField(default=0)  # 仅自己可见的视频数量
     total_like_count = models.IntegerField(default=0)  # 总点赞数
+    total_comment_count = models.IntegerField(default=0)  # 总评论数
     total_view_count = models.IntegerField(default=0)  # 总播放数
-   
+
+    class Meta:
+        db_table = 'users'
+
+
+class Label(models.Model):
+    '''
+    标签类
+    '''
+    label_name = models.CharField(max_length=50)  # 标签名
+    num = models.IntegerField(default=0)  # 该标签的video数
+
+    class Meta:
+        db_table = 'labels'
+
 
 
 class Video(models.Model):
     '''
     视频类
     '''
-    user = models.ForeignKey('User', on_delete=models.CASCADE)  # 用户open_id
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # 用户open_id
     photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
     caption = models.CharField(max_length=500, default="Default Caption")  # 作品标题
     cover = models.CharField(max_length=500, default="Default Cover")  # 作品封面
@@ -45,12 +60,7 @@ class Video(models.Model):
     comment_count = models.IntegerField(default=0)  # 作品评论数
     view_count = models.IntegerField(default=0)  # 作品观看数
     pending = models.BooleanField()  # 作品状态（是否正在处理，不能观看）
-    labels = models.CharField(max_length=100)  # 标签
+    labels = models.ManyToManyField(Label)  # 标签
 
-
-class Label(models.Model):
-    '''
-    标签类
-    '''
-    label_name = models.CharField(max_length=50)  # 标签名
-    num = models.IntegerField(default=0)  # 该标签的video数
+    class Meta:
+        db_table = 'videos'
