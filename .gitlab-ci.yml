@@ -42,9 +42,9 @@ style-test:
   before_script:
     - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements_dev.txt
   script:
-    - pycodestyle logIn tests
+    - pycodestyle logIn tests app
     - PYCODESTYLE_RET=$?
-    - pylint logIn tests --disable=C0103,E1101,C0411
+    - pylint logIn tests app --disable=C0103,E1101,C0411
     - PYLINT_RET=$?
     - if [ $PYCODESTYLE_RET \> 0 ]; then exit $PYCODESTYLE_RET; fi;
     - exit $PYLINT_RET
