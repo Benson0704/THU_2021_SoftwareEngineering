@@ -37,6 +37,7 @@ style-test:
   image: python:3.8.3
   stage: test
   # allow_failure: true
+  # pylint disables are: cant found methods, import orders and module names
 
   before_script:
     - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements_dev.txt
