@@ -73,9 +73,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kuaishou',  # 数据库名称，
         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
-        # 'HOST': '116.62.155.162',
         'USER': 'root',  # 数据库用户
-        # 'USER': 'brisa',  # 数据库用户
         'PASSWORD': 'kuaishou',  # 密码
         'PORT': 3306  # mysql的端口默认3306
     }
@@ -117,3 +115,8 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try:
+    from local_settings import *
+except ModuleNotFoundError:
+    pass

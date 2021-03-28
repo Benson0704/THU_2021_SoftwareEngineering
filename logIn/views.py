@@ -1,5 +1,6 @@
 '''
-this is a module for getting the information of users and videos in the login process
+this is a module for getting the information
+of users and videos in the login process
 '''
 
 import os
