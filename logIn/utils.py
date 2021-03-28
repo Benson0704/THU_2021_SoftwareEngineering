@@ -3,8 +3,8 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
-import time
-from app.models import User, Video
+from app.models import *
+import app.times
 
 
 def is_registered(open_id):
@@ -32,9 +32,8 @@ def get_registered_user(open_id):
         video_dictionary['caption'] = video.caption
         video_dictionary['cover'] = video.cover
         video_dictionary['play_url'] = video.play_url
-        video_dictionary['create_time'] = time.mktime(
-            time.strptime(video.create_time.strftime("%Y-%m-%d %H:%M:%S"),
-                          '%Y-%m-%d %H:%M:%S'))  # datetime2timestamp
+        video_dictionary['create_time'] = app.times.datetime2timestamp(
+            video.create_time)  # datetime2timestamp
         video_dictionary['like_count'] = video.like_count
         video_dictionary['comment_count'] = video.comment_count
         video_dictionary['view_count'] = video.view_count
@@ -69,16 +68,14 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
             video.delete()
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
-            create_time = video_list[i]['create_time'] // 1000
             video = Video(
                 user=open_id,
                 photo_id=video_list[i]['photo_id'],
                 caption=video_list[i]['caption'],
                 cover=video_list[i]['cover'],
                 play_url=video_list[i]['play_url'],
-                create_time=time.strftime(
-                    '%Y-%m-%d %H:%M:%S',
-                    time.localtime(create_time)),  # timestamp2str
+                create_time=app.times.timestamp2string(
+                    video_list[i]['create_time']),  # timestamp2str
                 like_count=video_list[i]['like_count'],
                 comment_count=video_list[i]['comment_count'],
                 view_count=video_list[i]['view_count'],
@@ -99,15 +96,13 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
                     all_count=count_dictionary['all_count'])
     new_user.save()
     for video in video_list:
-        create_time = video['create_time'] // 1000
         new_video = Video(user=open_id,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
                           cover=['cover'],
                           play_url=['play_url'],
-                          create_time=time.strftime(
-                              '%Y-%m-%d %H:%M:%S',
-                              time.localtime(create_time)),
+                          create_time=app.times.timestamp2string(
+                              video['create_time']),
                           like_count=video['like_count'],
                           comment_count=video['comment_count'],
                           view_count=video['view_count'],
