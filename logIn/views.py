@@ -8,7 +8,7 @@ import requests
 from django.http import JsonResponse
 from logIn.utils import is_registered, update_registered_user, \
     initialize_new_user, get_total_like_count, \
-    get_total_comment_count, get_total_view_count
+    get_total_comment_count, get_total_view_count, store_token
 
 OAUTH = {
     "app_id": "ks692991395583662522",
@@ -49,8 +49,8 @@ def oauth_callback(request):
 
         access_token = response.get("access_token")
         open_id = response.get("open_id")
-        expires_in = response.get("expires_in")
         refresh_token = response.get("refresh_token")
+        store_token(open_id, access_token, refresh_token)
 
         # 通过user_info接口得到用户的快手公开资料
         user_url = "https://open.kuaishou.com/openapi/user_info"
@@ -61,7 +61,7 @@ def oauth_callback(request):
         fan = user_data.get("fan")
         follow = user_data.get("follow")
         head = user_data.get("head")
-        bigHead = user_data.get("bigHead")
+        big_head = user_data.get("bigHead")
         city = user_data.get("city")
 
         # 通过list接口得到用户的全部video_list信息
@@ -88,15 +88,14 @@ def oauth_callback(request):
         total_comment_count = get_total_comment_count(open_id)
         total_view_count = get_total_view_count(open_id)
 
-        return gen_response(200, [
-            {
+        data = {
                 'user_data': {
                     "name": name,
                     "sex": sex,
                     "fan": fan,
                     "follow": follow,
                     "head": head,
-                    "bigHead": bigHead,
+                    "bigHead": big_head,
                     "city": city
                 },
                 'video_data': {
@@ -108,8 +107,8 @@ def oauth_callback(request):
                     'total_comment_count': total_comment_count,
                     'total_view_count': total_view_count
                 }
-            }
-        ])
+        }
+        return gen_response(200, data.__str__())
 
     return gen_response(405, 'method {} not allowed'.
                         format(request.method))
