@@ -21,7 +21,6 @@ unit-test:
 
   before_script:
     - pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements_dev.txt
-    - pip install pytest-django
   script:
     - coverage run --source logIn -m pytest --junit-xml=xunit-reports/xunit-result.xml
     - ret=$?
