@@ -49,7 +49,6 @@ class TestAppTimes(unittest.TestCase):
         '''
         test for datetime2timestamp
         '''
-        '''
         function_result = [{
             'timestamp':
             app.times.datetime2timestamp(self.test_result[0]['datetime']),
@@ -66,16 +65,10 @@ class TestAppTimes(unittest.TestCase):
             '2181-04-04 11:51:06'
         }]
         self.assertEqual(function_result, self.test_result)
-        '''
-        self.assertEqual(app.times.datetime2string(self.test_result[0]['datetime']),
-                         self.test_result[0]['string'])
-        self.assertEqual(app.times.datetime2string(self.test_result[1]['datetime']),
-                         self.test_result[1]['string'])
 
     def test_string2datetime(self):
         '''
         test for string2datetime
-        '''
         '''
         function_result = self.test_result
         function_result[0]['datetime'] = app.times.string2datetime(
@@ -83,17 +76,10 @@ class TestAppTimes(unittest.TestCase):
         function_result[1]['datetime'] = app.times.string2datetime(
             self.test_result[1]['string'])
         self.assertEqual(function_result, self.test_result)
-        '''
-        self.assertEqual(app.times.datetime2string(self.test_result[0]['string']),
-                         self.test_result[0]['datetime'])
-        self.assertEqual(app.times.datetime2string(self.test_result[1]['string']),
-                         self.test_result[1]['datetime'])
-
 
     def test_string2timestamp(self):
         '''
         test for string2timestamp
-        '''
         '''
         function_result = self.test_result
         function_result[0]['timestamp'] = app.times.string2timestamp(
@@ -101,16 +87,10 @@ class TestAppTimes(unittest.TestCase):
         function_result[1]['timestamp'] = app.times.string2timestamp(
             self.test_result[1]['string'])
         self.assertEqual(function_result, self.test_result)
-        '''
-        self.assertEqual(app.times.datetime2string(self.test_result[0]['string']),
-                         self.test_result[0]['timestamp'])
-        self.assertEqual(app.times.datetime2string(self.test_result[1]['string']),
-                         self.test_result[1]['timestamp'])
 
     def test_timestamp2datetime(self):
         '''
         test for timestamp2datetime
-        '''
         '''
         function_result = self.test_result
         function_result[0]['datetime'] = app.times.timestamp2datetime(
@@ -118,16 +98,10 @@ class TestAppTimes(unittest.TestCase):
         function_result[1]['datetime'] = app.times.timestamp2datetime(
             self.test_result[1]['timestamp'])
         self.assertEqual(function_result, self.test_result)
-        '''
-        self.assertEqual(app.times.datetime2string(self.test_result[0]['timestamp']),
-                         self.test_result[0]['datetime'])
-        self.assertEqual(app.times.datetime2string(self.test_result[1]['timestamp']),
-                         self.test_result[1]['datetime'])
 
     def test_timestamp2string(self):
         '''
         test for timestamp2string
-        '''
         '''
         function_result = self.test_result
         function_result[0]['string'] = app.times.timestamp2string(
@@ -135,11 +109,6 @@ class TestAppTimes(unittest.TestCase):
         function_result[1]['string'] = app.times.timestamp2string(
             self.test_result[1]['timestamp'])
         self.assertEqual(function_result, self.test_result)
-        '''
-        self.assertEqual(app.times.datetime2string(self.test_result[0]['timestamp']),
-                         self.test_result[0]['string'])
-        self.assertEqual(app.times.datetime2string(self.test_result[1]['timestamp']),
-                         self.test_result[1]['string'])
 
     def tearDown(self):
         '''

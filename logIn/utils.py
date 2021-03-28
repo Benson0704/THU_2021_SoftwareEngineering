@@ -9,7 +9,7 @@ import app.times
 
 def is_registered(open_id):
     '''
-    this fuction should check if a user registered by openID
+    this function should check if a user registered by openID
     return: 1:yes 0:no
     3.24: untest
     '''
@@ -143,3 +143,4 @@ def get_token(open_id):
     this function should return the user's access_token
     return: access_token
     """
+
