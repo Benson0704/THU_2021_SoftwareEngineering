@@ -136,15 +136,8 @@ def get_total_view_count(open_id):
     """
 
 
-def store_token(open_id, access_token, refresh_token, expire_time):
+def store_token(open_id, access_token, refresh_token):
     """
-    this function should store the access and refresh token and the correspond expire_time of refresh_token
+    this function should store the access and refresh token
     (regardless of initialize or update)
-    """
-
-
-def get_token(open_id):
-    """
-    this function should return the user's access_token
-    return: access_token
     """
