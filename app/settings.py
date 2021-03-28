@@ -115,8 +115,3 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-try:
-    from local_settings import *
-except ModuleNotFoundError:
-    pass
