@@ -29,6 +29,8 @@ class User(models.Model):
     total_like_count = models.IntegerField(default=0)  # 总点赞数
     total_comment_count = models.IntegerField(default=0)  # 总评论数
     total_view_count = models.IntegerField(default=0)  # 总播放数
+    access_token = models.CharField(max_length=500)
+    refresh_token = models.CharField(max_length=500)
 
     class Meta:
         db_table = 'users'
