@@ -3,14 +3,13 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
-
 import app.times
 from app.models import User, Video
 
 
 def is_registered(open_id):
     '''
-    this fuction should check if a user registered by openID
+    this function should check if a user registered by openID
     return: 1:yes 0:no
     3.24: untest
     '''

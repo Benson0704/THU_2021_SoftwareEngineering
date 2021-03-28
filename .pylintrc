@@ -1,5 +1,6 @@
 [MESSAGES CONTROL]
 disable=too-few-public-methods
+disable=too-many-locals
 
 [TYPECHECK]
 # pylint cannot deal with classes created at run time.
