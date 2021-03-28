@@ -36,7 +36,7 @@ unit-test:
 style-test:
   image: python:3.8.3
   stage: test
-  # allow_failure: true
+  allow_failure: true
   # pylint disables are: cant found methods, import orders and module names
 
   before_script:
