@@ -5,7 +5,7 @@
 from django.db import models
 import os
 import django
-os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
 # django.setup()
 
 
