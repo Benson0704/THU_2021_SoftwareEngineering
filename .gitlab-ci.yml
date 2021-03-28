@@ -36,7 +36,7 @@ unit-test:
 style-test:
   image: python:3.8.3
   stage: test
-  allow_failure: true
+  # allow_failure: true
   # pylint disables are: cant found methods, import orders and module names
 
   before_script:
@@ -54,4 +54,4 @@ deploy:
   script:
     - deployer dyno replace $CI_PROJECT_NAME "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" "$REGISTRY_USER" "$REGISTRY_PWD"
   only:
-    - dev
+    - master
