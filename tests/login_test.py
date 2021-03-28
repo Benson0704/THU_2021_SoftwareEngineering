@@ -9,7 +9,7 @@ import unittest
 from datetime import datetime
 import logIn.utils
 import app.times
-from app.models import User, Video
+from app.models import *
 
 
 class TestLogin(unittest.TestCase):
