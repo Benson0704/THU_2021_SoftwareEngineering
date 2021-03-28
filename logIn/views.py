@@ -1,5 +1,5 @@
 '''
-this is a module for getting the information 
+this is a module for getting the information
 of users and videos in the login process
 '''
 
