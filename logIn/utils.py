@@ -4,6 +4,7 @@ WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
 import app.times
+import app.tokens
 from app.models import User, Video
 
 
@@ -11,7 +12,6 @@ def is_registered(open_id):
     '''
     this function should check if a user registered by openID
     return: 1:yes 0:no
-    3.24: untest
     '''
     user = User.objects.filter(open_id=open_id)
     return bool(user)
@@ -21,7 +21,6 @@ def get_registered_user(open_id):
     '''
     this fuction should a registered user's video list and count
     return: list, dic
-    3.30: untest
     '''
     user = User.objects.get(open_id=open_id)
     video_list = Video.objects.filter(user=open_id).order_by('-pk')
@@ -58,7 +57,6 @@ def get_registered_user(open_id):
 def update_registered_user(open_id, user_data, video_list, count_dictionary):
     '''
     this function should update a registered user
-    3.30: untest
     '''
     user = User.objects.get(open_id=open_id)
     user.public_count = count_dictionary['public_count']
@@ -99,7 +97,6 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
 def initialize_new_user(open_id, user_data, video_list, count_dictionary):
     '''
     this function should create a user in User model and his works in Video
-    3.30: untest
     '''
     new_user = User(open_id=open_id,
                     public_count=count_dictionary['public_count'],
@@ -173,3 +170,17 @@ def store_token(open_id, access_token, refresh_token):
     this function should store the access and refresh token
     (regardless of initialize or update)
     """
+    user = User.objects.get(open_id=open_id)
+    user.access_token = app.tokens.encode(access_token)
+    user.refresh_token = app.tokens.decode(refresh_token)
+
+
+def get_token(open_id):
+    '''
+    this function returns the tokens of a user
+    return: access_token, refresh_token
+    '''
+    user = User.objects.get(open_id=open_id)
+    access_token = app.tokens.decode(user.access_token)
+    refresh_token = app.tokens.decode(user.refresh_token)
+    return access_token, refresh_token
