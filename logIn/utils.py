@@ -3,13 +3,13 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
-from app.models import User, Video
 import app.times
+from app.models import User, Video
 
 
 def is_registered(open_id):
     '''
-    this fuction should check if a user registered by openID
+    this function should check if a user registered by openID
     return: 1:yes 0:no
     3.24: untest
     '''
@@ -131,15 +131,8 @@ def get_total_view_count(open_id):
     """
 
 
-def store_token(open_id, access_token, refresh_token, expire_time):
+def store_token(open_id, access_token, refresh_token):
     """
-    this function should store the access and refresh token and the correspond expire_time of refresh_token
+    this function should store the access and refresh token
     (regardless of initialize or update)
-    """
-
-
-def get_token(open_id):
-    """
-    this function should return the user's access_token
-    return: access_token
     """
