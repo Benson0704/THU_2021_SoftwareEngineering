@@ -3,10 +3,6 @@
 '''
 
 from django.db import models
-import os
-import django
-# os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
-# django.setup()
 
 
 class User(models.Model):
@@ -33,6 +29,9 @@ class User(models.Model):
     refresh_token = models.CharField(max_length=2500, null=True)
 
     class Meta:
+        '''
+        double linking: users
+        '''
         db_table = 'users'
 
 
@@ -44,6 +43,9 @@ class Label(models.Model):
     num = models.IntegerField(default=0)  # 该标签的video数
 
     class Meta:
+        '''
+        double linking: labels
+        '''
         db_table = 'labels'
 
 
@@ -65,4 +67,7 @@ class Video(models.Model):
     labels = models.ManyToManyField(Label)  # 标签
 
     class Meta:
+        '''
+        double linking videos
+        '''
         db_table = 'videos'
