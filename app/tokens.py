@@ -1,7 +1,7 @@
 '''
 this module provides functions for encryption:
     all variables and return values are STRING
-    
+
 METHOD: AES.ECB
         KEY length=32
 '''

@@ -47,14 +47,14 @@ class Label(models.Model):
         db_table = 'labels'
 
 
-
 class Video(models.Model):
     '''
     视频类
     '''
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # 用户open_id
     photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
-    caption = models.CharField(max_length=500, default="Default Caption")  # 作品标题
+    caption = models.CharField(max_length=500,
+                               default="Default Caption")  # 作品标题
     cover = models.CharField(max_length=500, default="Default Cover")  # 作品封面
     play_url = models.CharField(max_length=500)  # 作品播放链接
     create_time = models.DateTimeField(default=0)  # 作品创建时间
