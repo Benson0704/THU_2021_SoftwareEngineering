@@ -11,13 +11,17 @@ class TestAppTimes(unittest.TestCase):
     '''
     def setUp(self):
         '''
-        iniialize test cases
+        initialize test cases
         '''
         self.test_result = [
-            'test', '1@_Test{,?}', '0123456789012345678901234567890123456789'
+            'test', '1@_Test{,?}',
+            '012345678901 2345678901 23456789012 3456789'
         ]
 
-    def test_Cryption(self):
+    def test_cryption(self):
+        '''
+        test for cryption
+        '''
         output = []
         for i in self.test_result:
             output.append(app.tokens.decode(app.tokens.encode(i)))
