@@ -13,4 +13,4 @@ EXPOSE 80
 
 ENV PYTHONUNBUFFERED=true
 
-CMD sh config.sh
+CMD sh config/run.sh
