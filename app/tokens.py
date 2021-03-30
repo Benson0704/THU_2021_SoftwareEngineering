@@ -17,7 +17,7 @@ def encode_token(string):
     return: a string encrypted
     '''
     while len(string) % 16 != 0:  # AES need mod16=0, base64 need mod4=0
-        string += '='
+        string += '\0'
     return base64.encodebytes(AES.new(
         KEY, AES.MODE_ECB).encrypt(string)).decode('utf-8')
 
@@ -29,4 +29,5 @@ def decode_token(code):
     return: a string decrypted
     '''
     return AES.new(KEY, AES.MODE_ECB).decrypt(
-        base64.decodebytes(code.encode('utf-8'))).decode('utf-8').split('=')[0]
+        base64.decodebytes(
+            code.encode('utf-8'))).decode('utf-8').split('\0')[0]
