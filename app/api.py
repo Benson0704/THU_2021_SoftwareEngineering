@@ -56,6 +56,8 @@ def refresh_access_token(open_id, app_id, app_secret):
         app.utils.store_token(open_id, token_data.get("access_token"),
                               token_data.get("refresh_token"))
         return token_data.get("access_token")
+    else:
+        return "Token is not available."
 
 
 def get_all_data(app_id, app_secret, open_id, access_token):
