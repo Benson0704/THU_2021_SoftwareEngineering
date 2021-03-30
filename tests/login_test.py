@@ -12,6 +12,7 @@ import app.times
 from app.models import *
 import pytest
 
+
 @pytest.mark.django_db
 class TestLogin(unittest.TestCase):
     '''
@@ -219,7 +220,7 @@ class TestLogin(unittest.TestCase):
             Video.objects.filter(
                 photo_id="this is a dog in New Zealand").exists())
         user = User.objects.filter(open_id="todayisagoodday")
-        self.assertEqual(user.city,"Beijing")
+        self.assertEqual(user.city, "Beijing")
 
     def test_is_registered(self):
         '''
@@ -271,7 +272,6 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(access_token, expected_token)
         self.assertEqual(refresh_token, expected_token)
 
-
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
         new_user = User.objects.filter(open_id="Test open_id")
@@ -292,4 +292,3 @@ class TestLogin(unittest.TestCase):
 if __name__ == '__main__':
 
     unittest.main()
-
