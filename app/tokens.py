@@ -17,9 +17,12 @@ def encode_token(string):
     return: a string encrypted
     '''
     while len(string) % 16 != 0:  # AES need mod16=0, base64 need mod4=0
+        string += '\0'
+    string = AES.new(KEY, AES.MODE_ECB).encrypt(string)
+    string = base64.encodebytes(string).decode('utf-8')
+    while len(string) % 3 != 0:
         string += '='
-    return base64.encodebytes(AES.new(
-        KEY, AES.MODE_ECB).encrypt(string)).decode('utf-8')
+    return string
 
 
 def decode_token(code):
@@ -29,7 +32,5 @@ def decode_token(code):
     return: a string decrypted
     '''
     return AES.new(KEY, AES.MODE_ECB).decrypt(
-        base64.decodebytes(code.encode('utf-8'))).decode('utf-8').split('=')[0]
-
-
-print(decode_token(encode_token('abcdefghijklmn')))
+        base64.decodebytes(
+            code.encode('utf-8'))).decode('utf-8').split('\0')[0]
