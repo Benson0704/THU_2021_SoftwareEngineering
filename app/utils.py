@@ -23,7 +23,7 @@ def get_registered_user(open_id):
     return: list, dic
     '''
     user = User.objects.get(open_id=open_id)
-    video_list = Video.objects.filter(user=open_id).order_by('-pk')
+    video_list = Video.objects.filter(user=user).order_by('-pk')
     res_video_list = []
     for video in video_list:
         video_dictionary = {}
@@ -70,8 +70,9 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     user.head = user_data['head']
     user.bigHead = user_data['bigHead']
     user.city = user_data['city']
+    user.save()
     new_video_list = []
-    old_video_list = Video.objects.filter(user=open_id)
+    old_video_list = Video.objects.filter(user=user)
     for video in video_list:
         new_video_list.append(video['photo_id'])
     for video in old_video_list:
@@ -80,7 +81,7 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
             video = Video(
-                user=open_id,
+                user=user,
                 photo_id=video_list[i]['photo_id'],
                 caption=video_list[i]['caption'],
                 cover=video_list[i]['cover'],
@@ -102,7 +103,7 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
                     public_count=count_dictionary['public_count'],
                     friend_count=count_dictionary['friend_count'],
                     private_count=count_dictionary['private_count'],
-                    video_count=count_dictionary['all_count'],
+                    video_count=count_dictionary['video_count'],
                     name=user_data['name'],
                     sex=user_data['sex'],
                     fan=user_data['fan'],
@@ -112,7 +113,7 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
                     city=user_data['city'])
     new_user.save()
     for video in video_list:
-        new_video = Video(user=open_id,
+        new_video = Video(user=new_user,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
                           cover=['cover'],
@@ -133,7 +134,7 @@ def get_total_like_count(open_id):
     """
     res = 0
     target = User.objects.get(open_id=open_id)
-    video_list = target.objects.Video.all()
+    video_list = target.video.all()
     for video in video_list:
         res += video.like_count
     return res
@@ -146,7 +147,7 @@ def get_total_comment_count(open_id):
     """
     res = 0
     target = User.objects.get(open_id=open_id)
-    video_list = target.objects.Video.all()
+    video_list = target.video.all()
     for video in video_list:
         res += video.comment_count
     return res
@@ -159,7 +160,7 @@ def get_total_view_count(open_id):
     """
     res = 0
     target = User.objects.get(open_id=open_id)
-    video_list = target.objects.Video.all()
+    video_list = target.video.all()
     for video in video_list:
         res += video.view_count
     return res
@@ -171,8 +172,9 @@ def store_token(open_id, access_token, refresh_token):
     (regardless of initialize or update)
     """
     user = User.objects.get(open_id=open_id)
-    user.access_token = app.tokens.encode(access_token)
-    user.refresh_token = app.tokens.decode(refresh_token)
+    user.access_token = app.tokens.encode_token(access_token)
+    user.refresh_token = app.tokens.encode_token(refresh_token)
+    user.save()
 
 
 def get_token(open_id):
@@ -181,6 +183,6 @@ def get_token(open_id):
     return: access_token, refresh_token
     """
     user = User.objects.get(open_id=open_id)
-    access_token = app.tokens.decode(user.access_token)
-    refresh_token = app.tokens.decode(user.refresh_token)
+    access_token = app.tokens.decode_token(user.access_token)
+    refresh_token = app.tokens.decode_token(user.refresh_token)
     return access_token, refresh_token
