@@ -17,7 +17,7 @@ def encode(string):
     return: a string encrypted
     '''
     while len(string) % 16 != 0:
-        string += '\0'
+        string += '='
     return base64.encodebytes(AES.new(
         KEY, AES.MODE_ECB).encrypt(string)).decode('utf-8')
 
