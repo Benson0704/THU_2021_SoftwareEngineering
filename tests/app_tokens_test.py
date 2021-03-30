@@ -24,7 +24,7 @@ class TestAppTimes(unittest.TestCase):
         '''
         output = []
         for i in self.test_result:
-            output.append(app.tokens.decode(app.tokens.encode(i)))
+            output.append(app.tokens.decode_token(app.tokens.encode_token(i)))
         self.assertEqual(output, self.test_result)
 
     def tearDown(self):

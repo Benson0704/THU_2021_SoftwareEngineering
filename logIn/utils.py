@@ -172,8 +172,8 @@ def store_token(open_id, access_token, refresh_token):
     (regardless of initialize or update)
     """
     user = User.objects.get(open_id=open_id)
-    user.access_token = app.tokens.encode(access_token)
-    user.refresh_token = app.tokens.decode(refresh_token)
+    user.access_token = app.tokens.encode_token(access_token)
+    user.refresh_token = app.tokens.decode_token(refresh_token)
     user.save()
 
 
@@ -183,6 +183,6 @@ def get_token(open_id):
     return: access_token, refresh_token
     '''
     user = User.objects.get(open_id=open_id)
-    access_token = app.tokens.decode(user.access_token)
-    refresh_token = app.tokens.decode(user.refresh_token)
+    access_token = app.tokens.decode_token(user.access_token)
+    refresh_token = app.tokens.decode_token(user.refresh_token)
     return access_token, refresh_token
