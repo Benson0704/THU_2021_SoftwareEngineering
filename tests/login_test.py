@@ -258,7 +258,7 @@ class TestLogin(unittest.TestCase):
         open_id = "todayisagoodday"
         access_token = "abcdefghijklmn"
         refresh_token = "abcdefghijklmn"
-        expected_token = "/JOHe6fYJRMmkFXrpTYJ5w=="
+        expected_token = "/JOHe6fYJRMmkFXrpTYJ5w==\n"
         logIn.utils.store_token(open_id, access_token, refresh_token)
         user = User.objects.filter(open_id=open_id)
         self.assertEqual(str(user[0].access_token), expected_token)
