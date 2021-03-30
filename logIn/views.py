@@ -4,20 +4,14 @@ of users and videos in the login process
 '''
 
 import os
-import requests
 from django.http import JsonResponse
-from logIn.utils import is_registered, update_registered_user, \
-    initialize_new_user, get_total_like_count, \
-    get_total_comment_count, get_total_view_count, store_token
+
+import app.api
+import logIn.utils
 
 OAUTH = {
     "app_id": "ks692991395583662522",
     "app_secret": "SQQoA2MFqcdeRF_vbFttIw",  # 需要存储在服务器端，不能暴露
-    "scope": "user_info,user_video_info",
-    "response_type": "code",
-    "auth_url": "https://open.kuaishou.com/oauth2/authorize",
-    "token_url": "https://open.kuaishou.com/oauth2/access_token",
-    "redirect_uri": "http://127.0.0.1:8000/logIn/oauth/callback"
 }
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -36,26 +30,17 @@ def oauth_callback(request):
 
     if request.method == 'GET':
         code = request.GET.get('code')
-        body = {
-            "app_id": OAUTH["app_id"],
-            "app_secret": OAUTH["app_secret"],
-            "code": code,
-            "grant_type": "authorization_code"
-        }
-        response = requests.post(OAUTH["token_url"], body).json()
-        result = response.get("result")
+        token_data = app.api.get_token_data(code, OAUTH["app_id"], OAUTH["app_secret"])
+        result = token_data.get("result")
         if result != '1':
-            return gen_response(404, response.get("error_msg"))
+            return gen_response(404, token_data.get("error_msg"))
 
-        access_token = response.get("access_token")
-        open_id = response.get("open_id")
-        refresh_token = response.get("refresh_token")
-        store_token(open_id, access_token, refresh_token)
+        access_token = token_data.get("access_token")
+        open_id = token_data.get("open_id")
+        refresh_token = token_data.get("refresh_token")
+        logIn.utils.store_token(open_id, access_token, refresh_token)
 
-        # 通过user_info接口得到用户的快手公开资料
-        user_url = "https://open.kuaishou.com/openapi/user_info"
-        params = {"access_token": access_token, "app_id": OAUTH["app_id"]}
-        user_data = requests.get(url=user_url, params=params).json()
+        user_data = app.api.get_user_data(OAUTH["app_id"], access_token)
         name = user_data.get("name")
         sex = user_data.get("sex")
         fan = user_data.get("fan")
@@ -64,29 +49,23 @@ def oauth_callback(request):
         big_head = user_data.get("bigHead")
         city = user_data.get("city")
 
-        # 通过list接口得到用户的全部video_list信息
-        url = "https://open.kuaishou.com/openapi/tsinghua/photo/list"
-        params = {"access_token": access_token, "app_id": OAUTH["app_id"]}
-        video_data = requests.get(url=url, params=params).json()
+        video_data = app.api.get_video_data(access_token, OAUTH["app_id"])
         video_list = video_data.get("video_list")
 
-        # 通过count接口得到用户的视频数量统计信息
-        count_url = "https://open.kuaishou.com/openapi/photo/count"
-        res = requests.get(url=count_url, params=params)
-        count_data = res.json()
+        count_data = app.api.get_count_data(access_token, OAUTH["app_id"])
         all_count = count_data["all_count"]
         private_count = count_data["private_count"]
         public_count = count_data["public_count"]
         friend_count = count_data["friend_count"]
 
-        if is_registered(open_id):
-            update_registered_user(open_id, user_data, video_list, count_data)
+        if logIn.utils.is_registered(open_id):
+            logIn.utils.update_registered_user(open_id, user_data, video_list, count_data)
         else:
-            initialize_new_user(open_id, user_data, video_list, count_data)
+            logIn.utils.initialize_new_user(open_id, user_data, video_list, count_data)
 
-        total_like_count = get_total_like_count(open_id)
-        total_comment_count = get_total_comment_count(open_id)
-        total_view_count = get_total_view_count(open_id)
+        total_like_count = logIn.utils.get_total_like_count(open_id)
+        total_comment_count = logIn.utils.get_total_comment_count(open_id)
+        total_view_count = logIn.utils.get_total_view_count(open_id)
 
         data = {
                 'user_data': {
