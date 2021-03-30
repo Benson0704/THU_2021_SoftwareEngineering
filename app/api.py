@@ -52,4 +52,3 @@ def get_count_data(access_token, app_id):
     params = {"access_token": access_token, "app_id": app_id}
     count_data = requests.get(url=count_url, params=params).json()
     return count_data
-
