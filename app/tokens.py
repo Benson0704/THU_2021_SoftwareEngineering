@@ -17,7 +17,7 @@ def encode(string):
     return: a string encrypted
     '''
     while len(string) % 48 != 0:  # AES need mod16=0, base64 need mod3=0
-        string += '\0'
+        string += '='
     return base64.encodebytes(AES.new(
         KEY, AES.MODE_ECB).encrypt(string)).decode('utf-8')
 
@@ -29,5 +29,4 @@ def decode(code):
     return: a string decrypted
     '''
     return AES.new(KEY, AES.MODE_ECB).decrypt(
-        base64.decodebytes(
-            code.encode('utf-8'))).decode('utf-8').split('\0')[0]
+        base64.decodebytes(code.encode('utf-8'))).decode('utf-8').split('=')[0]
