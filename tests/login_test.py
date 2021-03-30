@@ -2,15 +2,11 @@
 this file should be a .py file as tests for login
 '''
 
-# import sys
-# import os
-# import django
 import unittest
 from datetime import datetime
 import logIn.utils
 import app.times
 from app.models import *
-import pytest
 
 
 @pytest.mark.django_db
@@ -279,16 +275,6 @@ class TestLogin(unittest.TestCase):
         new_user = User.objects.filter(open_id="Test open_id")
         if new_user:
             new_user.delete()
-        # Video.objects.filter(
-        #     photo_id="this is a sunset photo in Hogwards").delete()
-        # Video.objects.filter(photo_id="this is a photo on Mars").delete()
-        # new_video = Video.objects.filter(
-        #     photo_id="this is a dog in New Zealand")
-        # if new_video:
-        #     new_video.delete()
-        # new_video = Video.objects.filter(photo_id="Test photo_id")
-        # if new_video:
-        #     new_video.delete()
 
 
 if __name__ == '__main__':
