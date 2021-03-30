@@ -203,6 +203,8 @@ class TestLogin(unittest.TestCase):
             'friend_count': 0,
             'private_count': 0,
             'all_count': 2,
+        }
+        user_data = {
             'name': "brisa",
             'sex': 1,
             'head': "https://ThisIsABeautifulGirl",
@@ -212,6 +214,7 @@ class TestLogin(unittest.TestCase):
             'follow': 20,
         }
         logIn.utils.update_registered_user(open_id="todayisagoodday",
+                                           user_data=user_data,
                                            video_list=video_list,
                                            count_dictionary=count_dictionary)
         self.assertFalse(
