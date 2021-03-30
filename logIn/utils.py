@@ -102,7 +102,7 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
                     public_count=count_dictionary['public_count'],
                     friend_count=count_dictionary['friend_count'],
                     private_count=count_dictionary['private_count'],
-                    video_count=count_dictionary['all_count'],
+                    video_count=count_dictionary['video_count'],
                     name=user_data['name'],
                     sex=user_data['sex'],
                     fan=user_data['fan'],
