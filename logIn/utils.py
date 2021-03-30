@@ -173,7 +173,7 @@ def store_token(open_id, access_token, refresh_token):
     """
     user = User.objects.get(open_id=open_id)
     user.access_token = app.tokens.encode_token(access_token)
-    user.refresh_token = app.tokens.decode_token(refresh_token)
+    user.refresh_token = app.tokens.encode_token(refresh_token)
     user.save()
 
 
