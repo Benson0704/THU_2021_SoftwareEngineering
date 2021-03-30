@@ -30,7 +30,8 @@ def oauth_callback(request):
 
     if request.method == 'GET':
         code = request.GET.get('code')
-        token_data = app.api.get_token_data(code, OAUTH["app_id"], OAUTH["app_secret"])
+        token_data = app.api.get_token_data(code, OAUTH["app_id"],
+                                            OAUTH["app_secret"])
         result = token_data.get("result")
         if result != '1':
             return gen_response(404, token_data.get("error_msg"))
@@ -59,9 +60,11 @@ def oauth_callback(request):
         friend_count = count_data["friend_count"]
 
         if logIn.utils.is_registered(open_id):
-            logIn.utils.update_registered_user(open_id, user_data, video_list, count_data)
+            logIn.utils.update_registered_user(open_id, user_data,
+                                               video_list, count_data)
         else:
-            logIn.utils.initialize_new_user(open_id, user_data, video_list, count_data)
+            logIn.utils.initialize_new_user(open_id, user_data,
+                                            video_list, count_data)
 
         total_like_count = logIn.utils.get_total_like_count(open_id)
         total_comment_count = logIn.utils.get_total_comment_count(open_id)

@@ -8,8 +8,6 @@ max-locals=40
 # Maximum number of arguments for function / method
 max-args=15
 
-max-line-length=100
-
 [TYPECHECK]
 # pylint cannot deal with classes created at run time.
 # https://stackoverflow.com/a/42814971/5359105
