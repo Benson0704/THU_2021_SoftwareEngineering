@@ -1,5 +1,5 @@
 '''
-this file should be a .py file as tests for login
+this file should be a .py file as tests for login function
 '''
 
 import unittest
