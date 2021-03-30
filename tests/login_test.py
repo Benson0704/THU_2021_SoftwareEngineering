@@ -52,17 +52,16 @@ class TestLogin(unittest.TestCase):
             view_count=20,
             pending=False)
         new_video.save()
-        new_video = Video.objects.create(
-            user=brisa,
-            photo_id="this is a photo on Mars",
-            caption="Mars view",
-            cover="https://MarsView",
-            play_url="https://PlayMarsView",
-            create_time='2021-03-07 12:13:14',
-            like_count=10,
-            comment_count=5,
-            view_count=20,
-            pending=False)
+        new_video = Video.objects.create(user=brisa,
+                                         photo_id="this is a photo on Mars",
+                                         caption="Mars view",
+                                         cover="https://MarsView",
+                                         play_url="https://PlayMarsView",
+                                         create_time='2021-03-07 12:13:14',
+                                         like_count=10,
+                                         comment_count=5,
+                                         view_count=20,
+                                         pending=False)
         new_video.save()
 
     def test_initialize_new_user(self):
@@ -262,8 +261,8 @@ class TestLogin(unittest.TestCase):
         expected_token = "/JOHe6fYJRMmkFXrpTYJ5w=="
         logIn.utils.store_token(open_id, access_token, refresh_token)
         user = User.objects.filter(open_id=open_id)
-        self.assertEqual(user[0].access_token, expected_token)
-        self.assertEqual(user[0].refresh_token, expected_token)
+        self.assertEqual(str(user[0].access_token), expected_token)
+        self.assertEqual(str(user[0].refresh_token), expected_token)
 
     def test_get_token(self):
         '''
