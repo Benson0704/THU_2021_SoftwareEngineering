@@ -53,7 +53,8 @@ def refresh_access_token(open_id, app_id, app_secret):
     token_url = "https://open.kuaishou.com/oauth2/refresh_token"
     token_data = requests.post(token_url, body).json()
     if token_data.get("result") == '1':
-        app.utils.store_token(open_id, token_data.get("access_token"), token_data.get("refresh_token"))
+        app.utils.store_token(open_id, token_data.get("access_token"),
+                              token_data.get("refresh_token"))
         return token_data.get("access_token")
 
 
@@ -78,9 +79,11 @@ def store_data(open_id, user_data, video_data, count_data):
     registered_state = app.utils.is_registered(open_id)
     video_list = video_data["video_list"]
     if registered_state:
-        app.utils.update_registered_user(open_id, user_data, video_list, count_data)
+        app.utils.update_registered_user(open_id, user_data,
+                                         video_list, count_data)
     else:
-        app.utils.initialize_new_user(open_id, user_data, video_list, count_data)
+        app.utils.initialize_new_user(open_id, user_data,
+                                      video_list, count_data)
 
 
 def manage_data(app_id, app_secret, open_id):
