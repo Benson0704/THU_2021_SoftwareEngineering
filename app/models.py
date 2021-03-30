@@ -53,7 +53,9 @@ class Video(models.Model):
     '''
     视频类
     '''
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # 用户open_id
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='video')  # 用户open_id
     photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
     caption = models.CharField(max_length=500,
                                default="Default Caption")  # 作品标题
