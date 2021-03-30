@@ -6,7 +6,8 @@ import unittest
 from datetime import datetime
 import logIn.utils
 import app.times
-from app.models import *
+from app.models import User, Video
+import pytest
 
 
 @pytest.mark.django_db
