@@ -96,9 +96,9 @@ class TestLogin(unittest.TestCase):
         }
 
         app.utils.initialize_new_user(open_id=open_id,
-                                        user_data=user_data,
-                                        video_list=video_list,
-                                        count_dictionary=count_dictionary)
+                                      user_data=user_data,
+                                      video_list=video_list,
+                                      count_dictionary=count_dictionary)
         self.assertTrue(User.objects.filter(open_id=open_id).exists())
         self.assertTrue(
             Video.objects.filter(photo_id="Test photo_id").exists())
@@ -210,9 +210,9 @@ class TestLogin(unittest.TestCase):
             'follow': 20,
         }
         app.utils.update_registered_user(open_id="todayisagoodday",
-                                           user_data=user_data,
-                                           video_list=video_list,
-                                           count_dictionary=count_dictionary)
+                                         user_data=user_data,
+                                         video_list=video_list,
+                                         count_dictionary=count_dictionary)
         self.assertFalse(
             Video.objects.filter(photo_id="this is a photo on Mars").exists())
         self.assertTrue(
