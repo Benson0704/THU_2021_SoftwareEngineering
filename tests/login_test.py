@@ -95,7 +95,7 @@ class TestLogin(unittest.TestCase):
             'follow': 20,
         }
 
-        logIn.utils.initialize_new_user(open_id=open_id,
+        app.utils.initialize_new_user(open_id=open_id,
                                         user_data=user_data,
                                         video_list=video_list,
                                         count_dictionary=count_dictionary)
@@ -107,7 +107,7 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for get_registered_user
         '''
-        res_video_list, res_count_dictionary = logIn.utils.get_registered_user(
+        res_video_list, res_count_dictionary = app.utils.get_registered_user(
             "todayisagoodday")
         expected_video_list = [
             {
@@ -209,7 +209,7 @@ class TestLogin(unittest.TestCase):
             'fan': 20,
             'follow': 20,
         }
-        logIn.utils.update_registered_user(open_id="todayisagoodday",
+        app.utils.update_registered_user(open_id="todayisagoodday",
                                            user_data=user_data,
                                            video_list=video_list,
                                            count_dictionary=count_dictionary)
@@ -225,28 +225,28 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for is_registered
         '''
-        self.assertTrue(logIn.utils.is_registered("todayisagoodday"))
+        self.assertTrue(app.utils.is_registered("todayisagoodday"))
 
     def test_get_total_like_count(self):
         '''
         this is a test for get_total_like_count
         '''
         open_id = "todayisagoodday"
-        self.assertEqual(logIn.utils.get_total_like_count(open_id), 20)
+        self.assertEqual(app.utils.get_total_like_count(open_id), 20)
 
     def test_get_total_comment_count(self):
         '''
         this is a test for get_total_comment_count
         '''
         open_id = "todayisagoodday"
-        self.assertEqual(logIn.utils.get_total_comment_count(open_id), 10)
+        self.assertEqual(app.utils.get_total_comment_count(open_id), 10)
 
     def test_get_total_view_count(self):
         '''
         this is a test for get_total_view_count
         '''
         open_id = "todayisagoodday"
-        self.assertEqual(logIn.utils.get_total_view_count(open_id), 40)
+        self.assertEqual(app.utils.get_total_view_count(open_id), 40)
 
     def test_store_token(self):
         '''
@@ -256,7 +256,7 @@ class TestLogin(unittest.TestCase):
         access_token = "abcdefghijklmn"
         refresh_token = "abcdefghijklmn"
         expected_token = "/JOHe6fYJRMmkFXrpTYJ5w==\n"
-        logIn.utils.store_token(open_id, access_token, refresh_token)
+        app.utils.store_token(open_id, access_token, refresh_token)
         user = User.objects.filter(open_id=open_id)
         self.assertEqual(str(user[0].access_token), expected_token)
         self.assertEqual(str(user[0].refresh_token), expected_token)
@@ -266,7 +266,7 @@ class TestLogin(unittest.TestCase):
         this is a test for get_token
         '''
         open_id = "todayisagoodday"
-        access_token, refresh_token = logIn.utils.get_token(open_id)
+        access_token, refresh_token = app.utils.get_token(open_id)
         expected_token = "abcdefghijklmn"
         self.assertEqual(access_token, expected_token)
         self.assertEqual(refresh_token, expected_token)
