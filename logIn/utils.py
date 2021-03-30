@@ -134,7 +134,7 @@ def get_total_like_count(open_id):
     """
     res = 0
     target = User.objects.get(open_id=open_id)
-    video_list = target.objects.Video.all()
+    video_list = target.Video.all()
     for video in video_list:
         res += video.like_count
     return res
@@ -147,7 +147,7 @@ def get_total_comment_count(open_id):
     """
     res = 0
     target = User.objects.get(open_id=open_id)
-    video_list = target.objects.Video.all()
+    video_list = target.Video.all()
     for video in video_list:
         res += video.comment_count
     return res
@@ -174,6 +174,7 @@ def store_token(open_id, access_token, refresh_token):
     user = User.objects.get(open_id=open_id)
     user.access_token = app.tokens.encode(access_token)
     user.refresh_token = app.tokens.decode(refresh_token)
+    user.save()
 
 
 def get_token(open_id):
