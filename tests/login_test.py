@@ -10,10 +10,10 @@ from datetime import datetime
 import logIn.utils
 import app.times
 from app.models import *
-# import pytest
+import pytest
 
 
-# @pytest.mark.django_db
+@pytest.mark.django_db
 class TestLogin(unittest.TestCase):
     '''
     This is a unittest for logIn
