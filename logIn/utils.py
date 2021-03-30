@@ -70,6 +70,7 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     user.head = user_data['head']
     user.bigHead = user_data['bigHead']
     user.city = user_data['city']
+    user.save()
     new_video_list = []
     old_video_list = Video.objects.filter(user=user)
     for video in video_list:

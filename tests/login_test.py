@@ -223,7 +223,7 @@ class TestLogin(unittest.TestCase):
             Video.objects.filter(
                 photo_id="this is a dog in New Zealand").exists())
         user = User.objects.filter(open_id="todayisagoodday")
-        self.assertEqual(user.city, "Beijing")
+        self.assertEqual(user[0].city, "Beijing")
 
     def test_is_registered(self):
         '''
@@ -238,7 +238,7 @@ class TestLogin(unittest.TestCase):
         open_id = "todayisagoodday"
         self.assertEqual(logIn.utils.get_total_like_count(open_id), 20)
 
-    def test_get_comment_like_count(self):
+    def test_get_total_comment_count(self):
         '''
         this is a test for get_total_comment_count
         '''
@@ -262,8 +262,8 @@ class TestLogin(unittest.TestCase):
         expected_token = "/JOHe6fYJRMmkFXrpTYJ5w=="
         logIn.utils.store_token(open_id, access_token, refresh_token)
         user = User.objects.filter(open_id=open_id)
-        self.assertEqual(user.access_token, expected_token)
-        self.assertEqual(user.refresh_token, expected_token)
+        self.assertEqual(user[0].access_token, expected_token)
+        self.assertEqual(user[0].refresh_token, expected_token)
 
     def test_get_token(self):
         '''
