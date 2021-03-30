@@ -7,7 +7,7 @@ import os
 from django.http import JsonResponse
 
 import app.api
-import logIn.utils
+import app.utils
 
 OAUTH = {
     "app_id": "ks692991395583662522",
@@ -39,9 +39,11 @@ def oauth_callback(request):
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
         refresh_token = token_data.get("refresh_token")
-        logIn.utils.store_token(open_id, access_token, refresh_token)
+        app.utils.store_token(open_id, access_token, refresh_token)
 
-        user_data = app.api.get_user_data(OAUTH["app_id"], access_token)
+        data = app.api.get_all_data(OAUTH["app_id"], OAUTH["app_secret"],
+                                    open_id, access_token)
+        user_data = data[0]
         name = user_data.get("name")
         sex = user_data.get("sex")
         fan = user_data.get("fan")
@@ -50,45 +52,41 @@ def oauth_callback(request):
         big_head = user_data.get("bigHead")
         city = user_data.get("city")
 
-        video_data = app.api.get_video_data(access_token, OAUTH["app_id"])
+        video_data = data[1]
         video_list = video_data.get("video_list")
 
-        count_data = app.api.get_count_data(access_token, OAUTH["app_id"])
+        count_data = data[2]
         all_count = count_data["all_count"]
         private_count = count_data["private_count"]
         public_count = count_data["public_count"]
         friend_count = count_data["friend_count"]
 
-        if logIn.utils.is_registered(open_id):
-            logIn.utils.update_registered_user(open_id, user_data,
-                                               video_list, count_data)
-        else:
-            logIn.utils.initialize_new_user(open_id, user_data,
-                                            video_list, count_data)
+        app.api.store_data(open_id, user_data,
+                           video_list, count_data)
 
-        total_like_count = logIn.utils.get_total_like_count(open_id)
-        total_comment_count = logIn.utils.get_total_comment_count(open_id)
-        total_view_count = logIn.utils.get_total_view_count(open_id)
+        total_like_count = app.utils.get_total_like_count(open_id)
+        total_comment_count = app.utils.get_total_comment_count(open_id)
+        total_view_count = app.utils.get_total_view_count(open_id)
 
         data = {
-                'user_data': {
-                    "name": name,
-                    "sex": sex,
-                    "fan": fan,
-                    "follow": follow,
-                    "head": head,
-                    "bigHead": big_head,
-                    "city": city
-                },
-                'video_data': {
-                    'video_count': all_count,
-                    'public_count': public_count,
-                    'private_count': private_count,
-                    'friend_count': friend_count,
-                    'total_like_count': total_like_count,
-                    'total_comment_count': total_comment_count,
-                    'total_view_count': total_view_count
-                }
+            'user_data': {
+                "name": name,
+                "sex": sex,
+                "fan": fan,
+                "follow": follow,
+                "head": head,
+                "bigHead": big_head,
+                "city": city
+            },
+            'video_data': {
+                'video_count': all_count,
+                'public_count': public_count,
+                'private_count': private_count,
+                'friend_count': friend_count,
+                'total_like_count': total_like_count,
+                'total_comment_count': total_comment_count,
+                'total_view_count': total_view_count
+            }
         }
         return gen_response(200, data.__str__())
 

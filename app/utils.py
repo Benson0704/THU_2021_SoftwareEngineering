@@ -19,7 +19,7 @@ def is_registered(open_id):
 
 def get_registered_user(open_id):
     '''
-    this fuction should a registered user's video list and count
+    this function should a registered user's video list and count
     return: list, dic
     '''
     user = User.objects.get(open_id=open_id)
@@ -176,10 +176,10 @@ def store_token(open_id, access_token, refresh_token):
 
 
 def get_token(open_id):
-    '''
+    """
     this function returns the tokens of a user
     return: access_token, refresh_token
-    '''
+    """
     user = User.objects.get(open_id=open_id)
     access_token = app.tokens.decode(user.access_token)
     refresh_token = app.tokens.decode(user.refresh_token)
