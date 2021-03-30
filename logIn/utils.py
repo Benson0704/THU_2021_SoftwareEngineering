@@ -23,7 +23,7 @@ def get_registered_user(open_id):
     return: list, dic
     '''
     user = User.objects.get(open_id=open_id)
-    video_list = Video.objects.filter(user=open_id).order_by('-pk')
+    video_list = Video.objects.filter(user=user).order_by('-pk')
     res_video_list = []
     for video in video_list:
         video_dictionary = {}
@@ -71,7 +71,7 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     user.bigHead = user_data['bigHead']
     user.city = user_data['city']
     new_video_list = []
-    old_video_list = Video.objects.filter(user=open_id)
+    old_video_list = Video.objects.filter(user=user)
     for video in video_list:
         new_video_list.append(video['photo_id'])
     for video in old_video_list:
@@ -80,7 +80,7 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
             video = Video(
-                user=open_id,
+                user=user,
                 photo_id=video_list[i]['photo_id'],
                 caption=video_list[i]['caption'],
                 cover=video_list[i]['cover'],
@@ -112,7 +112,7 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
                     city=user_data['city'])
     new_user.save()
     for video in video_list:
-        new_video = Video(user=open_id,
+        new_video = Video(user=new_user,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
                           cover=['cover'],

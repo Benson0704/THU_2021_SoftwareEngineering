@@ -10,10 +10,10 @@ from datetime import datetime
 import logIn.utils
 import app.times
 from app.models import *
-import pytest
+# import pytest
 
 
-@pytest.mark.django_db
+# @pytest.mark.django_db
 class TestLogin(unittest.TestCase):
     '''
     This is a unittest for logIn
@@ -41,7 +41,7 @@ class TestLogin(unittest.TestCase):
         brisa.save()
 
         new_video = Video.objects.create(
-            user=brisa.open_id,
+            user=brisa,
             photo_id="this is a sunset photo in Hogwards",
             caption="hogwards sunset",
             cover="https://HogwardsSunset",
@@ -53,7 +53,7 @@ class TestLogin(unittest.TestCase):
             pending=False)
         new_video.save()
         new_video = Video.objects.create(
-            user=brisa.open_id,
+            user=brisa,
             photo_id="this is a photo on Mars",
             caption="Mars view",
             cover="https://MarsView",
