@@ -4,7 +4,7 @@ this file should be a .py file as tests for login
 
 import unittest
 from datetime import datetime
-import logIn.utils
+import app.utils
 import app.times
 from app.models import User, Video
 import pytest
