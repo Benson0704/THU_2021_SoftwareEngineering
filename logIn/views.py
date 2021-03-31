@@ -61,7 +61,7 @@ def oauth_callback(request):
         friend_count = count_data["friend_count"]
 
         app.api.store_data(open_id, user_data,
-                           video_list, count_data)
+                           video_data, count_data)
 
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)
