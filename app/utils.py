@@ -130,8 +130,8 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
         new_video = Video(user=new_user,
                           photo_id=video['photo_id'],
                           caption=video['caption'],
-                          cover=['cover'],
-                          play_url=['play_url'],
+                          cover=video['cover'],
+                          play_url=video['play_url'],
                           create_time=app.times.timestamp2string(
                               video['create_time']),
                           like_count=video['like_count'],

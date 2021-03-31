@@ -13,7 +13,6 @@ OAUTH = {
     "app_id": "ks692991395583662522",
     "app_secret": "SQQoA2MFqcdeRF_vbFttIw",  # 需要存储在服务器端，不能暴露
 }
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 
 def oauth_callback(request):
@@ -21,7 +20,6 @@ def oauth_callback(request):
     this function get the request from frontend
     return: code, data
     """
-
     def gen_response(code: int, data: str):
         return JsonResponse({
             'code': code,
@@ -39,7 +37,6 @@ def oauth_callback(request):
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
         refresh_token = token_data.get("refresh_token")
-
 
         data = app.api.get_all_data(OAUTH["app_id"], OAUTH["app_secret"],
                                     open_id, access_token)
@@ -60,7 +57,6 @@ def oauth_callback(request):
         city = user_data.get("city")
 
         video_data = data[1]
-
         count_data = data[2]
         all_count = count_data["all_count"]
         private_count = count_data["private_count"]
