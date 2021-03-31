@@ -30,7 +30,7 @@ def get_data(app_id, app_secret, open_id, url, access_token):
     """
     params = {"access_token": access_token, "app_id": app_id}
     data = requests.get(url=url, params=params).json()
-    if data.get("result") != '1':
+    if data.get("result") != 1 and app.utils.is_registered(open_id) is True:
         access_token = refresh_access_token(open_id, app_id, app_secret)
         params = {"access_token": access_token, "app_id": app_id}
         data = requests.get(url=url, params=params).json()
@@ -52,7 +52,7 @@ def refresh_access_token(open_id, app_id, app_secret):
     }
     token_url = "https://open.kuaishou.com/oauth2/refresh_token"
     token_data = requests.post(token_url, body).json()
-    if token_data.get("result") == '1':
+    if token_data.get("result") == 1:
         app.utils.store_token(open_id, token_data.get("access_token"),
                               token_data.get("refresh_token"))
         return token_data.get("access_token")

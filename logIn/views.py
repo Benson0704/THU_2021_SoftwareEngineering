@@ -39,13 +39,20 @@ def oauth_callback(request):
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
         refresh_token = token_data.get("refresh_token")
-        app.utils.store_token(open_id, access_token, refresh_token)
+
 
         data = app.api.get_all_data(OAUTH["app_id"], OAUTH["app_secret"],
                                     open_id, access_token)
         user_data = data[0]
         name = user_data.get("name")
         sex = user_data.get("sex")
+        if sex == 'F':
+            sex = 1
+        else:
+            if sex == 'M':
+                sex = 0
+            else:
+                sex = None
         fan = user_data.get("fan")
         follow = user_data.get("follow")
         head = user_data.get("head")
@@ -62,6 +69,7 @@ def oauth_callback(request):
 
         app.api.store_data(open_id, user_data,
                            video_data, count_data)
+        app.utils.store_token(open_id, access_token, refresh_token)
 
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)

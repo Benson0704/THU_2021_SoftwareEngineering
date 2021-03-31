@@ -65,6 +65,13 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     user.video_count = count_dictionary['all_count']
     user.name = user_data['name']
     user.sex = user_data['sex']
+    if user.sex == 'F':
+        user.sex = 1
+    else:
+        if user.sex == 'M':
+            user.sex = 0
+        else:
+            user.sex = None
     user.fan = user_data['fan']
     user.follow = user_data['follow']
     user.head = user_data['head']
@@ -99,13 +106,20 @@ def initialize_new_user(open_id, user_data, video_list, count_dictionary):
     '''
     this function should create a user in User model and his works in Video
     '''
+    if user_data["sex"] == 'F':
+        sex = 1
+    else:
+        if user_data["sex"] == 'M':
+            sex = 0
+        else:
+            sex = None
     new_user = User(open_id=open_id,
                     public_count=count_dictionary['public_count'],
                     friend_count=count_dictionary['friend_count'],
                     private_count=count_dictionary['private_count'],
-                    video_count=count_dictionary['video_count'],
+                    video_count=count_dictionary['all_count'],
                     name=user_data['name'],
-                    sex=user_data['sex'],
+                    sex=sex,
                     fan=user_data['fan'],
                     follow=user_data['follow'],
                     head=user_data['head'],

@@ -83,11 +83,11 @@ class TestLogin(unittest.TestCase):
             'public_count': 1,
             'friend_count': 0,
             'private_count': 0,
-            'video_count': 1
+            'all_count': 1
         }
         user_data = {
             'name': "new user",
-            'sex': 0,
+            'sex': 'M',
             'head': "https://ThisIsAHandsomeMan",
             'bigHead': "",
             'city': "Chengdu",
@@ -156,7 +156,7 @@ class TestLogin(unittest.TestCase):
             'public_count': 2,
             'friend_count': 0,
             'private_count': 0,
-            'video_count': 2,
+            'all_count': 2,
             'name': "brisa",
             'sex': 1,
             'head': "https://ThisIsABeautifulGirl",
@@ -198,11 +198,11 @@ class TestLogin(unittest.TestCase):
             'public_count': 2,
             'friend_count': 0,
             'private_count': 0,
-            'all_count': 2,
+            'video_count': 2,
         }
         user_data = {
             'name': "brisa",
-            'sex': 1,
+            'sex': 'F',
             'head': "https://ThisIsABeautifulGirl",
             'bigHead': "",
             'city': "Beijing",
