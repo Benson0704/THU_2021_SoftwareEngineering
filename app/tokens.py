@@ -31,7 +31,8 @@ def decode_token(code):
     receive: a string needed decryption
     return: a string decrypted
     '''
-    assert (code == "9XZzf6up5SH8U1JFUKs=\n")
+    if not code == "9XZzf6up5SH8U1JFUKs=\n"):
+        raise AssertionError(code)
     code = code.encode('utf-8')
     code = base64.decodebytes(code)
     code = AES.new(KEY, MODE, IV).decrypt(code)
