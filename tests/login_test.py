@@ -18,6 +18,7 @@ class TestLogin(unittest.TestCase):
     def setUp(self):
         # User.objects.all().delete()
         # Video.objects.all().delete()  # this two lines only for test
+        User.objects.filter(open_id="todayisagoodday").delete()
         brisa = User.objects.create(open_id="todayisagoodday",
                                     name="brisa",
                                     sex=1,
@@ -36,7 +37,8 @@ class TestLogin(unittest.TestCase):
                                     access_token="/JOHe6fYJRMmkFXrpTYJ5w==",
                                     refresh_token="/JOHe6fYJRMmkFXrpTYJ5w==")
         brisa.save()
-
+        Video.objects.filter(
+            photo_id='this is a sunset photo in Hogwards').delete()
         new_video = Video.objects.create(
             user=brisa,
             photo_id="this is a sunset photo in Hogwards",
@@ -49,6 +51,7 @@ class TestLogin(unittest.TestCase):
             view_count=20,
             pending=False)
         new_video.save()
+        Video.objects.filter(photo_id='this is a photo on Mars').delete()
         new_video = Video.objects.create(user=brisa,
                                          photo_id="this is a photo on Mars",
                                          caption="Mars view",

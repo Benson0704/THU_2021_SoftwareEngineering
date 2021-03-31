@@ -22,12 +22,10 @@ class TestAppTimes(unittest.TestCase):
         '''
         test for cryption
         '''
-        '''
         output = []
         for i in self.test_result:
             output.append(app.tokens.decode_token(app.tokens.encode_token(i)))
         self.assertEqual(output, self.test_result)
-        '''
 
     def tearDown(self):
         '''
