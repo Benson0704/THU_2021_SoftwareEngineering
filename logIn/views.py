@@ -33,7 +33,7 @@ def oauth_callback(request):
         token_data = app.api.get_token_data(code, OAUTH["app_id"],
                                             OAUTH["app_secret"])
         result = token_data.get("result")
-        if result != '1':
+        if result != 1:
             return gen_response(404, token_data.get("error_msg"))
 
         access_token = token_data.get("access_token")
@@ -53,7 +53,6 @@ def oauth_callback(request):
         city = user_data.get("city")
 
         video_data = data[1]
-        video_list = video_data.get("video_list")
 
         count_data = data[2]
         all_count = count_data["all_count"]
