@@ -34,8 +34,8 @@ class TestLogin(unittest.TestCase):
                                     total_like_count=20,
                                     total_comment_count=10,
                                     total_view_count=40,
-                                    access_token="/JOHe6fYJRMmkFXrpTYJ5w==",
-                                    refresh_token="/JOHe6fYJRMmkFXrpTYJ5w==")
+                                    access_token="9XZzf6up5SH8U1JFUKs=\n",
+                                    refresh_token="9XZzf6up5SH8U1JFUKs=\n")
         brisa.save()
         Video.objects.filter(
             photo_id='this is a sunset photo in Hogwards').delete()
