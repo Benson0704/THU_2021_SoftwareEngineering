@@ -258,8 +258,8 @@ class TestLogin(unittest.TestCase):
         expected_token = "/JOHe6fYJRMmkFXrpTYJ5w==\n"
         app.utils.store_token(open_id, access_token, refresh_token)
         user = User.objects.filter(open_id=open_id)
-        self.assertEqual(str(user[0].access_token), expected_token)
-        self.assertEqual(str(user[0].refresh_token), expected_token)
+        self.assertEqual(user[0].access_token, expected_token)
+        self.assertEqual(user[0].refresh_token, expected_token)
 
     def test_get_token(self):
         '''
