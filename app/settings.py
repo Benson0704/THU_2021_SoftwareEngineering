@@ -74,7 +74,7 @@ DATABASES = {
         'NAME': 'kuaishou',  # 数据库名称，
         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
         'USER': 'root',  # 数据库用户
-        'PASSWORD': 'ohcuy9feehatahngah7haeweiT4ul6Mo',  # 密码
+        'PASSWORD': 'kuaishou',  # 密码
         'PORT': 3306  # mysql的端口默认3306
     }
 }
