@@ -1,9 +1,8 @@
-'''
+"""
 this is a module for getting the information
 of users and videos in the login process
-'''
+"""
 
-import os
 from django.http import JsonResponse
 
 import app.api

@@ -64,11 +64,10 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
     user.private_count = count_dictionary['private_count']
     user.video_count = count_dictionary['all_count']
     user.name = user_data['name']
-    user.sex = user_data['sex']
-    if user.sex == 'F':
+    if user_data['sex'] == 'F':
         user.sex = 1
     else:
-        if user.sex == 'M':
+        if user_data['sex'] == 'M':
             user.sex = 0
         else:
             user.sex = None
