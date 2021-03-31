@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json
+config = open('config.json', 'r')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$7z)6d^qie^0d%ji5#nhr5w_v-i%04wxd@jm00d^@j*2gn8m@0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(json.load(config)['DEBUG'])
 
 ALLOWED_HOSTS = []
 
@@ -74,7 +76,7 @@ DATABASES = {
         'NAME': 'kuaishou',  # 数据库名称，
         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
         'USER': 'root',  # 数据库用户
-        'PASSWORD': 'kuaishou',  # 密码
+        'PASSWORD': json.load(config)['PASSWORD'],  # 密码
         'PORT': 3306  # mysql的端口默认3306
     }
 }

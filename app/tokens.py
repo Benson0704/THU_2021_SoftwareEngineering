@@ -6,9 +6,11 @@ METHOD: AES.GCM
         KEY length=32
 '''
 import base64
+import json
 from Crypto.Cipher import AES
-KEY = 'FullHouse=WbnYzxZxyLwkGr'.encode('utf-8')
-IV = b'Input Vector'
+config = open('config.json', 'r')
+KEY = json.load(config)['KEY'].encode('utf-8')
+IV = json.load(config)['IV'].encode('utf-8')
 MODE = AES.MODE_GCM
 
 
