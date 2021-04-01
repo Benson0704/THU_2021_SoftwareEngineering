@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Label',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True,
+                                        serialize=False, verbose_name='ID')),
                 ('label_name', models.CharField(max_length=50)),
                 ('num', models.IntegerField(default=0)),
             ],
@@ -26,7 +27,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('open_id', models.CharField(max_length=50, primary_key=True, serialize=False, unique=True)),
+                ('open_id', models.CharField(max_length=50, primary_key=True,
+                                             serialize=False, unique=True)),
                 ('name', models.CharField(max_length=50, unique=True)),
                 ('sex', models.BooleanField(null=True)),
                 ('head', models.CharField(max_length=500, null=True)),
@@ -49,8 +51,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Video',
             fields=[
-                ('photo_id', models.CharField(max_length=50, primary_key=True, serialize=False)),
-                ('caption', models.CharField(default='Default Caption', max_length=500)),
+                ('photo_id', models.CharField(max_length=50, primary_key=True,
+                                              serialize=False)),
+                ('caption', models.CharField(default='Default Caption',
+                                             max_length=500)),
                 ('cover', models.CharField(default='Default Cover', max_length=500)),
                 ('play_url', models.CharField(max_length=500)),
                 ('create_time', models.DateTimeField(default=0)),
@@ -59,7 +63,8 @@ class Migration(migrations.Migration):
                 ('view_count', models.IntegerField(default=0)),
                 ('pending', models.BooleanField()),
                 ('labels', models.ManyToManyField(to='app.Label')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.user')),
+                ('user', models.ForeignKey(on_delete=django.db.models.
+                                           deletion.CASCADE, to='app.user')),
             ],
             options={
                 'db_table': 'videos',
