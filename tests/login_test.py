@@ -54,7 +54,7 @@ class TestLogin(unittest.TestCase):
         Video.objects.filter(photo_id='this is a photo on Mars').delete()
         new_video = Video.objects.create(user=brisa,
                                          photo_id="this is a photo on Mars",
-                                         caption="Mars view🔥",
+                                         caption="Mars view",
                                          cover="https://MarsView",
                                          play_url="https://PlayMarsView",
                                          create_time='2021-03-07 12:13:14',
@@ -135,7 +135,7 @@ class TestLogin(unittest.TestCase):
             },
             {
                 'photo_id':
-                "this is a photo on Mars🔥",
+                "this is a photo on Mars",
                 'caption':
                 "Mars view",
                 'cover':

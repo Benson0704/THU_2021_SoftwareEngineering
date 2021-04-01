@@ -65,7 +65,7 @@ def get_all_data(app_id, app_secret, open_id, access_token):
     return: user_data, video_list, count_data
     """
     user_url = "https://open.kuaishou.com/openapi/user_info"
-    video_url = "https://open.kuaishou.com/openapi/tsinghua/photo/list"
+    video_url = "https://open.kuaishou.com/openapi/photo/list"
     count_url = "https://open.kuaishou.com/openapi/photo/count"
     user_data = get_data(app_id, app_secret, open_id,
                          user_url, access_token).get("user_info")
