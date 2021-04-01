@@ -4,6 +4,8 @@ this module provides functions for encryption:
 
 METHOD: AES.GCM
         KEY length=32
+
+可能需要信息完整性校验，尚未添加 2021.4.1
 '''
 import base64
 import json
