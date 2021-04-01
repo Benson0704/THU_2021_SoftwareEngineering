@@ -80,6 +80,10 @@ DATABASES = {
         'PORT': 3306,  # mysql的端口默认3306
         'OPTIONS': {'charset': 'utf8mb4'}
     }
+    'TEST': {
+        'CHARSET': 'utf8mb4',
+        'COLLATION': 'utf8mb4_unicode_ci'
+    }
 }
 
 # Password validation
