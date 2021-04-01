@@ -3,10 +3,6 @@
 '''
 
 from django.db import models
-import os
-import django
-os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
-django.setup()
 
 
 class User(models.Model):
@@ -29,8 +25,13 @@ class User(models.Model):
     total_like_count = models.IntegerField(default=0)  # 总点赞数
     total_comment_count = models.IntegerField(default=0)  # 总评论数
     total_view_count = models.IntegerField(default=0)  # 总播放数
+    access_token = models.CharField(max_length=2500, null=True)
+    refresh_token = models.CharField(max_length=2500, null=True)
 
     class Meta:
+        '''
+        double linking: users
+        '''
         db_table = 'users'
 
 
@@ -42,17 +43,22 @@ class Label(models.Model):
     num = models.IntegerField(default=0)  # 该标签的video数
 
     class Meta:
+        '''
+        double linking: labels
+        '''
         db_table = 'labels'
-
 
 
 class Video(models.Model):
     '''
     视频类
     '''
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # 用户open_id
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='video')  # 用户open_id
     photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
-    caption = models.CharField(max_length=500, default="Default Caption")  # 作品标题
+    caption = models.CharField(max_length=500,
+                               default="Default Caption")  # 作品标题
     cover = models.CharField(max_length=500, default="Default Cover")  # 作品封面
     play_url = models.CharField(max_length=500)  # 作品播放链接
     create_time = models.DateTimeField(default=0)  # 作品创建时间
@@ -63,4 +69,7 @@ class Video(models.Model):
     labels = models.ManyToManyField(Label)  # 标签
 
     class Meta:
+        '''
+        double linking videos
+        '''
         db_table = 'videos'

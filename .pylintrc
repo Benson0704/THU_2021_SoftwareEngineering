@@ -1,6 +1,13 @@
 [MESSAGES CONTROL]
 disable=too-few-public-methods
 
+[DESIGN]
+# Maximum number of locals for function / method body
+max-locals=40
+
+# Maximum number of arguments for function / method
+max-args=15
+
 [TYPECHECK]
 # pylint cannot deal with classes created at run time.
 # https://stackoverflow.com/a/42814971/5359105

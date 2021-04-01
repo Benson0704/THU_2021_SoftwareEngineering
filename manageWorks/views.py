@@ -19,5 +19,5 @@ def video(request):
 
 def label(request):
     """
-    this functino should respond to the requests relating to labels
+    this function should respond to the requests relating to labels
     """
