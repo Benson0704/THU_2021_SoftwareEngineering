@@ -90,7 +90,7 @@ def oauth_callback(request):
                 'total_view_count': total_view_count
             }
         }
-        return gen_response(200, data.__str__())
+        return gen_response(200, data)
 
     return gen_response(405, 'method {} not allowed'.
                         format(request.method))
