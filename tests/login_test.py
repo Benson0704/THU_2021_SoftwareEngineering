@@ -18,6 +18,7 @@ class TestLogin(unittest.TestCase):
     def setUp(self):
         # User.objects.all().delete()
         # Video.objects.all().delete()  # this two lines only for test
+        User.objects.filter(open_id="todayisagoodday").delete()
         brisa = User.objects.create(open_id="todayisagoodday",
                                     name="brisa",
                                     sex=1,
@@ -33,10 +34,11 @@ class TestLogin(unittest.TestCase):
                                     total_like_count=20,
                                     total_comment_count=10,
                                     total_view_count=40,
-                                    access_token="/JOHe6fYJRMmkFXrpTYJ5w==",
-                                    refresh_token="/JOHe6fYJRMmkFXrpTYJ5w==")
+                                    access_token="9XZzf6up5SH8U1JFUKs=\n",
+                                    refresh_token="9XZzf6up5SH8U1JFUKs=\n")
         brisa.save()
-
+        Video.objects.filter(
+            photo_id='this is a sunset photo in Hogwards').delete()
         new_video = Video.objects.create(
             user=brisa,
             photo_id="this is a sunset photo in Hogwards",
@@ -49,6 +51,7 @@ class TestLogin(unittest.TestCase):
             view_count=20,
             pending=False)
         new_video.save()
+        Video.objects.filter(photo_id='this is a photo on Mars').delete()
         new_video = Video.objects.create(user=brisa,
                                          photo_id="this is a photo on Mars",
                                          caption="Mars view🔥",
@@ -255,7 +258,7 @@ class TestLogin(unittest.TestCase):
         open_id = "todayisagoodday"
         access_token = "abcdefghijklmn"
         refresh_token = "abcdefghijklmn"
-        expected_token = "/JOHe6fYJRMmkFXrpTYJ5w==\n"
+        expected_token = "9XZzf6up5SH8U1JFUKs=\n"
         app.utils.store_token(open_id, access_token, refresh_token)
         user = User.objects.filter(open_id=open_id)
         self.assertEqual(user[0].access_token, expected_token)

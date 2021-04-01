@@ -2,12 +2,16 @@
 this module provides functions for encryption:
     all variables and return values are STRING
 
-METHOD: AES.ECB
+METHOD: AES.GCM
         KEY length=32
 '''
 import base64
+import json
 from Crypto.Cipher import AES
-KEY = 'FullHouse=WbnYzxZxyLwkGr'
+config = json.load(open('config.json', 'r'))
+KEY = config['KEY'].encode('utf-8')
+IV = config['IV'].encode('utf-8')
+MODE = AES.MODE_GCM
 
 
 def encode_token(string):
@@ -16,10 +20,11 @@ def encode_token(string):
     receive: a string needed encryption
     return: a string encrypted
     '''
-    while len(string) % 16 != 0:  # AES need mod16=0, base64 need mod4=0
-        string += '\0'
-    return base64.encodebytes(AES.new(
-        KEY, AES.MODE_ECB).encrypt(string)).decode('utf-8')
+    string = string.encode('utf-8')
+    string = AES.new(KEY, MODE, IV).encrypt(string)
+    string = base64.encodebytes(string)
+    string = string.decode('utf-8')
+    return string
 
 
 def decode_token(code):
@@ -28,6 +33,8 @@ def decode_token(code):
     receive: a string needed decryption
     return: a string decrypted
     '''
-    return AES.new(KEY, AES.MODE_ECB).decrypt(
-        base64.decodebytes(
-            code.encode('utf-8'))).decode('utf-8').split('\0')[0]
+    code = code.encode('utf-8')
+    code = base64.decodebytes(code)
+    code = AES.new(KEY, MODE, IV).decrypt(code)
+    code = code.decode('utf-8').split('\0')[0]
+    return code
