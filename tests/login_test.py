@@ -1,7 +1,7 @@
 '''
 this file should be a .py file as tests for login function
 '''
-
+#encoding=utf8
 import unittest
 from datetime import datetime
 import app.utils

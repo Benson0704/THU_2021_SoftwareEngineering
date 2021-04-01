@@ -77,7 +77,8 @@ DATABASES = {
         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
         'USER': 'root',  # 数据库用户
         'PASSWORD': config['PASSWORD'],  # 密码
-        'PORT': 3306  # mysql的端口默认3306
+        'PORT': 3306,  # mysql的端口默认3306
+        'OPTIONS': {'charset': 'utf8mb4'}
     }
 }
 
