@@ -288,6 +288,21 @@ class TestLogin(unittest.TestCase):
         )
         self.assertEqual(coding, expected_coding)
 
+    def test_decoding(self):
+        '''
+        this is a test for decoding
+        '''
+        expected_message = {
+            "name": "brisa"
+        }
+        token = (
+            "eyJ0eXAiOiJKV1QiLCJhbGci"
+            "OiJIUzI1NiJ9.eyJuYW1lIjoiYnJpc2EifQ.IWgS8bm"
+            "QRY0JBiqz3IFrqq7-0LjJ7JIYFivfZ8prMK0"
+        )
+        message = app.utils.decoding(token)
+        self.assertEqual(message, expected_message)
+
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
         new_user = User.objects.filter(open_id="Test open_id")

@@ -210,3 +210,11 @@ def encoding(message):
     encode_jwt = jwt.encode(message, SECRET_KEY, algorithm='HS256')
     encode_str = str(encode_jwt, 'utf-8')
     return encode_str
+
+
+def decoding(token):
+    """
+    this function is for decoding jwt into json
+    """
+    message = jwt.decode(token, SECRET_KEY, algorithm='HS256')
+    return message
