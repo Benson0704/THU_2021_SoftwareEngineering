@@ -202,6 +202,7 @@ def get_token(open_id):
     refresh_token = app.tokens.decode_token(user.refresh_token)
     return access_token, refresh_token
 
+
 def encoding(message):
     encode_jwt = jwt.encode(message, SECRET_KEY, algorithm='HS256')
     encode_str = str(encode_jwt, 'utf-8')
