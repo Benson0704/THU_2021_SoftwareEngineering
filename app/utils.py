@@ -205,7 +205,7 @@ def get_token(open_id):
 
 def encoding(message):
     """
-    this function is for encoding data to pass to frontend
+    this function is for encoding data using jwt to pass to frontend
     """
     encode_jwt = jwt.encode(message, SECRET_KEY, algorithm='HS256')
     encode_str = str(encode_jwt, 'utf-8')
