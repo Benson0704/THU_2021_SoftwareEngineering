@@ -273,6 +273,18 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(access_token, expected_token)
         self.assertEqual(refresh_token, expected_token)
 
+    def test_encoding(self):
+        '''
+        this is a test for encoding
+        '''
+        message = {
+            "name": "brisa"
+        }
+        coding = app.utils.encoding(message)
+        expected_coding = ("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYnJ"
+                          "pc2EifQ.trZ4C9cVp0_60ZrZhSR47W2cpPHfPGKrFYq3SwMoRrg")
+        self.assertEqual(coding, expected_coding)
+
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
         new_user = User.objects.filter(open_id="Test open_id")

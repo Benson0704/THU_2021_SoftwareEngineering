@@ -6,6 +6,8 @@ all functions not used to handle frontend request DIRECTLY should write here
 import app.times
 import app.tokens
 from app.models import User, Video
+import jwt
+SECRET_KEY = "thisisasecretkey"
 
 
 def is_registered(open_id):
@@ -199,3 +201,8 @@ def get_token(open_id):
     access_token = app.tokens.decode_token(user.access_token)
     refresh_token = app.tokens.decode_token(user.refresh_token)
     return access_token, refresh_token
+
+def encoding(message):
+    encode_jwt = jwt.encode(message, SECRET_KEY, algorithm='HS256')
+    encode_str = str(encode_jwt, 'utf-8')
+    return encode_str
