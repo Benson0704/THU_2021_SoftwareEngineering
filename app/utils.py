@@ -197,8 +197,7 @@ def get_yesterday_change(open_id):
     today_timestamp = app.times.string2timestamp(today_time)
     yesterday_timestamp = today_timestamp - 24*60*60
     for video in video_list:
-        if yesterday_timestamp <= app.times.timestamp2string\
-                    (video.create_time) <= today_timestamp:
+        if yesterday_timestamp <= video.create_time <= today_timestamp:
             video_change += 1
             like_change += video.like_count
             comment_change += video.comment_count
