@@ -3,6 +3,8 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
+from datetime import datetime
+
 import app.times
 import app.tokens
 from app.models import User, Video
@@ -181,6 +183,38 @@ def get_total_view_count(open_id):
     for video in video_list:
         res += video.view_count
     return res
+
+
+def get_yesterday_change(open_id):
+    """
+    this function should return the total video change in yesterday 24 hours
+    return: yesterday_change
+    """
+    video_change = 0
+    like_change = 0
+    comment_change = 0
+    view_change = 0
+    target = User.objects.get(open_id=open_id)
+    video_list = target.video.all()
+    time = app.times.datetime2string(datetime.now())
+    today_time = time.split(' ')[0] + " 00:00:00"
+    today_timestamp = app.times.string2timestamp(today_time)
+    yesterday_timestamp = today_timestamp - 24 * 60 * 60
+    for video in video_list:
+        if yesterday_timestamp <= app.times.datetime2timestamp(
+                video.create_time) <= today_timestamp:
+            video_change += 1
+            like_change += video.like_count
+            comment_change += video.comment_count
+            view_change += video.view_change
+
+    yesterday_change = {
+        "video_change": video_change,
+        "like_change": like_change,
+        "comment_change": comment_change,
+        "view_change": view_change
+    }
+    return yesterday_change
 
 
 def store_token(open_id, access_token, refresh_token):
