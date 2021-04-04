@@ -123,7 +123,8 @@ class TestLogin(unittest.TestCase):
                 'play_url':
                     "https://PlayHogwardsSunset",
                 'create_time':
-                    app.times.datetime2timestamp(datetime(2021, 3, 7, 12, 13, 14)),
+                    app.times.datetime2timestamp(datetime
+                                                 (2021, 3, 7, 12, 13, 14)),
                 'like_count':
                     10,
                 'comment_count':
@@ -143,7 +144,8 @@ class TestLogin(unittest.TestCase):
                 'play_url':
                     "https://PlayMarsView",
                 'create_time':
-                    app.times.datetime2timestamp(datetime(2021, 3, 7, 12, 13, 14)),
+                    app.times.datetime2timestamp(datetime
+                                                 (2021, 3, 7, 12, 13, 14)),
                 'like_count':
                     10,
                 'comment_count':
@@ -262,7 +264,8 @@ class TestLogin(unittest.TestCase):
             "comment_change": 0,
             "view_change": 0
         }
-        self.assertEqual(app.utils.get_yesterday_change(open_id), except_yesterday_change)
+        self.assertEqual(app.utils.get_yesterday_change(open_id),
+                         except_yesterday_change)
 
     def test_store_token(self):
         '''
