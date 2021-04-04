@@ -280,7 +280,7 @@ class TestLogin(unittest.TestCase):
         message = {
             "name": "brisa"
         }
-        coding = app.utils.encoding(message)
+        coding = app.utils.encoding_message(message)
         expected_coding = (
             "eyJ0eXAiOiJKV1QiLCJhbGci"
             "OiJIUzI1NiJ9.eyJuYW1lIjoiYnJpc2EifQ.IWgS8bm"
@@ -300,7 +300,7 @@ class TestLogin(unittest.TestCase):
             "OiJIUzI1NiJ9.eyJuYW1lIjoiYnJpc2EifQ.IWgS8bm"
             "QRY0JBiqz3IFrqq7-0LjJ7JIYFivfZ8prMK0"
         )
-        message = app.utils.decoding(token)
+        message = app.utils.decoding_message(token)
         self.assertEqual(message, expected_message)
 
     def tearDown(self):
