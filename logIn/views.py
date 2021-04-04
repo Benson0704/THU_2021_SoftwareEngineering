@@ -90,4 +90,4 @@ def oauth_callback(request):
         return app.utils.gen_response(200, data)
 
     return app.utils.gen_response(405, 'method {} not allowed'.
-                        format(request.method))
+                                 format(request.method))
