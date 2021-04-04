@@ -2,9 +2,6 @@
 this is a module for getting the information
 of users and videos in the login process
 """
-
-from django.http import JsonResponse
-
 import app.api
 import app.utils
 

@@ -4,6 +4,7 @@ WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
 from datetime import datetime
+from django.http import JsonResponse
 
 import app.times
 import app.tokens
@@ -257,6 +258,9 @@ def decoding_message(token):
 
 
 def gen_response(code: int, data: str):
+    """
+    this function is for generating web response
+    """
     return JsonResponse({
         'code': code,
         'data': data
