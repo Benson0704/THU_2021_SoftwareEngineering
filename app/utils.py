@@ -254,3 +254,9 @@ def decoding_message(token):
     """
     message = jwt.decode(token, SECRET_KEY, algorithm='HS256')
     return message
+
+def gen_response(code: int, data: str):
+        return JsonResponse({
+            'code': code,
+            'data': data
+        }, status=code)
