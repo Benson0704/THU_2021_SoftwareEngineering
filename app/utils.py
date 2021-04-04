@@ -12,7 +12,6 @@ config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
 
-
 def is_registered(open_id):
     '''
     this function should check if a user registered by openID
