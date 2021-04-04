@@ -19,6 +19,7 @@ def oauth_callback(request):
     this function get the request from frontend
     return: code, data
     """
+
     def gen_response(code: int, data: str):
         return JsonResponse({
             'code': code,
@@ -70,6 +71,8 @@ def oauth_callback(request):
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(open_id)
 
+        yesterday_change = app.utils.get_yesterday_change(open_id)
+
         data = {
             'user_data': {
                 "name": name,
@@ -88,7 +91,8 @@ def oauth_callback(request):
                 'total_like_count': total_like_count,
                 'total_comment_count': total_comment_count,
                 'total_view_count': total_view_count
-            }
+            },
+            "yesterday_change": yesterday_change
         }
         return gen_response(200, data)
 
