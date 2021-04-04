@@ -1,5 +1,6 @@
 {
     "KEY": "FullHouse=WbnYzxZxyLwkGr",
+    "SECRET_KEY": "thisisasecretkey",
     "IV": "Input Vector",
     "DEBUG": 1,
     "PASSWORD": "kuaishou"

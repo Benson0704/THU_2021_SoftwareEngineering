@@ -7,7 +7,9 @@ import app.times
 import app.tokens
 from app.models import User, Video
 import jwt
-SECRET_KEY = "thisisasecretkey"
+import json
+config = json.load(open('config.json', 'r'))
+SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
 
 def is_registered(open_id):
@@ -203,7 +205,7 @@ def get_token(open_id):
     return access_token, refresh_token
 
 
-def encoding(message):
+def encoding_message(message):
     """
     this function is for encoding data using jwt to pass to frontend
     """
@@ -212,7 +214,7 @@ def encoding(message):
     return encode_str
 
 
-def decoding(token):
+def decoding_message(token):
     """
     this function is for decoding jwt into json
     """
