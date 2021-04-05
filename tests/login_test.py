@@ -280,28 +280,40 @@ class TestLogin(unittest.TestCase):
         message = {
             "name": "brisa"
         }
-        coding = app.utils.encoding_message(message)
-        expected_coding = (
-            "eyJ0eXAiOiJKV1QiLCJhbGci"
-            "OiJIUzI1NiJ9.eyJuYW1lIjoiYnJpc2EifQ.IWgS8bm"
-            "QRY0JBiqz3IFrqq7-0LjJ7JIYFivfZ8prMK0"
+        coding1 = app.utils.encoding_message(200, message)
+        coding2 = app.utils.encoding_message(200)
+        expected_coding1 = (
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ey"
+            "Jjb2RlIjoyMDAsImRhdGEiOnsibmFtZSI6ImJyaX"
+            "NhIn19.tE5YGG35YAQLP4wyJVQXUv7RisKsnb5vP2D8_DuLQo0"
         )
-        self.assertEqual(coding, expected_coding)
+        expected_coding2 = (
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb"
+            "2RlIjoyMDB9.w3x2fq8h5V7t0kQky__lgsQ_RgdpQS_qTPK8L866O2g"
+        )
+        self.assertEqual(coding1, expected_coding1)
+        self.assertEqual(coding2, expected_coding2)
 
     def test_decoding_message(self):
         '''
         this is a test for decoding_message
         '''
-        expected_message = {
+        token1 = (
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ey"
+            "Jjb2RlIjoyMDAsImRhdGEiOnsibmFtZSI6ImJyaX"
+            "NhIn19.tE5YGG35YAQLP4wyJVQXUv7RisKsnb5vP2D8_DuLQo0"
+        )
+        token2 = (
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb"
+            "2RlIjoyMDB9.w3x2fq8h5V7t0kQky__lgsQ_RgdpQS_qTPK8L866O2g"
+        )
+        expected_message1 = {
             "name": "brisa"
         }
-        token = (
-            "eyJ0eXAiOiJKV1QiLCJhbGci"
-            "OiJIUzI1NiJ9.eyJuYW1lIjoiYnJpc2EifQ.IWgS8bm"
-            "QRY0JBiqz3IFrqq7-0LjJ7JIYFivfZ8prMK0"
-        )
-        message = app.utils.decoding_message(token)
-        self.assertEqual(message, expected_message)
+        code1, message1 = app.utils.decoding_message(token1)
+        code2 = app.utils.decoding_message(token2)
+        self.assertEqual(message1, expected_message1)
+        self.assertEqual(code2, 200)
 
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
