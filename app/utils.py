@@ -180,19 +180,19 @@ def get_total_view_count(open_id):
     return res
 
 
-def get_yesterday_videos(open_id, yesterday_timestamp, today_timestamp):
+def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
     """
-    this function should return the total video list in yesterday 24 hours
-    return: video list of yesterday
+    this function should return the videos base on the before and after timestamp
+    return: videos
     """
     target = User.objects.get(open_id=open_id)
     video_list = target.video.all()
-    yesterday_videos = []
+    videos = []
     for video in video_list:
-        if yesterday_timestamp <= app.times.datetime2timestamp(
-                video.create_time) <= today_timestamp:
-            yesterday_videos.append(video)
-    return yesterday_videos
+        if before_timestamp <= app.times.datetime2timestamp(
+                video.create_time) <= after_timestamp:
+            videos.append(video)
+    return videos
 
 
 def store_token(open_id, access_token, refresh_token):
