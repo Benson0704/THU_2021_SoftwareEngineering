@@ -182,7 +182,8 @@ def get_total_view_count(open_id):
 
 def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
     """
-    this function should return the videos base on the before and after timestamp
+    this function should return the videos
+    based on the before and after timestamp
     return: videos
     """
     target = User.objects.get(open_id=open_id)

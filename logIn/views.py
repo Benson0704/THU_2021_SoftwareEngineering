@@ -17,7 +17,7 @@ def oauth_callback(request):
     return: code, data
     """
 
-    def gen_response(code: int, data: dict):
+    def gen_response(code: int, data: str):
         return JsonResponse({
             'code': code,
             'data': data
@@ -108,7 +108,7 @@ def oauth_callback(request):
                 "view_change": view_change
             }
         }
-        return gen_response(200, data)
+        return gen_response(200, str(data))
 
     return gen_response(405, 'method {} not allowed'.
                         format(request.method))
