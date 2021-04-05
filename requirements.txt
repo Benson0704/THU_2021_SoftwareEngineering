@@ -13,6 +13,7 @@ django==3.0.8
 pycrypto==2.6.1
 pycryptodome==3.10.1
 pytest-django==4.1.0
+djangorestframework-jwt==1.11.0
 
 PyMySQL~=1.0.2
 requests~=2.24.0
