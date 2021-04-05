@@ -3,7 +3,6 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
-from datetime import datetime
 
 import app.times
 import app.tokens
