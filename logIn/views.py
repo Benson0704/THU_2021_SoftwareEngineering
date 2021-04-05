@@ -2,13 +2,11 @@
 this is a module for getting the information
 of users and videos in the login process
 """
+from datetime import datetime
+
 import app.api
 import app.utils
-
-OAUTH = {
-    "app_id": "ks692991395583662522",
-    "app_secret": "SQQoA2MFqcdeRF_vbFttIw",  # 需要存储在服务器端，不能暴露
-}
+import app.times
 
 
 def oauth_callback(request):
@@ -18,8 +16,7 @@ def oauth_callback(request):
     """
     if request.method == 'GET':
         code = request.GET.get('code')
-        token_data = app.api.get_token_data(code, OAUTH["app_id"],
-                                            OAUTH["app_secret"])
+        token_data = app.api.get_token_data(code)
         result = token_data.get("result")
         if result != 1:
             return app.utils.gen_response(404, token_data.get("error_msg"))
@@ -28,8 +25,7 @@ def oauth_callback(request):
         open_id = token_data.get("open_id")
         refresh_token = token_data.get("refresh_token")
 
-        data = app.api.get_all_data(OAUTH["app_id"], OAUTH["app_secret"],
-                                    open_id, access_token)
+        data = app.api.get_all_data(open_id, access_token)
         user_data = data[0]
         name = user_data.get("name")
         sex = user_data.get("sex")
@@ -61,7 +57,21 @@ def oauth_callback(request):
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(open_id)
 
-        yesterday_change = app.utils.get_yesterday_change(open_id)
+        video_change = 0
+        like_change = 0
+        comment_change = 0
+        view_change = 0
+        time = app.times.datetime2string(datetime.now())
+        today_time = time.split(' ')[0] + " 00:00:00"
+        today_timestamp = app.times.string2timestamp(today_time)
+        yesterday_timestamp = today_timestamp - 24 * 60 * 60
+        yesterday_videos = app.utils.get_videos_by_timestamp(
+            open_id, yesterday_timestamp, today_timestamp)
+        for video in yesterday_videos:
+            video_change += 1
+            like_change += video.like_count
+            comment_change += video.comment_count
+            view_change += video.view_change
 
         data = {
             'user_data': {
@@ -82,7 +92,12 @@ def oauth_callback(request):
                 'total_comment_count': total_comment_count,
                 'total_view_count': total_view_count
             },
-            "yesterday_change": yesterday_change
+            "yesterday_change": {
+                "video_change": video_change,
+                "like_change": like_change,
+                "comment_change": comment_change,
+                "view_change": view_change
+            }
         }
         return app.utils.gen_response(200, data)
 
