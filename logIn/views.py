@@ -4,8 +4,6 @@ of users and videos in the login process
 """
 from datetime import datetime
 
-from django.http import JsonResponse
-
 import app.api
 import app.utils
 import app.times

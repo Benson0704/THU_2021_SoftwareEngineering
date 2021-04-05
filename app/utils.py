@@ -9,6 +9,7 @@ import app.tokens
 from app.models import User, Video
 import jwt
 import json
+from django.http import JsonResponse
 config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
