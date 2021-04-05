@@ -17,7 +17,7 @@ def oauth_callback(request):
     return: code, data
     """
 
-    def gen_response(code: int, data: str):
+    def gen_response(code: int, data: dict):
         return JsonResponse({
             'code': code,
             'data': data
@@ -74,7 +74,8 @@ def oauth_callback(request):
         today_time = time.split(' ')[0] + " 00:00:00"
         today_timestamp = app.times.string2timestamp(today_time)
         yesterday_timestamp = today_timestamp - 24 * 60 * 60
-        yesterday_videos = app.utils.get_yesterday_videos(open_id, yesterday_timestamp, today_timestamp)
+        yesterday_videos = app.utils.get_yesterday_videos(
+            open_id, yesterday_timestamp, today_timestamp)
         for video in yesterday_videos:
             video_change += 1
             like_change += video.like_count
