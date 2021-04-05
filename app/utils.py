@@ -210,7 +210,7 @@ def encoding_message(code, message=None):
     this function is for encoding data using jwt to pass to frontend
     """
     origin = {}
-    if(message):
+    if message:
         origin = {
             "code": code,
             "data": message
@@ -229,7 +229,6 @@ def decoding_message(token):
     this function is for decoding jwt into json
     """
     message = jwt.decode(token, SECRET_KEY, algorithm='HS256')
-    if("data" in message):
+    if "data" in message:
         return message["code"], message["data"]
-    else:
-        return message["code"]
+    return message["code"]

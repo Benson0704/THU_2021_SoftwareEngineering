@@ -313,6 +313,7 @@ class TestLogin(unittest.TestCase):
         code1, message1 = app.utils.decoding_message(token1)
         code2 = app.utils.decoding_message(token2)
         self.assertEqual(message1, expected_message1)
+        self.assertEqual(code1, 200)
         self.assertEqual(code2, 200)
 
     def tearDown(self):
