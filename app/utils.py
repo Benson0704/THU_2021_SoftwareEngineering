@@ -3,14 +3,13 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
-from datetime import datetime
-from django.http import JsonResponse
 
 import app.times
 import app.tokens
 from app.models import User, Video
 import jwt
 import json
+from django.http import JsonResponse
 config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
@@ -186,36 +185,20 @@ def get_total_view_count(open_id):
     return res
 
 
-def get_yesterday_change(open_id):
+def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
     """
-    this function should return the total video change in yesterday 24 hours
-    return: yesterday_change
+    this function should return the videos
+    based on the before and after timestamp
+    return: videos
     """
-    video_change = 0
-    like_change = 0
-    comment_change = 0
-    view_change = 0
     target = User.objects.get(open_id=open_id)
     video_list = target.video.all()
-    time = app.times.datetime2string(datetime.now())
-    today_time = time.split(' ')[0] + " 00:00:00"
-    today_timestamp = app.times.string2timestamp(today_time)
-    yesterday_timestamp = today_timestamp - 24 * 60 * 60
+    videos = []
     for video in video_list:
-        if yesterday_timestamp <= app.times.datetime2timestamp(
-                video.create_time) <= today_timestamp:
-            video_change += 1
-            like_change += video.like_count
-            comment_change += video.comment_count
-            view_change += video.view_change
-
-    yesterday_change = {
-        "video_change": video_change,
-        "like_change": like_change,
-        "comment_change": comment_change,
-        "view_change": view_change
-    }
-    return yesterday_change
+        if before_timestamp <= app.times.datetime2timestamp(
+                video.create_time) <= after_timestamp:
+            videos.append(video)
+    return videos
 
 
 def store_token(open_id, access_token, refresh_token):

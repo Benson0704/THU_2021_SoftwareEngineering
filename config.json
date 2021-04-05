@@ -3,5 +3,7 @@
     "SECRET_KEY": "thisisasecretkey",
     "IV": "Input Vector",
     "DEBUG": 1,
-    "PASSWORD": "kuaishou"
+    "PASSWORD": "kuaishou",
+    "app_id": "ks692991395583662522",
+    "app_secret": "SQQoA2MFqcdeRF_vbFttIw"
 }
