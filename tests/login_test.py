@@ -253,20 +253,6 @@ class TestLogin(unittest.TestCase):
         open_id = "todayisagoodday"
         self.assertEqual(app.utils.get_total_view_count(open_id), 40)
 
-    def test_get_yesterday_change(self):
-        '''
-        this is a test for get_yesterday_change
-        '''
-        open_id = "todayisagoodday"
-        except_yesterday_change = {
-            "video_change": 0,
-            "like_change": 0,
-            "comment_change": 0,
-            "view_change": 0
-        }
-        self.assertEqual(app.utils.get_yesterday_change(open_id),
-                         except_yesterday_change)
-
     def test_store_token(self):
         '''
         this is a test for store_token
