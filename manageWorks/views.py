@@ -16,6 +16,10 @@ def get_video_time_sort(request):
     if request.method == 'GET':
         ret = request.body
         try:
+            ret = json.loads(ret.decode('utf-8'))
+        except:
+            return app.utils.gen_response(400, 'not json')
+        try:
             open_id = ret['open_id']
             begin_timestamp = ret['begin_timestamp']
             end_timestamp = ret['term_timestamp']
@@ -70,6 +74,10 @@ def get_label_list(request):
     if request.method == 'GET':
         ret = request.body
         try:
+            ret = json.loads(ret.decode('utf-8'))
+        except:
+            return app.utils.gen_response(400, 'not json')
+        try:
             open_id = ret['open_id']
             app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
@@ -86,6 +94,10 @@ def get_label_list(request):
                 400, 'json content error {}'.format(str(ret)))
     elif request.method == 'POST':
         ret = request.body
+        try:
+            ret = json.loads(ret.decode('utf-8'))
+        except:
+            return app.utils.gen_response(400, 'not json')
         try:
             open_id = ret['open_id']
             target_label = ret['label']
