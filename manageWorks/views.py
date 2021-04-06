@@ -77,8 +77,7 @@ def get_label_list(request):
             return app.utils.gen_response(200, return_list)
         except:
             return app.utils.gen_response(
-                400, '{}json content error'.format(
-                    json.loads(request.body.decode('utf-8'))))
+                400, '{}json content error'.format(request.GET.get('open_id')))
     elif request.method == 'POST':
         ret = request.body
         try:
