@@ -65,10 +65,7 @@ def get_label_list(request):
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
-        except:
-            return app.utils.gen_response(101, 'get')
             # app.api.manage_data(open_id)
-        try:
             user = User.objects.get(open_id=open_id)
         except:
             return app.utils.gen_response(102, 'openid')

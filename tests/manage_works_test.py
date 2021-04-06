@@ -135,7 +135,7 @@ class TestManageWorks(TestCase):
                                    data=payload,
                                    content_type="application/json")
         expected_labels = [{"label": "scene", "num": 0}]
-        self.assertEqual(200, response.json())
+        self.assertEqual(200, response.json()['code'])
         self.assertEqual(response.json()['data'], expected_labels)
 
     def test_get_label_list_post(self):
