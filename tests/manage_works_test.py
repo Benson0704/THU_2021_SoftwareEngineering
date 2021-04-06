@@ -64,10 +64,9 @@ class TestManageWorks(TestCase):
                                          pending=False,
                                          labels="")
         new_video.save()
+        Label.objects.filter(label_name='scene').delete()
         new_label = Label.objects.create(user=brisa, label_name="scene", num=0)
         new_label.save()
-        self.assertEqual(User.objects.filter(open_id='todayisagoodday'),
-                         Label.objects.filter(label_name='scene'))
 
     def test_get_video_time_openid_lost(self):
         payload = {
@@ -138,6 +137,8 @@ class TestManageWorks(TestCase):
                                    data=payload,
                                    content_type="application/json")
         expected_labels = [{"label": "scene", "num": 0}]
+        self.assertEqual(User.objects.filter(open_id='todayisagoodday'),
+                         Label.objects.filter(label_name='scene'))
         self.assertEqual(200, response.json())
         self.assertEqual(response.json()['data'], expected_labels)
 
