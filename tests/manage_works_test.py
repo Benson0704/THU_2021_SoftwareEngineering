@@ -66,6 +66,8 @@ class TestManageWorks(TestCase):
         new_video.save()
         new_label = Label.objects.create(user=brisa, label_name="scene", num=0)
         new_label.save()
+        self.assertEqual(User.objects.filter(open_id='todayisagoodday'),
+                         Label.objects.filter(label_name='scene'))
 
     def test_get_video_time_openid_lost(self):
         payload = {
@@ -85,7 +87,7 @@ class TestManageWorks(TestCase):
         payload = {
             'open_id': "todayisagoodday",
             'begin_timestamp': app.times.datetime2timestamp(time1),
-            'end_timestamp': app.times.datetime2timestamp(time2),
+            'term_timestamp': app.times.datetime2timestamp(time2),
             'count_per_page': 5,
             'page': 1,
         }
