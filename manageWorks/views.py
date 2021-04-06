@@ -63,17 +63,18 @@ def get_label_list(request):
     this function should respond to the requests relating to labels
     """
     if request.method == 'GET':
+        return app.utils.gen_response(201, 'error')
         try:
             open_id = request.GET.get('open_id')
             # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
         except:
-            return app.utils.gen_response(102, 'openid')
+            return app.utils.gen_response(202, 'openid error')
             #return_list = []
         try:
             labels = user.label.objects.all()
         except:
-            return app.utils.gen_response(103, 'labels')
+            return app.utils.gen_response(203, 'labels error')
             '''
             for label in labels:
                 return_list.append({
@@ -82,7 +83,7 @@ def get_label_list(request):
                 })
             '''
         try:
-            return app.utils.gen_response(200, 'returnlist')
+            return app.utils.gen_response(200, 'return list')
         except:
             return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
