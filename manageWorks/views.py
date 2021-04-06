@@ -14,15 +14,10 @@ def get_video_time_sort(request):
     this function should respond to the get video request
     """
     if request.method == 'GET':
-        ret = request.body
         try:
-            ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(400, 'not json')
-        try:
-            open_id = ret['open_id']
-            begin_timestamp = ret['begin_timestamp']
-            end_timestamp = ret['term_timestamp']
+            open_id = request.GET.get('open_id')
+            begin_timestamp = request.GET.get('begin_timestamp')
+            end_timestamp = request.GET.get('term_timestamp')
             # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             videos = user.video.all().order_by('-create_time')
@@ -68,22 +63,20 @@ def get_label_list(request):
     this function should respond to the requests relating to labels
     """
     if request.method == 'GET':
-        ret = request.body
         try:
-            ret = json.loads(ret.decode('utf-8'))
+            open_id = request.GET.get('open_id')
+            # app.api.manage_data(open_id)
+            user = User.objects.get(open_id=open_id)
+            return_list = []
+            labels = user.Label.objects.all()
+            for label in labels:
+                return_list.append({
+                    'label': label.label_name,
+                    'num': label.num
+                })
+            return app.utils.gen_response(200, return_list)
         except:
-            return app.utils.gen_response(400, 'not json')
-        #try:
-        open_id = ret['open_id']
-        # app.api.manage_data(open_id)
-        user = User.objects.get(open_id=open_id)
-        return_list = []
-        labels = user.Label.objects.all()
-        for label in labels:
-            return_list.append({'label': label.label_name, 'num': label.num})
-        return app.utils.gen_response(200, return_list)
-        #except:
-        #return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
         ret = request.body
         try:
