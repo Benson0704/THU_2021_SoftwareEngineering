@@ -112,7 +112,8 @@ def get_label_list(request):
                         label = Label(user=user, label_name=target_label)
                         label.num += 1
                         label.save()
-                    return app.utils.gen_response(113, 'new labels')
+                    except:
+                        return app.utils.gen_response(113, 'new labels')
                 try:
                     video = Video.objects.get(photo_id=photo_id)
                     video.labels = video.labels + target_label + '_&_'
