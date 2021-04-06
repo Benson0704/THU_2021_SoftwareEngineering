@@ -27,6 +27,7 @@ def get_video_time_sort(request):
                         video.create_time) <= term_timestamp:
                     video_list.append(video)
             return_list = []
+            return app.utils.gen_response(201, 'error')
             for i, video in enumerate(video_list):
                 return_list.append({
                     'photo_id':
@@ -67,8 +68,7 @@ def get_label_list(request):
             open_id = request.GET.get('open_id')
             # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
-            return app.utils.gen_response(201, 'error')
-            labels = user.label.objects.all()
+            labels = user.label.all()
             return_list = []
             for label in labels:
                 return_list.append({
