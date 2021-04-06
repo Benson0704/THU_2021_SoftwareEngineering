@@ -138,7 +138,7 @@ class TestManageWorks(TestCase):
                                    data=payload,
                                    content_type="application/json")
         expected_labels = [{"label": "scene", "num": 0}]
-        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(200, response.json())
         self.assertEqual(response.json()['code']['encoded_data'],
                          app.utils.encoding_message(200, expected_labels))
 
