@@ -80,7 +80,7 @@ class TestManageWorks(TestCase):
         response = self.client.get('/api/video/time',
                                    data=payload,
                                    content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
+        self.assertEqual(400, response.json())
 
     def test_get_video_time(self):
         time1 = datetime(2022, 4, 7, 12, 13, 10)
@@ -120,7 +120,7 @@ class TestManageWorks(TestCase):
         response = self.client.get('/api/video/time',
                                    data=payload,
                                    content_type="application/json")
-        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(200, response.json())
         self.assertEqual(response.json()['encoded_data'],
                          app.utils.encoding_message(200, expected_vedioslists))
 
@@ -129,14 +129,14 @@ class TestManageWorks(TestCase):
         response = self.client.get('/api/video/label',
                                    data=payload,
                                    content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
+        self.assertEqual(400, response.json())
 
     def test_get_label_list_post_openid_lost(self):
         payload = {}
         response = self.client.post('/api/video/label',
                                     data=payload,
                                     content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
+        self.assertEqual(400, response.json())
 
     def test_get_label_list_get(self):
         payload = {
@@ -150,7 +150,7 @@ class TestManageWorks(TestCase):
                 "label": "scene",
                 "num": 0
             }]
-        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(200, response.json())
         self.assertEqual(response.json()['encoded_data'],
                          app.utils.encoding_message(200, expected_labels))
 
@@ -163,7 +163,7 @@ class TestManageWorks(TestCase):
         response = self.client.post('/api/video/label',
                                     data=payload,
                                     content_type="application/json")
-        self.assertEqual(201, response.json()['code'])
+        self.assertEqual(201, response.json())
         label = Label.objects.get(label_name="scene")
         self.assertEqual(label.num, 1)
 
