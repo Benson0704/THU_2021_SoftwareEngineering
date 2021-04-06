@@ -94,6 +94,7 @@ def get_label_list(request):
     elif request.method == 'POST':
         ret = request.body
         try:
+            return app.utils.gen_response(400, 'not json {}'.format(ret))
             ret = json.loads(ret.decode('utf-8'))
         except:
             return app.utils.gen_response(400, 'not json {}'.format(ret))
