@@ -70,32 +70,32 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kuaishou',  # 数据库名称，
-        'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
-        'USER': 'root',  # 数据库用户
-        'PASSWORD': config['PASSWORD'],  # 密码
-        'PORT': 3306,  # mysql的端口默认3306
-        'OPTIONS': {'charset': 'utf8mb4'},
-        'TEST': {
-            'CHARSET': 'utf8mb4',
-            'COLLATION': 'utf8mb4_unicode_ci'
-        }
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'kuaishou',  # 数据库名称，9
-#         'HOST': '116.62.155.162',
-#         'USER': 'brisa',  # 数据库用户
-#         'PASSWORD': 'kuaishou',  # 密码
-#         'PORT': 3306  # mysql的端口默认3306
+#         'NAME': 'kuaishou',  # 数据库名称，
+#         'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
+#         'USER': 'root',  # 数据库用户
+#         'PASSWORD': config['PASSWORD'],  # 密码
+#         'PORT': 3306,  # mysql的端口默认3306
+#         'OPTIONS': {'charset': 'utf8mb4'},
+#         'TEST': {
+#             'CHARSET': 'utf8mb4',
+#             'COLLATION': 'utf8mb4_unicode_ci'
+#         }
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'kuaishou',  # 数据库名称，9
+        'HOST': '116.62.155.162',
+        'USER': 'brisa',  # 数据库用户
+        'PASSWORD': 'kuaishou',  # 密码
+        'PORT': 3306  # mysql的端口默认3306
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
