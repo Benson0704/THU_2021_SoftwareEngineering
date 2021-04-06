@@ -94,13 +94,12 @@ def get_label_list(request):
     elif request.method == 'POST':
         ret = request.body
         try:
-            return app.utils.gen_response(
-                400, 'not json ' + ',' + ret.decode('utf-8') + ',' +
-                json.loads(ret.decode('utf-8')))
             ret = json.loads(ret.decode('utf-8'))
         except:
             return app.utils.gen_response(
-                400, 'not json1 {}'.format(json.loads(ret.decode('utf-8'))))
+                400, '{} {} {}'.format(
+                    type(ret) == dict, type(ret),
+                    json.loads(ret.decode('utf-8'))))
         try:
             open_id = ret['open_id']
             target_label = ret['label']
