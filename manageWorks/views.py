@@ -123,22 +123,16 @@ def get_label_list(request):
                     return app.utils.gen_response(100, 'video')
 
             else:
-                try:
-                    label = user.Label.get(label_name=target_label)
-                    label.num -= 1
-                    if label.num <= 0:
-                        label.delete()
-                    else:
-                        label.save()
-                    video = Video.objects.get(photo_id=photo_id)
-                    video.labels = video.labels.replace(
-                        target_label + '_&_', '')
-                    video.save()
-                except:
-                    return app.utils.gen_response(102, 'videos and labels')
-            return app.utils.gen_response(2010, 'here')
+                label = user.Label.get(label_name=target_label)
+                label.num -= 1
+                if label.num <= 0:
+                    label.delete()
+                else:
+                    label.save()
+                video = Video.objects.get(photo_id=photo_id)
+                video.labels = video.labels.replace(target_label + '_&_', '')
+                video.save()
         except:
-            return app.utils.gen_response(
-                40, '{}json content error'.format(str(ret)))
+            return app.utils.gen_response(400, 'json content error')
     else:
         return app.utils.gen_response(405, 'no such method ')
