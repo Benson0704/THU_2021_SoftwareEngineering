@@ -83,7 +83,7 @@ def get_label_list(request):
                     'num': label.num
                 })
         try:
-            return app.utils.gen_response(200, return_list)
+            return app.utils.gen_response(200, 'returnlist')
         except:
             return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
