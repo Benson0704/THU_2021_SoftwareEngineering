@@ -3,9 +3,15 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
+
 import app.times
 import app.tokens
 from app.models import User, Video
+import jwt
+import json
+from django.http import JsonResponse
+config = json.load(open('config.json', 'r'))
+SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
 
 def is_registered(open_id):
@@ -179,6 +185,22 @@ def get_total_view_count(open_id):
     return res
 
 
+def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
+    """
+    this function should return the videos
+    based on the before and after timestamp
+    return: videos
+    """
+    target = User.objects.get(open_id=open_id)
+    video_list = target.video.all()
+    videos = []
+    for video in video_list:
+        if before_timestamp <= app.times.datetime2timestamp(
+                video.create_time) <= after_timestamp:
+            videos.append(video)
+    return videos
+
+
 def store_token(open_id, access_token, refresh_token):
     """
     this function should store the access and refresh token
@@ -199,3 +221,42 @@ def get_token(open_id):
     access_token = app.tokens.decode_token(user.access_token)
     refresh_token = app.tokens.decode_token(user.refresh_token)
     return access_token, refresh_token
+
+
+def encoding_message(code, message=None):
+    """
+    this function is for encoding data using jwt to pass to frontend
+    """
+    origin = {}
+    if message:
+        origin = {
+            "code": code,
+            "data": message
+        }
+    else:
+        origin = {
+            "code": code
+        }
+    encode_jwt = jwt.encode(origin, SECRET_KEY, algorithm='HS256')
+    encode_str = str(encode_jwt, 'utf-8')
+    return encode_str
+
+
+def decoding_message(token):
+    """
+    this function is for decoding jwt into json
+    """
+    message = jwt.decode(token, SECRET_KEY, algorithm='HS256')
+    if "data" in message:
+        return message["code"], message["data"]
+    return message["code"]
+
+
+def gen_response(code: int, data: str):
+    """
+    this function is for generating web response
+    """
+    return JsonResponse({
+        'code': code,
+        'data': data
+    }, status=code)
