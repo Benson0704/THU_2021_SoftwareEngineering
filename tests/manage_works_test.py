@@ -148,7 +148,9 @@ class TestManageWorks(TestCase):
             "label": "scene",
             "add": 1
         }
-        response = self.client.post('/api/video/label', data=payload)
+        response = self.client.post('/api/video/label',
+                                    data=json.dump(payload),
+                                    content_type="application/json")
         self.assertEqual(201, response.json())
         label = Label.objects.get(label_name="scene")
         self.assertEqual(label.num, 1)
