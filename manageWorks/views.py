@@ -16,7 +16,7 @@ def get_video_time_sort(request):
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
-        except ValueError:
+        except:
             return app.utils.gen_response(
                 400, app.utils.encoding_message(400, 'not json'))
         try:
@@ -61,7 +61,7 @@ def get_video_time_sort(request):
                     })
             return app.utils.gen_response(
                 200, app.utils.encoding_message(200, return_list))
-        except ValueError:
+        except:
             return app.utils.gen_response(
                 400, app.utils.encoding_message(400, 'json content error'))
     else:
@@ -78,27 +78,49 @@ def get_label_list(request):
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
-        except ValueError:
+        except:
             return app.utils.gen_response(
                 400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
             app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
-
-        except ValueError:
+            return_list = []
+            labels = user.labels.objects.all()
+            for label in labels:
+                return_list.append({
+                    'label': label.label_name,
+                    'num': label.num
+                })
+            return app.utils.gen_response(
+                200, app.utils.encoding_message(200, return_list))
+        except:
             return app.utils.gen_response(
                 400, app.utils.encoding_message(400, 'json content error'))
     elif request.method == 'POST':
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
-        except ValueError:
+        except:
             return app.utils.gen_response(
                 400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
-        except ValueError:
+            target_label = ret['label']
+            photo_id = ret['photo_id']
+            app.api.manage_data(open_id)
+            user = User.objects.get(open_id=open_id)
+            if ret['add']:
+                try:
+                    label = user.labels.get(label_name=target_label)
+                    label.num += 1
+                    label.save()
+                except:
+                    '''
+                    do something
+                    '''
+            return app.utils.gen_response(201, app.utils.encoding_message(201))
+        except:
             return app.utils.gen_response(
                 400, app.utils.encoding_message(400, 'json content error'))
     else:
