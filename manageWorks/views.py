@@ -102,7 +102,10 @@ def get_label_list(request):
             target_label = ret['label']
             photo_id = ret['photo_id']
             # app.api.manage_data(open_id)
-            user = User.objects.get(open_id=open_id)
+            try:
+                user = User.objects.get(open_id=open_id)
+            except:
+                return gen_response(100, 'getuser')
             if ret['add']:
                 try:
                     label = user.Label.get(label_name=target_label)
