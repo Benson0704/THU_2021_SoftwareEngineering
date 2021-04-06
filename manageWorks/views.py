@@ -94,34 +94,24 @@ def get_label_list(request):
         except:
             return app.utils.gen_response(400, 'not json')
         try:
-            try:
-                open_id = ret['open_id']
-                target_label = ret['label']
-                photo_id = ret['photo_id']
-                add = ret['add']
-                # app.api.manage_data(open_id)
-                user = User.objects.get(open_id=open_id)
-            except:
-                return app.utils.gen_response(110, 'user')
-            if add == 1:
+            open_id = ret['open_id']
+            target_label = ret['label']
+            photo_id = ret['photo_id']
+            add = ret['add']
+            # app.api.manage_data(open_id)
+            user = User.objects.get(open_id=open_id)
+            if add:
                 try:
                     label = user.Label.get(label_name=target_label)
                     label.num += 1
                     label.save()
                 except:
-                    try:
-                        label = Label(user=user, label_name=target_label)
-                        label.num += 1
-                        label.save()
-                    except:
-                        return app.utils.gen_response(113, 'new labels')
-                try:
-                    video = Video.objects.get(photo_id=photo_id)
-                    video.labels = video.labels + target_label + '_&_'
-                    video.save()
-                except:
-                    return app.utils.gen_response(100, 'video')
-
+                    label = Label(user=user, label_name=target_label)
+                    label.num += 1
+                    label.save()
+                video = Video.objects.get(photo_id=photo_id)
+                video.labels = video.labels + target_label + '_&_'
+                video.save()
             else:
                 label = user.Label.get(label_name=target_label)
                 label.num -= 1
@@ -132,6 +122,7 @@ def get_label_list(request):
                 video = Video.objects.get(photo_id=photo_id)
                 video.labels = video.labels.replace(target_label + '_&_', '')
                 video.save()
+            return app.utils.gen_response(200)
         except:
             return app.utils.gen_response(400, 'json content error')
     else:
