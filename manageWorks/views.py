@@ -101,7 +101,7 @@ def get_label_list(request):
         except:
             return app.utils.gen_response(
                 400, 'not json {},{}'.format(ret.decode('utf-8'),
-                                             json.load(ret.decode('utf-8'))))
+                                             json.loads(ret.decode('utf-8'))))
         try:
             open_id = ret['open_id']
             target_label = ret['label']
