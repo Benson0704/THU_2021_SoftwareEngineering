@@ -40,8 +40,8 @@ def get_video_time_sort(request):
                     for label in labels:
                         label_list.append(label.label_name)
                     return_list.append({
-                        'open_id':
-                        video_list[i].open_id,
+                        'photo_id':
+                        video_list[i].photo_id,
                         'caption':
                         video_list[i].caption,
                         'cover':
