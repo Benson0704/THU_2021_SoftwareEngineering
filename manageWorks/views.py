@@ -67,7 +67,7 @@ def get_video_time_sort(request):
     else:
         return app.utils.gen_response(
             405, app.utils.encoding_message(405, 'no\
-             such method'))
+             such method'                         ))
 
 
 def get_label_list(request):
@@ -86,7 +86,7 @@ def get_label_list(request):
             app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             return_list = []
-            labels = user.labels.objects.all()
+            labels = user.Label.objects.all()
             for label in labels:
                 return_list.append({
                     'label': label.label_name,
@@ -112,13 +112,28 @@ def get_label_list(request):
             user = User.objects.get(open_id=open_id)
             if ret['add']:
                 try:
-                    label = user.labels.get(label_name=target_label)
+                    label = user.Label.get(label_name=target_label)
                     label.num += 1
                     label.save()
                 except:
-                    '''
-                    do something
-                    '''
+                    label = Label(user=user, label_name=target_label)
+                    label.num += 1
+                    label.save()
+                video = Video.objects.get(photo_id=photo_id)
+                    video.labels = video.labels + target_label + '_&_'
+                    video.save()
+
+            else:
+                label = user.Label.get(label_name=target_label)
+                label.num -= 1
+                if label.num <= 0:
+                    label.delete()
+                else:
+                    label.save()
+                video = Video.objects.get(photo_id=photo_id)
+                video.labels = video.labels.replace(target_label + '_&_', '')
+                video.save()
+
             return app.utils.gen_response(201, app.utils.encoding_message(201))
         except:
             return app.utils.gen_response(
@@ -127,4 +142,4 @@ def get_label_list(request):
         return app.utils.gen_response(
             405,
             app.utils.encoding_message(405, 'no\
-             such method '))
+             such method '                          ))
