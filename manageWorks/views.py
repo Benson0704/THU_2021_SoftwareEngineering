@@ -17,7 +17,8 @@ def get_video_time_sort(request):
         try:
             ret = json.loads(ret.decode('utf-8'))
         except ValueError:
-            return app.utils.gen_response(400, 'not json')
+            return app.utils.gen_response(
+                400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
             begin_timestamp = ret['begin_timestamp']
@@ -35,13 +36,9 @@ def get_video_time_sort(request):
             return_list = []
             for i, video in enumerate(video_list):
                 if count_per_page * (page - 1) <= i < count_per_page * page:
-                    label_list = []
-                    labels = video_list[i].labels.objects.all()
-                    for label in labels:
-                        label_list.append(label.label_name)
                     return_list.append({
-                        'open_id':
-                        video_list[i].open_id,
+                        'photo_id':
+                        video_list[i].photo_id,
                         'caption':
                         video_list[i].caption,
                         'cover':
@@ -60,12 +57,13 @@ def get_video_time_sort(request):
                         'pending':
                         video_list[i].pending,
                         'labels':
-                        label_list
+                        video_list[i].labels.split('_&_')
                     })
             return app.utils.gen_response(
                 200, app.utils.encoding_message(200, return_list))
         except ValueError:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(
+                400, app.utils.encoding_message(400, 'json content error'))
     else:
         return app.utils.gen_response(
             405, app.utils.encoding_message(405, 'no\
@@ -81,23 +79,28 @@ def get_label_list(request):
         try:
             ret = json.loads(ret.decode('utf-8'))
         except ValueError:
-            return app.utils.gen_response(400, 'not json')
+            return app.utils.gen_response(
+                400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
             app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
+
         except ValueError:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(
+                400, app.utils.encoding_message(400, 'json content error'))
     elif request.method == 'POST':
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
         except ValueError:
-            return app.utils.gen_response(400, 'not json')
+            return app.utils.gen_response(
+                400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
         except ValueError:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(
+                400, app.utils.encoding_message(400, 'json content error'))
     else:
         return app.utils.gen_response(
             405,
