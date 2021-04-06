@@ -113,10 +113,10 @@ def get_label_list(request):
                     label.save()
                 try:
                     video = Video.objects.get(photo_id=photo_id)
+                    video.labels = video.labels + target_label + '_&_'
+                    video.save()
                 except:
                     return app.utils.gen_response(100, 'video')
-                video.labels = video.labels + target_label + '_&_'
-                video.save()
 
             else:
                 try:
