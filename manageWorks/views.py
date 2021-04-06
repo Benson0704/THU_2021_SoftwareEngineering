@@ -65,15 +65,24 @@ def get_label_list(request):
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
+        except:
+            return app.utils.gen_response(101, 'get')
             # app.api.manage_data(open_id)
+        try:
             user = User.objects.get(open_id=open_id)
+        except:
+            return app.utils.gen_response(102, 'openid')
             return_list = []
+        try:
             labels = user.label.objects.all()
+        except:
+            return app.utils.gen_response(103, 'labels')
             for label in labels:
                 return_list.append({
                     'label': label.label_name,
                     'num': label.num
                 })
+        try:
             return app.utils.gen_response(200, return_list)
         except:
             return app.utils.gen_response(400, 'json content error')
