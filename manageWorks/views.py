@@ -55,8 +55,7 @@ def get_video_time_sort(request):
                         'labels':
                         video_list[i].labels.split('_&_')
                     })
-            return app.utils.gen_response(
-                200, app.utils.encoding_message(200, return_list))
+            return app.utils.gen_response(200, return_list)
         except:
             return app.utils.gen_response(400, 'json content error')
     else:
