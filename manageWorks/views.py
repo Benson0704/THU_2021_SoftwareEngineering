@@ -91,13 +91,13 @@ def get_label_list(request):
             return app.utils.gen_response(200, return_list)
         except:
             return app.utils.gen_response(
-                400, 'json content error {}'.format(str(ret)))
+                400, 'json content error'）
     elif request.method == 'POST':
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
         except:
-            return app.utils.gen_response(400, 'not json')
+            return app.utils.gen_response(400, 'not json {}'.format(ret))
         try:
             open_id = ret['open_id']
             target_label = ret['label']
@@ -132,4 +132,4 @@ def get_label_list(request):
         except:
             return app.utils.gen_response(400, 'json content error')
     else:
-        return app.utils.gen_response(405, 'nosuch method ')
+        return app.utils.gen_response(405, 'no such method ')
