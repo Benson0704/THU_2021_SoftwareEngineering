@@ -25,7 +25,7 @@ def get_video_time_sort(request):
             end_timestamp = ret['term_timestamp']
             count_per_page = ret['count_per_page']
             page = ret['page']
-            app.api.manage_data(open_id)
+            # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             videos = user.video.all().order_by('-create_time')
             video_list = []
@@ -79,7 +79,7 @@ def get_label_list(request):
             return app.utils.gen_response(400, 'not json')
         try:
             open_id = ret['open_id']
-            app.api.manage_data(open_id)
+            # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             return_list = []
             labels = user.Label.objects.all()
@@ -101,7 +101,7 @@ def get_label_list(request):
             open_id = ret['open_id']
             target_label = ret['label']
             photo_id = ret['photo_id']
-            app.api.manage_data(open_id)
+            # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             if ret['add']:
                 try:
