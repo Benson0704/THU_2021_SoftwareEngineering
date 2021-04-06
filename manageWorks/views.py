@@ -83,7 +83,19 @@ def get_label_list(request):
         except ValueError:
             return app.utils.gen_response(400, 'not json')
         try:
-            pass
+            open_id = ret['open_id']
+            app.api.manage_data(open_id)
+            user = User.objects.get(open_id=open_id)
+        except ValueError:
+            return app.utils.gen_response(400, 'json content error')
+    elif request.method == 'POST':
+        ret = request.body
+        try:
+            ret = json.loads(ret.decode('utf-8'))
+        except ValueError:
+            return app.utils.gen_response(400, 'not json')
+        try:
+            open_id = ret['open_id']
         except ValueError:
             return app.utils.gen_response(400, 'json content error')
     else:
