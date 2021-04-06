@@ -105,7 +105,7 @@ def get_label_list(request):
             try:
                 user = User.objects.get(open_id=open_id)
             except:
-                return gen_response(100, 'getuser')
+                return app.utils.gen_response(110, 'user')
             if ret['add']:
                 try:
                     label = user.Label.get(label_name=target_label)
@@ -115,7 +115,11 @@ def get_label_list(request):
                     label = Label(user=user, label_name=target_label)
                     label.num += 1
                     label.save()
-                video = Video.objects.get(photo_id=photo_id)
+                try:
+
+                    video = Video.objects.get(photo_id=photo_id)
+                except:
+                    return app.utils.gen_response(100, 'video')
                 video.labels = video.labels + target_label + '_&_'
                 video.save()
 
