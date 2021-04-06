@@ -72,16 +72,18 @@ def get_label_list(request):
             user = User.objects.get(open_id=open_id)
         except:
             return app.utils.gen_response(102, 'openid')
-            return_list = []
+            #return_list = []
         try:
             labels = user.label.objects.all()
         except:
             return app.utils.gen_response(103, 'labels')
+            '''
             for label in labels:
                 return_list.append({
                     'label': label.label_name,
                     'num': label.num
                 })
+            '''
         try:
             return app.utils.gen_response(200, 'returnlist')
         except:
