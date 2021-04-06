@@ -251,8 +251,4 @@ def gen_response(code: int, encoded_data: str):
     """
     this function is for generating web response
     """
-    return JsonResponse({
-        'code': code,
-        'encoded_data': encoded_data
-    },
-                        status=code)
+    return JsonResponse({'code': code, 'data': encoded_data}, status=code)
