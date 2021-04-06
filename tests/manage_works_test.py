@@ -125,7 +125,7 @@ class TestManageWorks(TestCase):
     def test_get_label_list_get_openid_lost(self):
         payload = {}
         response = self.client.get('api/video/label',
-                                   data=payload, content_type="text/html")
+                                   data=payload, content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_post_openid_lost(self):
