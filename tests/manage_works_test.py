@@ -116,7 +116,7 @@ class TestManageWorks(TestCase):
         response = self.client.get('/api/video/time',
                                    data=payload,
                                    content_type="application/json")
-        self.assertEqual(200, response.json())
+        self.assertEqual(200, response.json()['code'])
         self.assertEqual(response['data'], expected_vedioslists)
 
     def test_get_label_list_get_openid_lost(self):
