@@ -152,7 +152,7 @@ class TestManageWorks(TestCase):
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
-        self.assertEqual([], Label.objects.all())
+        self.assertEqual([], Label.objects.filter(label_name='scene'))
         label = Label.objects.get(label_name="scene")
         self.assertEqual(label.num, 1)
 
