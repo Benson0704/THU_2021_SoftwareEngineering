@@ -96,10 +96,7 @@ def get_label_list(request):
         try:
             ret = json.loads(ret.decode('utf-8'))
         except:
-            return app.utils.gen_response(
-                400, '{} {} {}'.format(
-                    type(ret) == dict, type(ret),
-                    json.loads(ret.decode('utf-8'))))
+            return app.utils.gen_response(400, 'not json')
         try:
             open_id = ret['open_id']
             target_label = ret['label']
@@ -132,6 +129,7 @@ def get_label_list(request):
 
             return app.utils.gen_response(201)
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(
+                400, '{}json content error'.format(str(ret)))
     else:
         return app.utils.gen_response(405, 'no such method ')
