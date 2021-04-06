@@ -19,9 +19,9 @@ def get_video_time_sort(request):
             begin_timestamp = request.GET.get('begin_timestamp')
             term_timestamp = request.GET.get('term_timestamp')
             # app.api.manage_data(open_id)
-            return app.utils.gen_response(201, 'error')
             user = User.objects.get(open_id=open_id)
             videos = user.video.all().order_by('-create_time')
+            return app.utils.gen_response(201, 'error')
             video_list = []
             for video in videos:
                 if begin_timestamp <= app.times.datetime2timestamp(
