@@ -96,9 +96,8 @@ def get_label_list(request):
         try:
             return app.utils.gen_response(
                 400, 'not json {}, {}, {}, {}'.format(
-                    ret,
-                    ret.decode('utf-8').json.load(
-                        ret.decode('utf-8')).json.loads(ret.decode('utf-8'))))
+                    ret, ret.decode('utf-8'), json.load(ret.decode('utf-8')),
+                    json.loads(ret.decode('utf-8'))))
             ret = json.loads(ret.decode('utf-8'))
         except:
             return app.utils.gen_response(400, 'not json {}'.format(ret))
