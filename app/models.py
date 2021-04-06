@@ -67,9 +67,8 @@ class Video(models.Model):
     comment_count = models.IntegerField(default=0)  # 作品评论数
     view_count = models.IntegerField(default=0)  # 作品观看数
     pending = models.BooleanField()  # 作品状态（是否正在处理，不能观看）
-    labels = models.CharField(
-        max_length=100, default=None,
-        null=True)  # 表示视频的标签, split each by _&_: e.g. School_&_Home
+    labels = models.CharField(max_length=100, default=None,
+                              null=True)  # 表示视频的标签
 
     class Meta:
         '''
