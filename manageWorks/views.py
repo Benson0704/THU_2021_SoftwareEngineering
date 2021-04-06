@@ -20,14 +20,13 @@ def get_video_time_sort(request):
             term_timestamp = request.GET.get('term_timestamp')
             # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
-            videos = user.video.all().order_by('-create_time')
+            videos = user.video.all()
             video_list = []
             for video in videos:
                 if begin_timestamp <= app.times.datetime2timestamp(
                         video.create_time) <= term_timestamp:
                     video_list.append(video)
             return_list = []
-            return app.utils.gen_response(201, 'error')
             for i, video in enumerate(video_list):
                 return_list.append({
                     'photo_id':
@@ -75,7 +74,7 @@ def get_label_list(request):
                     'label': label.label_name,
                     'num': label.num
                 })
-            return app.utils.gen_response(200, 'return list')
+            return app.utils.gen_response(200, return_list)
         except:
             return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
