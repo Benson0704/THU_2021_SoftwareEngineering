@@ -135,10 +135,10 @@ class TestManageWorks(TestCase):
     def test_get_label_list_get(self):
         payload = {"open_id": "todayisagoodday"}
         response = self.client.get('/api/video/label',
-                                   data=json.dumps(payload),
+                                   data=payload,
                                    content_type="application/json")
         expected_labels = [{"label": "scene", "num": 0}]
-        self.assertEqual(200, response.json())
+        self.assertEqual(200, response.json()['code'])
         self.assertEqual(response.json()['data'], expected_labels)
 
     def test_get_label_list_post(self):
@@ -149,9 +149,9 @@ class TestManageWorks(TestCase):
             "add": 1
         }
         response = self.client.post('/api/video/label',
-                                    data=payload,
+                                    data=json.dumps(payload),
                                     content_type="application/json")
-        self.assertEqual(201, response.json()['code'])
+        self.assertEqual(201, response.json())
         label = Label.objects.get(label_name="scene")
         self.assertEqual(label.num, 1)
 
