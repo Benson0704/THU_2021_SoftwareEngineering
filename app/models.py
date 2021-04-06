@@ -5,20 +5,6 @@
 from django.db import models
 
 
-class Label(models.Model):
-    '''
-    标签类
-    '''
-    label_name = models.CharField(max_length=50)  # 标签名
-    num = models.IntegerField(default=0)  # 该标签的video数
-
-    class Meta:
-        '''
-        double linking: labels
-        '''
-        db_table = 'labels'
-
-
 class User(models.Model):
     '''
     用户类
@@ -41,7 +27,6 @@ class User(models.Model):
     total_view_count = models.IntegerField(default=0)  # 总播放数
     access_token = models.CharField(max_length=2500, null=True)
     refresh_token = models.CharField(max_length=2500, null=True)
-    labels = models.ManyToManyField(Label)  # 标签
 
     class Meta:
         '''
@@ -75,3 +60,20 @@ class Video(models.Model):
         double linking videos
         '''
         db_table = 'videos'
+
+
+class Label(models.Model):
+    '''
+    标签类
+    '''
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='label')  # 用户open_id
+    label_name = models.CharField(max_length=50)  # 标签名
+    num = models.IntegerField(default=0)  # 该标签的video数
+
+    class Meta:
+        '''
+        double linking: labels
+        '''
+        db_table = 'labels'
