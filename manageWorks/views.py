@@ -6,6 +6,7 @@ import app.utils
 import app.times
 import app.api
 from app.models import User, Video, Label
+from django.views.decorators.csrf import csrf_exempt
 
 
 def get_video_time_sort(request):
@@ -14,11 +15,6 @@ def get_video_time_sort(request):
     """
     if request.method == 'GET':
         ret = request.body
-        try:
-            ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
             begin_timestamp = ret['begin_timestamp']
@@ -70,17 +66,13 @@ def get_video_time_sort(request):
              such method'))
 
 
+@csrf_exempt
 def get_label_list(request):
     """
     this function should respond to the requests relating to labels
     """
     if request.method == 'GET':
         ret = request.body
-        try:
-            ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
             app.api.manage_data(open_id)
@@ -99,11 +91,6 @@ def get_label_list(request):
                 400, app.utils.encoding_message(400, 'json content error'))
     elif request.method == 'POST':
         ret = request.body
-        try:
-            ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'not json'))
         try:
             open_id = ret['open_id']
             target_label = ret['label']
