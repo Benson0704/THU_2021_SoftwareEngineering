@@ -73,20 +73,17 @@ def get_label_list(request):
             ret = json.loads(ret.decode('utf-8'))
         except:
             return app.utils.gen_response(400, 'not json')
-        try:
-            open_id = ret['open_id']
-            # app.api.manage_data(open_id)
-            user = User.objects.get(open_id=open_id)
-            return_list = []
-            labels = user.Label.objects.all()
-            for label in labels:
-                return_list.append({
-                    'label': label.label_name,
-                    'num': label.num
-                })
-            return app.utils.gen_response(200, return_list)
-        except:
-            return app.utils.gen_response(400, 'json content error')
+        #try:
+        open_id = ret['open_id']
+        # app.api.manage_data(open_id)
+        user = User.objects.get(open_id=open_id)
+        return_list = []
+        labels = user.Label.objects.all()
+        for label in labels:
+            return_list.append({'label': label.label_name, 'num': label.num})
+        return app.utils.gen_response(200, return_list)
+        #except:
+        #return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
         ret = request.body
         try:
@@ -122,7 +119,7 @@ def get_label_list(request):
                 video = Video.objects.get(photo_id=photo_id)
                 video.labels = video.labels.replace(target_label + '_&_', '')
                 video.save()
-            return app.utils.gen_response(200)
+            return app.utils.gen_response(201)
         except:
             return app.utils.gen_response(400, 'json content error')
     else:
