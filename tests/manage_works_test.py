@@ -7,6 +7,7 @@ from app.models import User, Video, Label
 import pytest
 import app.times
 import app.utils
+import json
 from datetime import datetime
 
 
@@ -133,8 +134,8 @@ class TestManageWorks(TestCase):
 
     def test_get_label_list_get(self):
         payload = {"open_id": "todayisagoodday"}
-        response = self.client.get('/api/video/label/',
-                                   data=payload,
+        response = self.client.get('/api/video/label',
+                                   data=json.dumps(payload),
                                    content_type="application/json")
         expected_labels = [{"label": "scene", "num": 0}]
         self.assertEqual(200, response.json())
