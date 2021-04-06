@@ -58,12 +58,9 @@ def get_video_time_sort(request):
             return app.utils.gen_response(
                 200, app.utils.encoding_message(200, return_list))
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'json content error'))
+            return app.utils.gen_response(400, 'json content error')
     else:
-        return app.utils.gen_response(
-            405, app.utils.encoding_message(405, 'no\
-             such method'))
+        return app.utils.gen_response(405, 'no such method')
 
 
 @csrf_exempt
@@ -84,11 +81,9 @@ def get_label_list(request):
                     'label': label.label_name,
                     'num': label.num
                 })
-            return app.utils.gen_response(
-                200, app.utils.encoding_message(200, return_list))
+            return app.utils.gen_response(200, return_list)
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'json content error'))
+            return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
         ret = request.body
         try:
@@ -123,10 +118,6 @@ def get_label_list(request):
 
             return app.utils.gen_response(201, app.utils.encoding_message(201))
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'json content error'))
+            return app.utils.gen_response(400, 'json content error')
     else:
-        return app.utils.gen_response(
-            405,
-            app.utils.encoding_message(405, 'no\
-             such method '))
+        return app.utils.gen_response(405, 'nosuch method ')
