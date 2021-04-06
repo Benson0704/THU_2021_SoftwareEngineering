@@ -67,7 +67,7 @@ def get_video_time_sort(request):
     else:
         return app.utils.gen_response(
             405, app.utils.encoding_message(405, 'no\
-             such method'                         ))
+             such method'))
 
 
 def get_label_list(request):
@@ -120,8 +120,8 @@ def get_label_list(request):
                     label.num += 1
                     label.save()
                 video = Video.objects.get(photo_id=photo_id)
-                    video.labels = video.labels + target_label + '_&_'
-                    video.save()
+                video.labels = video.labels + target_label + '_&_'
+                video.save()
 
             else:
                 label = user.Label.get(label_name=target_label)
@@ -142,4 +142,4 @@ def get_label_list(request):
         return app.utils.gen_response(
             405,
             app.utils.encoding_message(405, 'no\
-             such method '                          ))
+             such method '))
