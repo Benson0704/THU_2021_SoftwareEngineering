@@ -68,7 +68,7 @@ def get_label_list(request):
             # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             return_list = []
-            labels = user.Label.objects.all()
+            labels = user.label.objects.all()
             for label in labels:
                 return_list.append({
                     'label': label.label_name,
@@ -92,7 +92,7 @@ def get_label_list(request):
             user = User.objects.get(open_id=open_id)
             if add:
                 try:
-                    label = user.Label.get(label_name=target_label)
+                    label = user.label.get(label_name=target_label)
                     label.num += 1
                     label.save()
                 except:
@@ -103,7 +103,7 @@ def get_label_list(request):
                 video.labels = video.labels + target_label + '_&_'
                 video.save()
             else:
-                label = user.Label.get(label_name=target_label)
+                label = user.label.get(label_name=target_label)
                 label.num -= 1
                 if label.num <= 0:
                     label.delete()

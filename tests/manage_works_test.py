@@ -137,8 +137,6 @@ class TestManageWorks(TestCase):
                                    data=payload,
                                    content_type="application/json")
         expected_labels = [{"label": "scene", "num": 0}]
-        self.assertEqual(User.objects.filter(open_id='todayisagoodday'),
-                         Label.objects.filter(label_name='scene'))
         self.assertEqual(200, response.json())
         self.assertEqual(response.json()['data'], expected_labels)
 
