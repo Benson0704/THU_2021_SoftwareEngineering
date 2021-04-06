@@ -150,7 +150,9 @@ class TestManageWorks(TestCase):
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
-        label = Label.objects.get(label_name="scene")
+        label = Label.objects.get(
+            user=User.objects.get(open_id='todayisagoodday'),
+            label_name="scene")
         self.assertEqual(label.num, 1)
 
     def tearDown(self):
