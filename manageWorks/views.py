@@ -98,11 +98,12 @@ def get_label_list(request):
                 open_id = ret['open_id']
                 target_label = ret['label']
                 photo_id = ret['photo_id']
+                add = ret['add']
                 # app.api.manage_data(open_id)
                 user = User.objects.get(open_id=open_id)
             except:
                 return app.utils.gen_response(110, 'user')
-            if ret['add']:
+            if add == 1:
                 try:
                     label = user.Label.get(label_name=target_label)
                     label.num += 1
@@ -135,10 +136,9 @@ def get_label_list(request):
                     video.save()
                 except:
                     return app.utils.gen_response(102, 'videos and labels')
-
-            return app.utils.gen_response(201)
+            return app.utils.gen_response(2010, 'here')
         except:
             return app.utils.gen_response(
-                400, '{}json content error'.format(str(ret)))
+                40, '{}json content error'.format(str(ret)))
     else:
         return app.utils.gen_response(405, 'no such method ')
