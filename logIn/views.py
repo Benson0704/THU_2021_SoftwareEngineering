@@ -19,7 +19,8 @@ def oauth_callback(request):
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
         if result != 1:
-            return app.utils.gen_response(404, token_data.get("error_msg"))
+            return app.utils.gen_response(
+                404, app.utils.encoding_message(token_data.get("error_msg")))
 
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
@@ -97,9 +98,10 @@ def oauth_callback(request):
                 "like_change": like_change,
                 "comment_change": comment_change,
                 "view_change": view_change
-            }
+            },
+            'open_id': open_id
         }
-        return app.utils.gen_response(200, data)
+        return app.utils.gen_response(200, app.utils.encoding_message(data))
 
-    return app.utils.gen_response(405, 'method {} not allowed'.
-                                  format(request.method))
+    return app.utils.gen_response(
+        405, app.utils.encoding_message('no such method'))
