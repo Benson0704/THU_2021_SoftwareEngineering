@@ -65,10 +65,10 @@ class TestManageWorks(TestCase):
                                          labels="")
         new_video.save()
         new_label = Label.objects.create(
+            user=brisa,
             label_name="scene",
             num=0)
         new_label.save()
-        brisa.labels.add(new_label)
 
     def test_get_video_time_openid_lost(self):
         payload = {
@@ -77,13 +77,14 @@ class TestManageWorks(TestCase):
             'count_per_page': 5,
             'page': 3,
         }
-        response = self.client.get('api/video/time',
-                                   data=payload, content_type="application/json")
+        response = self.client.get('/api/video/time',
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_video_time(self):
-        time1 = datetime(2022,4,7,12,13,10)
-        time2 = datetime(2022,4,7,12,13,20)
+        time1 = datetime(2022, 4, 7, 12, 13, 10)
+        time2 = datetime(2022, 4, 7, 12, 13, 20)
         payload = {
             'open_id': "todayisagoodday",
             'begin_timestamp': app.times.datetime2timestamp(time1),
@@ -116,35 +117,39 @@ class TestManageWorks(TestCase):
                 "pending": False,
                 "labels": ""
             }]
-        response = self.client.get('api/video/time',
-                                   data=payload, content_type="application/json")
+        response = self.client.get('/api/video/time',
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(response.json()['encoded_data'],
                          app.utils.encoding_message(200, expected_vedioslists))
 
     def test_get_label_list_get_openid_lost(self):
         payload = {}
-        response = self.client.get('api/video/label',
-                                   data=payload, content_type="application/json")
+        response = self.client.get('/api/video/label',
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_post_openid_lost(self):
         payload = {}
-        response = self.client.post('api/video/label',
-                                   data=payload, content_type="application/json")
+        response = self.client.post('/api/video/label',
+                                    data=payload,
+                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_get(self):
         payload = {
             "open_id": "todayisagoodday"
         }
-        response = self.client.get('api/video/label',
-                                   data=payload, content_type="application/json")
+        response = self.client.get('/api/video/label',
+                                   data=payload,
+                                   content_type="application/json")
         expected_labels = [
             {
                 "label": "scene",
                 "num": 0
-        }]
+            }]
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(response.json()['encoded_data'],
                          app.utils.encoding_message(200, expected_labels))
@@ -154,10 +159,10 @@ class TestManageWorks(TestCase):
             "open_id": "todayisagoodday",
             "photo_id": "this is a sunset photo in Hogwards",
             "label": "scene",
-            "add": 1
-        }
-        response = self.client.post('api/video/label',
-                                    data=payload, content_type="application/json")
+            "add": 1}
+        response = self.client.post('/api/video/label',
+                                    data=payload,
+                                    content_type="application/json")
         self.assertEqual(201, response.json()['code'])
         label = Label.objects.get(label_name="scene")
         self.assertEqual(label.num, 1)

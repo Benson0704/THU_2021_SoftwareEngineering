@@ -86,6 +86,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'kuaishou',  # 数据库名称，9
+#         'HOST': '116.62.155.162',
+#         'USER': 'brisa',  # 数据库用户
+#         'PASSWORD': 'kuaishou',  # 密码
+#         'PORT': 3306  # mysql的端口默认3306
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
