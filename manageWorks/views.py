@@ -26,8 +26,6 @@ def get_video_time_sort(request):
                 if int(begin_timestamp) <= app.times.datetime2timestamp(
                         video.create_time) <= int(term_timestamp):
                     video_list.append(video)
-
-            return app.utils.gen_response(201, 'error')
             return_list = []
             for i, video in enumerate(video_list):
                 return_list.append({
