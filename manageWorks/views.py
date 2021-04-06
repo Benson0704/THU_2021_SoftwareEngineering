@@ -23,8 +23,6 @@ def get_video_time_sort(request):
             open_id = ret['open_id']
             begin_timestamp = ret['begin_timestamp']
             end_timestamp = ret['term_timestamp']
-            count_per_page = ret['count_per_page']
-            page = ret['page']
             # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             videos = user.video.all().order_by('-create_time')
@@ -35,30 +33,28 @@ def get_video_time_sort(request):
                     video_list.append(video)
             return_list = []
             for i, video in enumerate(video_list):
-                if count_per_page * (page - 1) <= i < count_per_page * page:
-                    return_list.append({
-                        'photo_id':
-                        video_list[i].photo_id,
-                        'caption':
-                        video_list[i].caption,
-                        'cover':
-                        video_list[i].cover,
-                        'play_url':
-                        video_list[i].play_url,
-                        'create_time':
-                        app.times.datetime2timestamp(
-                            video_list[i].create_time),
-                        'like_count':
-                        video_list[i].like_count,
-                        'comment_count':
-                        video_list[i].comment_count,
-                        'view_count':
-                        video_list[i].view_count,
-                        'pending':
-                        video_list[i].pending,
-                        'labels':
-                        video_list[i].labels.split('_&_')
-                    })
+                return_list.append({
+                    'photo_id':
+                    video_list[i].photo_id,
+                    'caption':
+                    video_list[i].caption,
+                    'cover':
+                    video_list[i].cover,
+                    'play_url':
+                    video_list[i].play_url,
+                    'create_time':
+                    app.times.datetime2timestamp(video_list[i].create_time),
+                    'like_count':
+                    video_list[i].like_count,
+                    'comment_count':
+                    video_list[i].comment_count,
+                    'view_count':
+                    video_list[i].view_count,
+                    'pending':
+                    video_list[i].pending,
+                    'labels':
+                    video_list[i].labels.split('_&_')
+                })
             return app.utils.gen_response(200, return_list)
         except:
             return app.utils.gen_response(400, 'json content error')
@@ -98,11 +94,11 @@ def get_label_list(request):
         except:
             return app.utils.gen_response(400, 'not json')
         try:
-            open_id = ret['open_id']
-            target_label = ret['label']
-            photo_id = ret['photo_id']
-            # app.api.manage_data(open_id)
             try:
+                open_id = ret['open_id']
+                target_label = ret['label']
+                photo_id = ret['photo_id']
+                # app.api.manage_data(open_id)
                 user = User.objects.get(open_id=open_id)
             except:
                 return app.utils.gen_response(110, 'user')
@@ -116,7 +112,6 @@ def get_label_list(request):
                     label.num += 1
                     label.save()
                 try:
-
                     video = Video.objects.get(photo_id=photo_id)
                 except:
                     return app.utils.gen_response(100, 'video')
@@ -124,15 +119,19 @@ def get_label_list(request):
                 video.save()
 
             else:
-                label = user.Label.get(label_name=target_label)
-                label.num -= 1
-                if label.num <= 0:
-                    label.delete()
-                else:
-                    label.save()
-                video = Video.objects.get(photo_id=photo_id)
-                video.labels = video.labels.replace(target_label + '_&_', '')
-                video.save()
+                try:
+                    label = user.Label.get(label_name=target_label)
+                    label.num -= 1
+                    if label.num <= 0:
+                        label.delete()
+                    else:
+                        label.save()
+                    video = Video.objects.get(photo_id=photo_id)
+                    video.labels = video.labels.replace(
+                        target_label + '_&_', '')
+                    video.save()
+                except:
+                    return app.utils.gen_response(102, 'videos and labels')
 
             return app.utils.gen_response(201)
         except:
