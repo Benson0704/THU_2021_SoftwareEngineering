@@ -1,5 +1,5 @@
 '''
-this is a url configuration for login
+this is a url configuration for manageWorks
 '''
 
 from django.urls import path

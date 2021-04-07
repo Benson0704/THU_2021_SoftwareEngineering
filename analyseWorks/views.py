@@ -1,4 +1,10 @@
 """
-this is a module for analysing works
+this is a module for analyse the information of videos and labels
 """
-# Create your views here.
+
+import json
+import app.utils
+import app.times
+import app.api
+from app.models import User, Video, Label
+from django.views.decorators.csrf import csrf_exempt

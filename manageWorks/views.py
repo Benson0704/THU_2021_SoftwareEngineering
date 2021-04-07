@@ -6,7 +6,6 @@ import app.utils
 import app.times
 import app.api
 from app.models import User, Video, Label
-from django.views.decorators.csrf import csrf_exempt
 
 
 def get_video_time_sort(request):
@@ -45,14 +44,16 @@ def get_video_time_sort(request):
                     'labels':
                     video_list[i].labels.split('_&_')
                 })
-            return app.utils.gen_response(200, return_list)
+            return app.utils.gen_response(200, {
+                'video_count': len(return_list),
+                'video_list': return_list
+            })
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400)
     else:
-        return app.utils.gen_response(405, 'no such method')
+        return app.utils.gen_response(405)
 
 
-@csrf_exempt
 def get_label_list(request):
     """
     this function should respond to the requests relating to labels
@@ -69,16 +70,15 @@ def get_label_list(request):
                     'label': label.label_name,
                     'num': label.num
                 })
-            return app.utils.gen_response(200, return_list)
+            return app.utils.gen_response(200, {'label_list': return_list})
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400)
     elif request.method == 'POST':
         ret = request.body
-        print(ret)
         try:
             ret = json.loads(ret.decode('utf-8'))
         except:
-            return app.utils.gen_response(400, 'not json')
+            return app.utils.gen_response(400)
         try:
             open_id = ret['open_id']
             target_label = ret['label']
@@ -110,6 +110,6 @@ def get_label_list(request):
                 video.save()
             return app.utils.gen_response(201)
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400)
     else:
-        return app.utils.gen_response(405, 'no such method ')
+        return app.utils.gen_response(405)
