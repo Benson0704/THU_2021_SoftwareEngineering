@@ -229,14 +229,9 @@ def encoding_message(code, message=None):
     """
     origin = {}
     if message:
-        origin = {
-            "code": code,
-            "data": message
-        }
+        origin = {"code": code, "data": message}
     else:
-        origin = {
-            "code": code
-        }
+        origin = {"code": code}
     encode_jwt = jwt.encode(origin, SECRET_KEY, algorithm='HS256')
     encode_str = str(encode_jwt, 'utf-8')
     return encode_str
@@ -252,11 +247,12 @@ def decoding_message(token):
     return message["code"]
 
 
-def gen_response(code: int, data: str):
+def gen_response(code: int, encoded_data: str):
     """
     this function is for generating web response
     """
     return JsonResponse({
         'code': code,
-        'data': data
-    }, status=code)
+        'encoded_data': encoded_data
+    },
+                        status=code)

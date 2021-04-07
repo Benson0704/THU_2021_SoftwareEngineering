@@ -35,20 +35,6 @@ class User(models.Model):
         db_table = 'users'
 
 
-class Label(models.Model):
-    '''
-    标签类
-    '''
-    label_name = models.CharField(max_length=50)  # 标签名
-    num = models.IntegerField(default=0)  # 该标签的video数
-
-    class Meta:
-        '''
-        double linking: labels
-        '''
-        db_table = 'labels'
-
-
 class Video(models.Model):
     '''
     视频类
@@ -66,10 +52,28 @@ class Video(models.Model):
     comment_count = models.IntegerField(default=0)  # 作品评论数
     view_count = models.IntegerField(default=0)  # 作品观看数
     pending = models.BooleanField()  # 作品状态（是否正在处理，不能观看）
-    labels = models.ManyToManyField(Label)  # 标签
+    labels = models.CharField(max_length=100, default=None,
+                              null=True)  # 表示视频的标签
 
     class Meta:
         '''
         double linking videos
         '''
         db_table = 'videos'
+
+
+class Label(models.Model):
+    '''
+    标签类
+    '''
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='label')  # 用户open_id
+    label_name = models.CharField(max_length=50)  # 标签名
+    num = models.IntegerField(default=0)  # 该标签的video数
+
+    class Meta:
+        '''
+        double linking: labels
+        '''
+        db_table = 'labels'

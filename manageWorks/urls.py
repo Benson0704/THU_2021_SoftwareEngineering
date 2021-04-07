@@ -7,6 +7,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('time', views.video),
-    path('label', views.label),
+    path('time', views.get_video_time_sort),
+    path('label', views.get_label_list),
 ]
