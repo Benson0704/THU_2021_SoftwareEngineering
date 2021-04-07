@@ -20,7 +20,7 @@ def oauth_callback(request):
         result = token_data.get("result")
         if result != 1:
             return app.utils.gen_response(
-                404, app.utils.encoding_message(token_data.get("error_msg")))
+                404, token_data.get("error_msg"))
 
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
@@ -101,7 +101,7 @@ def oauth_callback(request):
             },
             'open_id': open_id
         }
-        return app.utils.gen_response(200, app.utils.encoding_message(data))
+        return app.utils.gen_response(200, data)
 
     return app.utils.gen_response(
-        405, app.utils.encoding_message('no such method'))
+        405, 'no such method')
