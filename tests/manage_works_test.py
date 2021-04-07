@@ -160,11 +160,20 @@ class TestManageWorks(TestCase):
 
     def test_get_label_list_post(self):
         """
-        this is a test for get_label_list(method: post, no error)
+        this is a test for get_label_list(add labels, method: post, no error)
         """
         payload = {
             "open_id": "todayissunny",
             "photo_id": "this is a Sunrise photo in Hogwards",
+            "label": "scene",
+            "add": 1
+        }
+        self.client.post('/api/video/label',
+                         data=payload,
+                         content_type="application/json")
+        payload = {
+            "open_id": "todayissunny",
+            "photo_id": "this is a photo on Earth",
             "label": "scene",
             "add": 1
         }
@@ -175,7 +184,44 @@ class TestManageWorks(TestCase):
         label = Label.objects.get(
             user=User.objects.get(open_id='todayissunny'),
             label_name="scene")
+        self.assertEqual(label.num, 2)
+        payload = {
+            "open_id": "todayissunny",
+            "photo_id": "this is a Sunrise photo in Hogwards",
+            "label": "magic",
+            "add": 1
+        }
+        response = self.client.post('/api/video/label',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(201, response.json()['code'])
+        label = Label.objects.get(
+            user=User.objects.get(open_id='todayissunny'),
+            label_name="magic")
         self.assertEqual(label.num, 1)
+        payload = {
+            "open_id": "todayissunny",
+            "photo_id": "this is a Sunrise photo in Hogwards",
+            "label": "scene",
+            "add": 0
+        }
+        self.client.post('/api/video/label',
+                         data=payload,
+                         content_type="application/json")
+        payload = {
+            "open_id": "todayissunny",
+            "photo_id": "this is a photo on Earth",
+            "label": "scene",
+            "add": 0
+        }
+        response = self.client.post('/api/video/label',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(201, response.json()['code'])
+        label = Label.objects.filter(
+            user=User.objects.get(open_id='todayissunny'),
+            label_name="scene")
+        self.assertFalse(label)
 
     def tearDown(self):
         """
