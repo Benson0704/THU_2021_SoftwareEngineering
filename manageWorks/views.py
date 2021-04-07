@@ -55,6 +55,7 @@ def get_video_time_sort(request):
         return app.utils.gen_response(405)
 
 
+@csrf_exempt
 def get_label_list(request):
     """
     this function should respond to the requests relating to labels
