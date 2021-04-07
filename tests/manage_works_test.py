@@ -7,6 +7,7 @@ from app.models import User, Video, Label
 import pytest
 import app.times
 import app.utils
+import json
 from datetime import datetime
 
 
@@ -15,7 +16,6 @@ class TestManageWorks(TestCase):
     '''
     This is a unittest for manageWorks
     '''
-
     def setUp(self):
         User.objects.filter(open_id="todayisagoodday").delete()
         brisa = User.objects.create(open_id="todayisagoodday",
@@ -64,10 +64,8 @@ class TestManageWorks(TestCase):
                                          pending=False,
                                          labels="")
         new_video.save()
-        new_label = Label.objects.create(
-            user=brisa,
-            label_name="scene",
-            num=0)
+        Label.objects.filter(label_name='scene').delete()
+        new_label = Label.objects.create(user=brisa, label_name="scene", num=0)
         new_label.save()
 
     def test_get_video_time_openid_lost(self):
@@ -88,79 +86,72 @@ class TestManageWorks(TestCase):
         payload = {
             'open_id': "todayisagoodday",
             'begin_timestamp': app.times.datetime2timestamp(time1),
-            'end_timestamp': app.times.datetime2timestamp(time2),
+            'term_timestamp': app.times.datetime2timestamp(time2),
             'count_per_page': 5,
             'page': 1,
         }
-        expected_vedioslists = [
-            {
-                "photo_id": "this is a sunset photo in Hogwards",
-                "caption": "hogwards sunset",
-                "cover": "https://HogwardsSunset",
-                "play_url": "https://PlayHogwardsSunset",
-                "create_time": '2022-04-07 12:13:14',
-                "like_count": 10,
-                "comment_count": 5,
-                "view_count": 20,
-                "pending": False,
-                "labels": ""
-            },
-            {
-                "photo_id": "this is a photo on Mars",
-                "caption": "Mars view",
-                "cover": "https://MarsView",
-                "play_url": "https://PlayMarsView",
-                "create_time": '2022-04-07 12:13:16',
-                "like_count": 10,
-                "comment_count": 5,
-                "view_count": 20,
-                "pending": False,
-                "labels": ""
-            }]
+        expected_vedioslists = [{
+            "photo_id": "this is a sunset photo in Hogwards",
+            "caption": "hogwards sunset",
+            "cover": "https://HogwardsSunset",
+            "play_url": "https://PlayHogwardsSunset",
+            "create_time": '2022-04-07 12:13:14',
+            "like_count": 10,
+            "comment_count": 5,
+            "view_count": 20,
+            "pending": False,
+            "labels": ""
+        }, {
+            "photo_id": "this is a photo on Mars",
+            "caption": "Mars view",
+            "cover": "https://MarsView",
+            "play_url": "https://PlayMarsView",
+            "create_time": '2022-04-07 12:13:16',
+            "like_count": 10,
+            "comment_count": 5,
+            "view_count": 20,
+            "pending": False,
+            "labels": ""
+        }]
         response = self.client.get('/api/video/time',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        self.assertEqual(response.json()['encoded_data'],
-                         app.utils.encoding_message(200, expected_vedioslists))
+        self.assertEqual(response['data'], expected_vedioslists)
 
     def test_get_label_list_get_openid_lost(self):
-        payload = {}
         response = self.client.get('/api/video/label',
-                                   data=payload,
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_post_openid_lost(self):
-        payload = {}
         response = self.client.post('/api/video/label',
-                                    data=payload,
                                     content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_get(self):
-        open_id = "todayisagoodday"
-        response = self.client.get("/api/video/label")
-        expected_labels = [
-            {
-                "label": "scene",
-                "num": 0
-            }]
+        payload = {"open_id": "todayisagoodday"}
+        response = self.client.get('/api/video/label',
+                                   data=payload,
+                                   content_type="application/json")
+        expected_labels = [{"label": "scene", "num": 0}]
         self.assertEqual(200, response.json()['code'])
-        self.assertEqual(response.json()['encoded_data'],
-                         app.utils.encoding_message(200, expected_labels))
+        self.assertEqual(response.json()['data'], expected_labels)
 
     def test_get_label_list_post(self):
         payload = {
             "open_id": "todayisagoodday",
             "photo_id": "this is a sunset photo in Hogwards",
             "label": "scene",
-            "add": 1}
+            "add": 1
+        }
         response = self.client.post('/api/video/label',
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
-        label = Label.objects.get(label_name="scene")
+        label = Label.objects.get(
+            user=User.objects.get(open_id='todayisagoodday'),
+            label_name="scene")
         self.assertEqual(label.num, 1)
 
     def tearDown(self):

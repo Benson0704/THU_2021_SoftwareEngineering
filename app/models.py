@@ -41,7 +41,7 @@ class Video(models.Model):
     '''
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
-                             related_name='video')  # 用户open_id
+                             related_name='video')  # 用户
     photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
     caption = models.CharField(max_length=500,
                                default="Default Caption")  # 作品标题
@@ -68,7 +68,7 @@ class Label(models.Model):
     '''
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
-                             related_name='label')  # 用户open_id
+                             related_name='label')  # 用户
     label_name = models.CharField(max_length=50)  # 标签名
     num = models.IntegerField(default=0)  # 该标签的video数
 

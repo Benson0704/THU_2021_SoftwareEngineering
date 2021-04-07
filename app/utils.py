@@ -247,12 +247,8 @@ def decoding_message(token):
     return message["code"]
 
 
-def gen_response(code: int, encoded_data: str):
+def gen_response(code: int, data=''):
     """
     this function is for generating web response
     """
-    return JsonResponse({
-        'code': code,
-        'encoded_data': encoded_data
-    },
-                        status=code)
+    return JsonResponse({'code': code, 'data': data}, status=code)

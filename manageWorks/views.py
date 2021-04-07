@@ -6,6 +6,7 @@ import app.utils
 import app.times
 import app.api
 from app.models import User, Video, Label
+from django.views.decorators.csrf import csrf_exempt
 
 
 def get_video_time_sort(request):
@@ -13,107 +14,85 @@ def get_video_time_sort(request):
     this function should respond to the get video request
     """
     if request.method == 'GET':
-        ret = request.body
         try:
-            ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'not json'))
-        try:
-            open_id = ret['open_id']
-            begin_timestamp = ret['begin_timestamp']
-            end_timestamp = ret['term_timestamp']
-            count_per_page = ret['count_per_page']
-            page = ret['page']
-            app.api.manage_data(open_id)
+            open_id = request.GET.get('open_id')
+            begin_timestamp = request.GET.get('begin_timestamp')
+            term_timestamp = request.GET.get('term_timestamp')
+            # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
             videos = user.video.all().order_by('-create_time')
             video_list = []
             for video in videos:
-                if begin_timestamp <= app.times.datetime2timestamp(
-                        video.create_time) <= end_timestamp:
+                if int(begin_timestamp) <= app.times.datetime2timestamp(
+                        video.create_time) <= int(term_timestamp):
                     video_list.append(video)
             return_list = []
             for i, video in enumerate(video_list):
-                if count_per_page * (page - 1) <= i < count_per_page * page:
-                    return_list.append({
-                        'photo_id':
-                        video_list[i].photo_id,
-                        'caption':
-                        video_list[i].caption,
-                        'cover':
-                        video_list[i].cover,
-                        'play_url':
-                        video_list[i].play_url,
-                        'create_time':
-                        app.times.datetime2timestamp(
-                            video_list[i].create_time),
-                        'like_count':
-                        video_list[i].like_count,
-                        'comment_count':
-                        video_list[i].comment_count,
-                        'view_count':
-                        video_list[i].view_count,
-                        'pending':
-                        video_list[i].pending,
-                        'labels':
-                        video_list[i].labels.split('_&_')
-                    })
-            return app.utils.gen_response(
-                200, app.utils.encoding_message(200, return_list))
+                return_list.append({
+                    'photo_id':
+                    video_list[i].photo_id,
+                    'caption':
+                    video_list[i].caption,
+                    'cover':
+                    video_list[i].cover,
+                    'play_url':
+                    video_list[i].play_url,
+                    'create_time':
+                    app.times.datetime2timestamp(video_list[i].create_time),
+                    'like_count':
+                    video_list[i].like_count,
+                    'comment_count':
+                    video_list[i].comment_count,
+                    'view_count':
+                    video_list[i].view_count,
+                    'pending':
+                    video_list[i].pending,
+                    'labels':
+                    video_list[i].labels.split('_&_')
+                })
+            return app.utils.gen_response(200, return_list)
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'json content error'))
+            return app.utils.gen_response(400, 'json content error')
     else:
-        return app.utils.gen_response(
-            405, app.utils.encoding_message(405, 'no\
-             such method'))
+        return app.utils.gen_response(405, 'no such method')
 
 
+@csrf_exempt
 def get_label_list(request):
     """
     this function should respond to the requests relating to labels
     """
     if request.method == 'GET':
-        ret = request.body
-        # print(ret)
         try:
-            ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'not json'))
-        try:
-            open_id = ret['open_id']
-            app.api.manage_data(open_id)
+            open_id = request.GET.get('open_id')
+            # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
+            labels = user.label.all()
             return_list = []
-            labels = user.Label.objects.all()
             for label in labels:
                 return_list.append({
                     'label': label.label_name,
                     'num': label.num
                 })
-            return app.utils.gen_response(
-                200, app.utils.encoding_message(200, return_list))
+            return app.utils.gen_response(200, return_list)
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'json content error'))
+            return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'not json'))
+            return app.utils.gen_response(400, 'not json')
         try:
             open_id = ret['open_id']
             target_label = ret['label']
             photo_id = ret['photo_id']
-            app.api.manage_data(open_id)
+            add = ret['add']
+            # app.api.manage_data(open_id)
             user = User.objects.get(open_id=open_id)
-            if ret['add']:
+            if add:
                 try:
-                    label = user.Label.get(label_name=target_label)
+                    label = user.label.get(label_name=target_label)
                     label.num += 1
                     label.save()
                 except:
@@ -123,9 +102,8 @@ def get_label_list(request):
                 video = Video.objects.get(photo_id=photo_id)
                 video.labels = video.labels + target_label + '_&_'
                 video.save()
-
             else:
-                label = user.Label.get(label_name=target_label)
+                label = user.label.get(label_name=target_label)
                 label.num -= 1
                 if label.num <= 0:
                     label.delete()
@@ -134,13 +112,8 @@ def get_label_list(request):
                 video = Video.objects.get(photo_id=photo_id)
                 video.labels = video.labels.replace(target_label + '_&_', '')
                 video.save()
-
-            return app.utils.gen_response(201, app.utils.encoding_message(201))
+            return app.utils.gen_response(201)
         except:
-            return app.utils.gen_response(
-                400, app.utils.encoding_message(400, 'json content error'))
+            return app.utils.gen_response(400, 'json content error')
     else:
-        return app.utils.gen_response(
-            405,
-            app.utils.encoding_message(405, 'no\
-             such method '))
+        return app.utils.gen_response(405, 'no such method ')
