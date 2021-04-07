@@ -192,7 +192,7 @@ def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
     return: videos
     """
     user = User.objects.get(open_id=open_id)
-    videos = user.video.all().order_by('-create_time')
+    video_list = user.video.all().order_by('-create_time')
     videos = []
     for video in video_list:
         if int(before_timestamp) <= app.times.datetime2timestamp(
