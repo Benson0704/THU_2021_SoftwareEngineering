@@ -22,7 +22,7 @@ def get_video_time_sort(request):
             video_list = app.utils.get_videos_by_timestamp(
                 open_id, begin_timestamp, term_timestamp)
             return_list = []
-            for i, video in enumerate(video_list):
+            for i, _ in enumerate(video_list):
                 return_list.append({
                     'photo_id':
                     video_list[i].photo_id,
