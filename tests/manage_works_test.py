@@ -1,5 +1,6 @@
 '''
 this file should be a .py file as tests for manageWorks function
+finished: 4.7
 '''
 from django.test import TestCase
 from app.models import User, Video, Label
