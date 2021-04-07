@@ -45,7 +45,10 @@ def get_video_time_sort(request):
                     'labels':
                     video_list[i].labels.split('_&_')
                 })
-            return app.utils.gen_response(200, return_list)
+            return app.utils.gen_response(200, {
+                'video_count': len(return_list),
+                'video_list': return_list
+            })
         except:
             return app.utils.gen_response(400, 'json content error')
     else:
@@ -69,7 +72,7 @@ def get_label_list(request):
                     'label': label.label_name,
                     'num': label.num
                 })
-            return app.utils.gen_response(200, return_list)
+            return app.utils.gen_response(200, {'label_list': return_list})
         except:
             return app.utils.gen_response(400, 'json content error')
     elif request.method == 'POST':

@@ -247,7 +247,7 @@ def decoding_message(token):
     return message["code"]
 
 
-def gen_response(code: int, data=''):
+def gen_response(code: int, data: dict):
     """
     this function is for generating web response
     """
