@@ -191,12 +191,12 @@ def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
     based on the before and after timestamp
     return: videos
     """
-    target = User.objects.get(open_id=open_id)
-    video_list = target.video.all()
+    user = User.objects.get(open_id=open_id)
+    video_list = user.video.all().order_by('-create_time')
     videos = []
     for video in video_list:
-        if before_timestamp <= app.times.datetime2timestamp(
-                video.create_time) <= after_timestamp:
+        if int(before_timestamp) <= app.times.datetime2timestamp(
+                video.create_time) <= int(after_timestamp):
             videos.append(video)
     return videos
 
