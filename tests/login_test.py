@@ -49,7 +49,8 @@ class TestLogin(unittest.TestCase):
             like_count=10,
             comment_count=5,
             view_count=20,
-            pending=False)
+            pending=False,
+            labels="")
         new_video.save()
         Video.objects.filter(photo_id='this is a photo on Mars').delete()
         new_video = Video.objects.create(user=brisa,
@@ -61,7 +62,8 @@ class TestLogin(unittest.TestCase):
                                          like_count=10,
                                          comment_count=5,
                                          view_count=20,
-                                         pending=False)
+                                         pending=False,
+                                         labels="")
         new_video.save()
 
     def test_initialize_new_user(self):

@@ -18,50 +18,50 @@ class TestManageWorks(TestCase):
         """
         this is the constructin of tests
         """
-        User.objects.filter(open_id="todayisagoodday").delete()
-        brisa = User.objects.create(open_id="todayisagoodday",
+        User.objects.filter(open_id="todayissunny").delete()
+        brisa = User.objects.create(open_id="todayissunny",
                                     name="brisa",
-                                    sex=1,
-                                    head="https://ThisIsABeautifulGirl",
+                                    sex=0,
+                                    head="https://ThisGirlIsBeautiful",
                                     bigHead="",
-                                    city="Shanghai",
-                                    fan=20,
-                                    follow=20,
+                                    city="Chengdu",
+                                    fan=40,
+                                    follow=40,
                                     video_count=2,
                                     public_count=2,
                                     friend_count=0,
                                     private_count=0,
-                                    total_like_count=20,
-                                    total_comment_count=10,
-                                    total_view_count=40,
+                                    total_like_count=40,
+                                    total_comment_count=20,
+                                    total_view_count=80,
                                     access_token="9XZzf6up5SH8U1JFUKs=\n",
                                     refresh_token="9XZzf6up5SH8U1JFUKs=\n")
         brisa.save()
         Video.objects.filter(
-            photo_id='this is a sunset photo in Hogwards').delete()
+            photo_id='this is a sunrise photo in Hogwards').delete()
         new_video = Video.objects.create(
             user=brisa,
-            photo_id="this is a sunset photo in Hogwards",
-            caption="hogwards sunset",
-            cover="https://HogwardsSunset",
-            play_url="https://PlayHogwardsSunset",
-            create_time='2022-04-07 12:13:14',
-            like_count=10,
-            comment_count=5,
-            view_count=20,
+            photo_id="this is a sunrise photo in Hogwards",
+            caption="hogwards sunrise",
+            cover="https://HogwardsSunrise",
+            play_url="https://PlayHogwardsSunrise",
+            create_time='2022-04-07 12:13:15',
+            like_count=20,
+            comment_count=10,
+            view_count=40,
             pending=False,
             labels="")
         new_video.save()
-        Video.objects.filter(photo_id='this is a photo on Mars').delete()
+        Video.objects.filter(photo_id='this is a photo on Earth').delete()
         new_video = Video.objects.create(user=brisa,
-                                         photo_id="this is a photo on Mars",
-                                         caption="Mars view",
-                                         cover="https://MarsView",
-                                         play_url="https://PlayMarsView",
-                                         create_time='2022-04-07 12:13:16',
-                                         like_count=10,
-                                         comment_count=5,
-                                         view_count=20,
+                                         photo_id="this is a photo on Earth",
+                                         caption="Earth view",
+                                         cover="https://EarthView",
+                                         play_url="https://PlayEarthView",
+                                         create_time='2022-04-07 12:13:17',
+                                         like_count=20,
+                                         comment_count=10,
+                                         view_count=40,
                                          pending=False,
                                          labels="")
         new_video.save()
@@ -91,35 +91,35 @@ class TestManageWorks(TestCase):
         time1 = datetime(2022, 4, 7, 12, 13, 10)
         time2 = datetime(2022, 4, 7, 12, 13, 20)
         payload = {
-            'open_id': "todayisagoodday",
+            'open_id': "todayissunny",
             'begin_timestamp': app.times.datetime2timestamp(time1),
             'term_timestamp': app.times.datetime2timestamp(time2),
             'count_per_page': 5,
             'page': 1,
         }
-        time3 = datetime(2022, 4, 7, 12, 13, 16)
-        time4 = datetime(2022, 4, 7, 12, 13, 14)
+        time3 = datetime(2022, 4, 7, 12, 13, 17)
+        time4 = datetime(2022, 4, 7, 12, 13, 15)
         expected_vedioslists = [
             {
-                "photo_id": "this is a photo on Mars",
-                "caption": "Mars view",
-                "cover": "https://MarsView",
-                "play_url": "https://PlayMarsView",
+                "photo_id": "this is a photo on Earth",
+                "caption": "Earth view",
+                "cover": "https://EarthView",
+                "play_url": "https://PlayEarthView",
                 "create_time": app.times.datetime2timestamp(time3),
-                "like_count": 10,
-                "comment_count": 5,
-                "view_count": 20,
+                "like_count": 20,
+                "comment_count": 10,
+                "view_count": 40,
                 "pending": False,
                 "labels": [""]
             }, {
-                "photo_id": "this is a sunset photo in Hogwards",
-                "caption": "hogwards sunset",
-                "cover": "https://HogwardsSunset",
-                "play_url": "https://PlayHogwardsSunset",
+                "photo_id": "this is a sunrise photo in Hogwards",
+                "caption": "hogwards sunrise",
+                "cover": "https://HogwardsSunrise",
+                "play_url": "https://PlayHogwardsSunrise",
                 "create_time": app.times.datetime2timestamp(time4),
-                "like_count": 10,
-                "comment_count": 5,
-                "view_count": 20,
+                "like_count": 20,
+                "comment_count": 10,
+                "view_count": 40,
                 "pending": False,
                 "labels": [""]
             }]
@@ -149,7 +149,7 @@ class TestManageWorks(TestCase):
         """
         this is a test for get_label_list(method: get, no error)
         """
-        payload = {"open_id": "todayisagoodday"}
+        payload = {"open_id": "todayissunny"}
         response = self.client.get('/api/video/label',
                                    data=payload,
                                    content_type="application/json")
@@ -162,8 +162,8 @@ class TestManageWorks(TestCase):
         this is a test for get_label_list(method: post, no error)
         """
         payload = {
-            "open_id": "todayisagoodday",
-            "photo_id": "this is a sunset photo in Hogwards",
+            "open_id": "todayissunny",
+            "photo_id": "this is a Sunrise photo in Hogwards",
             "label": "scene",
             "add": 1
         }
@@ -172,7 +172,7 @@ class TestManageWorks(TestCase):
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
         label = Label.objects.get(
-            user=User.objects.get(open_id='todayisagoodday'),
+            user=User.objects.get(open_id='todayissunny'),
             label_name="scene")
         self.assertEqual(label.num, 1)
 
@@ -180,5 +180,4 @@ class TestManageWorks(TestCase):
         """
         this is for destruction of tests
         """
-        Label.objects.filter(label_name="scene").delete()
-        User.objects.filter(open_id="todayisagoodday").delete()
+        User.objects.filter(open_id="todayissunny").delete()
