@@ -215,13 +215,14 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for update_registered_user
         '''
+        time1 = datetime(2021, 3, 7, 12, 13, 13)
+        time2 = datetime(2021, 3, 7, 12, 13, 15)
         video_list = [{
             'photo_id': "this is a sunset photo in Hogwards",
             'caption': "hogwards sunset",
             'cover': "https://HogwardsSunset",
             'play_url': "https://PlayHogwardsSunset",
-            'create_time': app.times.datetime2timestamp(datetime
-                                                       (2021, 3, 7, 12, 13, 13)),
+            'create_time': app.times.datetime2timestamp(time1),
             'like_count': 10,
             'comment_count': 5,
             'view_count': 20,
@@ -231,8 +232,7 @@ class TestLogin(unittest.TestCase):
             'caption': "New Zealand dog",
             'cover': "https://NewZealanddog",
             'play_url': "https://PlayNewZealanddog",
-            'create_time': app.times.datetime2timestamp(datetime
-                                                       (2021, 3, 7, 12, 13, 15)),
+            'create_time': app.times.datetime2timestamp(time2),
             'like_count': 10,
             'comment_count': 5,
             'view_count': 20,
@@ -396,7 +396,8 @@ class TestLogin(unittest.TestCase):
         after_timestamp = app.times.datetime2timestamp(after_time)
         exp_results = Video.objects.filter(create_time="2021-03-07 12:13:13")
         results = app.utils.get_videos_by_timestamp(open_id,
-                                                    before_timestamp, after_timestamp)
+                                                    before_timestamp,
+                                                    after_timestamp)
         self.assertEqual(exp_results[0].photo_id, results[0].photo_id)
 
     def tearDown(self):
