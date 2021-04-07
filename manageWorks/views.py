@@ -50,9 +50,9 @@ def get_video_time_sort(request):
                 'video_list': return_list
             })
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400)
     else:
-        return app.utils.gen_response(405, 'no such method')
+        return app.utils.gen_response(405)
 
 
 @csrf_exempt
@@ -74,14 +74,13 @@ def get_label_list(request):
                 })
             return app.utils.gen_response(200, {'label_list': return_list})
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400)
     elif request.method == 'POST':
         ret = request.body
-        print(ret)
         try:
             ret = json.loads(ret.decode('utf-8'))
         except:
-            return app.utils.gen_response(400, 'not json')
+            return app.utils.gen_response(400)
         try:
             open_id = ret['open_id']
             target_label = ret['label']
@@ -113,6 +112,6 @@ def get_label_list(request):
                 video.save()
             return app.utils.gen_response(201)
         except:
-            return app.utils.gen_response(400, 'json content error')
+            return app.utils.gen_response(400)
     else:
-        return app.utils.gen_response(405, 'no such method ')
+        return app.utils.gen_response(405)
