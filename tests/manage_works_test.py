@@ -158,7 +158,7 @@ class TestManageWorks(TestCase):
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(response.json()['data'], expected_labels)
 
-    def test_get_label_list_post_add(self):
+    def test_get_label_list_post(self):
         """
         this is a test for get_label_list(add labels, method: post, no error)
         """
@@ -199,11 +199,6 @@ class TestManageWorks(TestCase):
             user=User.objects.get(open_id='todayissunny'),
             label_name="magic")
         self.assertEqual(label.num, 1)
-
-    def test_get_label_list_post_delete(self):
-        """
-        this is a test for get_label_list(delete labels, method: post, no error)
-        """
         payload = {
             "open_id": "todayissunny",
             "photo_id": "this is a Sunrise photo in Hogwards",
@@ -223,7 +218,7 @@ class TestManageWorks(TestCase):
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
-        label = Label.objects.get(
+        label = Label.objects.filter(
             user=User.objects.get(open_id='todayissunny'),
             label_name="scene")
         self.assertFalse(label)
