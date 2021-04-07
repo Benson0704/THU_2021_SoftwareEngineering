@@ -221,7 +221,7 @@ class TestLogin(unittest.TestCase):
             'cover': "https://HogwardsSunset",
             'play_url': "https://PlayHogwardsSunset",
             'create_time': app.times.datetime2timestamp(datetime
-                                                 (2021, 3, 7, 12, 13, 13)),
+                                                       (2021, 3, 7, 12, 13, 13)),
             'like_count': 10,
             'comment_count': 5,
             'view_count': 20,
@@ -232,7 +232,7 @@ class TestLogin(unittest.TestCase):
             'cover': "https://NewZealanddog",
             'play_url': "https://PlayNewZealanddog",
             'create_time': app.times.datetime2timestamp(datetime
-                                                 (2021, 3, 7, 12, 13, 15)),
+                                                       (2021, 3, 7, 12, 13, 15)),
             'like_count': 10,
             'comment_count': 5,
             'view_count': 20,
@@ -394,9 +394,10 @@ class TestLogin(unittest.TestCase):
         before_timestamp = app.times.datetime2timestamp(before_time)
         after_time = datetime(2021, 3, 7, 12, 13, 14)
         after_timestamp = app.times.datetime2timestamp(after_time)
-        expected_results = Video.objects.filter(create_time="2021-03-07 12:13:13")
-        results = app.utils.get_videos_by_timestamp(open_id, before_timestamp, after_timestamp)
-        self.assertEqual(expected_results[0].photo_id, results[0].photo_id)
+        exp_results = Video.objects.filter(create_time="2021-03-07 12:13:13")
+        results = app.utils.get_videos_by_timestamp(open_id,
+                                                    before_timestamp, after_timestamp)
+        self.assertEqual(exp_results[0].photo_id, results[0].photo_id)
 
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
