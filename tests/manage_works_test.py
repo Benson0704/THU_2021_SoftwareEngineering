@@ -1,13 +1,12 @@
 '''
 this file should be a .py file as tests for manageWorks function
 '''
-from django.test import TestCase, Client
+from django.test import TestCase
 import manageWorks.views
 from app.models import User, Video, Label
 import pytest
 import app.times
 import app.utils
-import json
 from datetime import datetime
 
 
@@ -17,6 +16,9 @@ class TestManageWorks(TestCase):
     This is a unittest for manageWorks
     '''
     def setUp(self):
+        """
+        this is the constructin of tests
+        """
         User.objects.filter(open_id="todayisagoodday").delete()
         brisa = User.objects.create(open_id="todayisagoodday",
                                     name="brisa",
@@ -69,6 +71,9 @@ class TestManageWorks(TestCase):
         new_label.save()
 
     def test_get_video_time_openid_lost(self):
+        """
+        this is a test for get_video_time(error:openid lost)
+        """
         payload = {
             'begin_timestamp': 00000000000,
             'end_timestamp': 00000000000,
@@ -81,6 +86,9 @@ class TestManageWorks(TestCase):
         self.assertEqual(400, response.json()['code'])
 
     def test_get_video_time(self):
+        """
+        this is a test for get_video_time(no error)
+        """
         time1 = datetime(2022, 4, 7, 12, 13, 10)
         time2 = datetime(2022, 4, 7, 12, 13, 20)
         payload = {
@@ -90,46 +98,58 @@ class TestManageWorks(TestCase):
             'count_per_page': 5,
             'page': 1,
         }
-        expected_vedioslists = [{
-            "photo_id": "this is a sunset photo in Hogwards",
-            "caption": "hogwards sunset",
-            "cover": "https://HogwardsSunset",
-            "play_url": "https://PlayHogwardsSunset",
-            "create_time": '2022-04-07 12:13:14',
-            "like_count": 10,
-            "comment_count": 5,
-            "view_count": 20,
-            "pending": False,
-            "labels": ""
-        }, {
+        time3 = datetime(2022, 4, 7, 12, 13, 16)
+        time4 = datetime(2022, 4, 7, 12, 13, 14)
+        expected_vedioslists = [
+            {
             "photo_id": "this is a photo on Mars",
             "caption": "Mars view",
             "cover": "https://MarsView",
             "play_url": "https://PlayMarsView",
-            "create_time": '2022-04-07 12:13:16',
+            "create_time": app.times.datetime2timestamp(time3),
             "like_count": 10,
             "comment_count": 5,
             "view_count": 20,
             "pending": False,
-            "labels": ""
-        }]
+            "labels": [""]
+            },{
+                "photo_id": "this is a sunset photo in Hogwards",
+                "caption": "hogwards sunset",
+                "cover": "https://HogwardsSunset",
+                "play_url": "https://PlayHogwardsSunset",
+                "create_time": app.times.datetime2timestamp(time4),
+                "like_count": 10,
+                "comment_count": 5,
+                "view_count": 20,
+                "pending": False,
+                "labels": [""]
+            }]
         response = self.client.get('/api/video/time',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        self.assertEqual(response['data'], expected_vedioslists)
+        self.assertEqual(response.json()['data'], expected_vedioslists)
 
     def test_get_label_list_get_openid_lost(self):
+        """
+        this is a test for get_label_list(method: get, error: openid lost)
+        """
         response = self.client.get('/api/video/label',
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_post_openid_lost(self):
+        """
+        this is a test for get_label_list(method: post, error: openid lost)
+        """
         response = self.client.post('/api/video/label',
                                     content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_get(self):
+        """
+        this is a test for get_label_list(method: get, no error)
+        """
         payload = {"open_id": "todayisagoodday"}
         response = self.client.get('/api/video/label',
                                    data=payload,
@@ -139,6 +159,9 @@ class TestManageWorks(TestCase):
         self.assertEqual(response.json()['data'], expected_labels)
 
     def test_get_label_list_post(self):
+        """
+        this is a test for get_label_list(method: post, no error)
+        """
         payload = {
             "open_id": "todayisagoodday",
             "photo_id": "this is a sunset photo in Hogwards",
@@ -155,5 +178,8 @@ class TestManageWorks(TestCase):
         self.assertEqual(label.num, 1)
 
     def tearDown(self):
+        """
+        this is for destruction of tests
+        """
         Label.objects.filter(label_name="scene").delete()
         User.objects.filter(open_id="todayisagoodday").delete()
