@@ -141,5 +141,4 @@ def get_user_info(request):
                 },
                 'open_id': request.Get.get('open_id')
             })
-    else:
-        return app.utils.gen_response(405)
+    return app.utils.gen_response(405)
