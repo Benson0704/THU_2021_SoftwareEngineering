@@ -227,6 +227,36 @@ class TestLogin(unittest.TestCase):
                 photo_id="this is a dog in New Zealand").exists())
         user = User.objects.filter(open_id="todayisagoodday")
         self.assertEqual(user[0].city, "Beijing")
+        user_data = {
+            'name': "brisa",
+            'sex': 'M',
+            'head': "https://ThisIsABeautifulGirl",
+            'bigHead': "",
+            'city': "Beijing",
+            'fan': 20,
+            'follow': 20,
+        }
+        app.utils.update_registered_user(open_id="todayisagoodday",
+                                         user_data=user_data,
+                                         video_list=video_list,
+                                         count_dictionary=count_dictionary)
+        user = User.objects.filter(open_id="todayisagoodday")
+        self.assertEqual(user[0].sex, 0)
+        user_data = {
+            'name': "brisa",
+            'sex': '',
+            'head': "https://ThisIsABeautifulGirl",
+            'bigHead': "",
+            'city': "Beijing",
+            'fan': 20,
+            'follow': 20,
+        }
+        app.utils.update_registered_user(open_id="todayisagoodday",
+                                         user_data=user_data,
+                                         video_list=video_list,
+                                         count_dictionary=count_dictionary)
+        user = User.objects.filter(open_id="todayisagoodday")
+        self.assertEqual(user[0].sex, None)
 
     def test_is_registered(self):
         '''
