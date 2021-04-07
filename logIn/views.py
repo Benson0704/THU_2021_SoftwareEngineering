@@ -19,8 +19,7 @@ def oauth_callback(request):
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
         if result != 1:
-            return app.utils.gen_response(
-                404, token_data.get("error_msg"))
+            return app.utils.gen_response(404, token_data.get("error_msg"))
 
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
@@ -50,8 +49,7 @@ def oauth_callback(request):
         public_count = count_data["public_count"]
         friend_count = count_data["friend_count"]
 
-        app.api.store_data(open_id, user_data,
-                           video_data, count_data)
+        app.api.store_data(open_id, user_data, video_data, count_data)
         app.utils.store_token(open_id, access_token, refresh_token)
 
         total_like_count = app.utils.get_total_like_count(open_id)
@@ -103,5 +101,45 @@ def oauth_callback(request):
         }
         return app.utils.gen_response(200, data)
 
-    return app.utils.gen_response(
-        405, 'no such method')
+    return app.utils.gen_response(405, 'no such method')
+
+
+def get_user_info(request):
+    """
+    this function get the user info for frontend
+    return: userdata, videodata, open_id
+    """
+    if request.method == 'GET':
+        _, user_info = app.utils.get_registered_user(
+            request.Get.get('open_id'))
+        return app.utils.gen_response(
+            200, {
+                'user_data': {
+                    'name': user_info['name'],
+                    'fan': user_info['fan'],
+                    'follow': user_info['follow'],
+                    'head': user_info['head'],
+                    'bigHead': user_info['bigHead'],
+                    'city': user_info['city']
+                },
+                'video_data': {
+                    'video_count':
+                    user_info['video_count'],
+                    'public_count':
+                    user_info['public_count'],
+                    'friend_count':
+                    user_info['friend_count'],
+                    'private_count':
+                    user_info['private_count'],
+                    'total_like_count':
+                    app.utils.get_total_like_count(request.Get.get('open_id')),
+                    'total_comment_total':
+                    app.utils.get_total_comment_count(
+                        request.Get.get('open_id')),
+                    'total_view_count':
+                    app.utils.get_total_view_count(request.Get.get('open_id'))
+                },
+                'open_id': request.Get.get('open_id')
+            })
+    else:
+        return app.utils.gen_response(405)

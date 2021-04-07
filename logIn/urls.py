@@ -8,4 +8,5 @@ from . import views
 
 urlpatterns = [
     path('home', views.oauth_callback),
+    path('home/id', views.get_user_info)
 ]
