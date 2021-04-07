@@ -253,6 +253,6 @@ def gen_response(code: int, encoded_data: str):
     """
     return JsonResponse({
         'code': code,
-        'encoded_data': encoded_data
+        'data': encoded_data
     },
                         status=code)
