@@ -139,12 +139,8 @@ class TestManageWorks(TestCase):
         self.assertEqual(400, response.json()['code'])
 
     def test_get_label_list_get(self):
-        payload = {
-            "open_id": "todayisagoodday"
-        }
-        response = self.client.get('/api/video/label',
-                                   data=payload,
-                                   content_type="application/json")
+        open_id = "todayisagoodday"
+        response = self.client.get("/api/video/label")
         expected_labels = [
             {
                 "label": "scene",

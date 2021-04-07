@@ -76,6 +76,7 @@ def get_label_list(request):
     """
     if request.method == 'GET':
         ret = request.body
+        # print(ret)
         try:
             ret = json.loads(ret.decode('utf-8'))
         except:
