@@ -102,17 +102,17 @@ class TestManageWorks(TestCase):
         time4 = datetime(2022, 4, 7, 12, 13, 14)
         expected_vedioslists = [
             {
-            "photo_id": "this is a photo on Mars",
-            "caption": "Mars view",
-            "cover": "https://MarsView",
-            "play_url": "https://PlayMarsView",
-            "create_time": app.times.datetime2timestamp(time3),
-            "like_count": 10,
-            "comment_count": 5,
-            "view_count": 20,
-            "pending": False,
-            "labels": [""]
-            },{
+                "photo_id": "this is a photo on Mars",
+                "caption": "Mars view",
+                "cover": "https://MarsView",
+                "play_url": "https://PlayMarsView",
+                "create_time": app.times.datetime2timestamp(time3),
+                "like_count": 10,
+                "comment_count": 5,
+                "view_count": 20,
+                "pending": False,
+                "labels": [""]
+            }, {
                 "photo_id": "this is a sunset photo in Hogwards",
                 "caption": "hogwards sunset",
                 "cover": "https://HogwardsSunset",
