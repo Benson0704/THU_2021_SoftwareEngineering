@@ -2,7 +2,6 @@
 this file should be a .py file as tests for manageWorks function
 '''
 from django.test import TestCase
-import manageWorks.views
 from app.models import User, Video, Label
 import pytest
 import app.times
