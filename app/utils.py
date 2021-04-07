@@ -191,12 +191,12 @@ def get_videos_by_timestamp(open_id, before_timestamp, after_timestamp):
     based on the before and after timestamp
     return: videos
     """
-    target = User.objects.get(open_id=open_id)
-    video_list = target.video.all()
+    user = User.objects.get(open_id=open_id)
+    video_list = user.video.all().order_by('-create_time')
     videos = []
     for video in video_list:
-        if before_timestamp <= app.times.datetime2timestamp(
-                video.create_time) <= after_timestamp:
+        if int(before_timestamp) <= app.times.datetime2timestamp(
+                video.create_time) <= int(after_timestamp):
             videos.append(video)
     return videos
 
@@ -247,12 +247,8 @@ def decoding_message(token):
     return message["code"]
 
 
-def gen_response(code: int, encoded_data: json):
+def gen_response(code: int, data=''):
     """
     this function is for generating web response
     """
-    return JsonResponse({
-        'code': code,
-        'data': encoded_data
-    },
-                        status=code)
+    return JsonResponse({'code': code, 'data': data}, status=code)

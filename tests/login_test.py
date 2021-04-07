@@ -45,30 +45,32 @@ class TestLogin(unittest.TestCase):
             caption="hogwards sunset",
             cover="https://HogwardsSunset",
             play_url="https://PlayHogwardsSunset",
-            create_time='2021-03-07 12:13:14',
+            create_time='2021-03-07 12:13:13',
             like_count=10,
             comment_count=5,
             view_count=20,
-            pending=False)
+            pending=False,
+            labels="")
         new_video.save()
         Video.objects.filter(photo_id='this is a photo on Mars').delete()
         new_video = Video.objects.create(user=brisa,
                                          photo_id="this is a photo on Mars",
-                                         caption="Mars view🔥",
+                                         caption="Mars view",
                                          cover="https://MarsView",
                                          play_url="https://PlayMarsView",
-                                         create_time='2021-03-07 12:13:14',
+                                         create_time='2021-03-07 12:13:15',
                                          like_count=10,
                                          comment_count=5,
                                          view_count=20,
-                                         pending=False)
+                                         pending=False,
+                                         labels="")
         new_video.save()
 
     def test_initialize_new_user(self):
         '''
         this is a test for initialize_registered_user
         '''
-        open_id = "Test open_id"
+        open_id = "Male Test open_id"
         video_list = []
         video = {
             'photo_id': "Test photo_id",
@@ -89,7 +91,7 @@ class TestLogin(unittest.TestCase):
             'all_count': 1
         }
         user_data = {
-            'name': "new user",
+            'name': "new male user",
             'sex': 'M',
             'head': "https://ThisIsAHandsomeMan",
             'bigHead': "",
@@ -105,6 +107,42 @@ class TestLogin(unittest.TestCase):
         self.assertTrue(User.objects.filter(open_id=open_id).exists())
         self.assertTrue(
             Video.objects.filter(photo_id="Test photo_id").exists())
+        open_id = "Female Test open_id"
+        user_data = {
+            'name': "new female user",
+            'sex': 'F',
+            'head': "",
+            'bigHead': "",
+            'city': "Chengdu",
+            'fan': 20,
+            'follow': 20,
+        }
+        count_dictionary = {
+            'public_count': 0,
+            'friend_count': 0,
+            'private_count': 0,
+            'all_count': 0
+        }
+        app.utils.initialize_new_user(open_id=open_id,
+                                      user_data=user_data,
+                                      video_list=[],
+                                      count_dictionary=count_dictionary)
+        self.assertTrue(User.objects.filter(open_id=open_id).exists())
+        user_data = {
+            'name': "new user",
+            'sex': '',
+            'head': "",
+            'bigHead': "",
+            'city': "Chengdu",
+            'fan': 20,
+            'follow': 20,
+        }
+        open_id = "Test open_id"
+        app.utils.initialize_new_user(open_id=open_id,
+                                      user_data=user_data,
+                                      video_list=[],
+                                      count_dictionary=count_dictionary)
+        self.assertTrue(User.objects.filter(open_id=open_id).exists())
 
     def test_get_registered_user(self):
         '''
@@ -124,7 +162,7 @@ class TestLogin(unittest.TestCase):
                     "https://PlayHogwardsSunset",
                 'create_time':
                     app.times.datetime2timestamp(datetime
-                                                 (2021, 3, 7, 12, 13, 14)),
+                                                 (2021, 3, 7, 12, 13, 13)),
                 'like_count':
                     10,
                 'comment_count':
@@ -138,14 +176,14 @@ class TestLogin(unittest.TestCase):
                 'photo_id':
                     "this is a photo on Mars",
                 'caption':
-                    "Mars view🔥",
+                    "Mars view",
                 'cover':
                     "https://MarsView",
                 'play_url':
                     "https://PlayMarsView",
                 'create_time':
                     app.times.datetime2timestamp(datetime
-                                                 (2021, 3, 7, 12, 13, 14)),
+                                                 (2021, 3, 7, 12, 13, 15)),
                 'like_count':
                     10,
                 'comment_count':
@@ -177,13 +215,14 @@ class TestLogin(unittest.TestCase):
         '''
         this is a test for update_registered_user
         '''
-
+        time1 = datetime(2021, 3, 7, 12, 13, 13)
+        time2 = datetime(2021, 3, 7, 12, 13, 15)
         video_list = [{
             'photo_id': "this is a sunset photo in Hogwards",
             'caption': "hogwards sunset",
             'cover': "https://HogwardsSunset",
             'play_url': "https://PlayHogwardsSunset",
-            'create_time': 0000000000000,
+            'create_time': app.times.datetime2timestamp(time1),
             'like_count': 10,
             'comment_count': 5,
             'view_count': 20,
@@ -193,7 +232,7 @@ class TestLogin(unittest.TestCase):
             'caption': "New Zealand dog",
             'cover': "https://NewZealanddog",
             'play_url': "https://PlayNewZealanddog",
-            'create_time': 0000000000000,
+            'create_time': app.times.datetime2timestamp(time2),
             'like_count': 10,
             'comment_count': 5,
             'view_count': 20,
@@ -225,6 +264,36 @@ class TestLogin(unittest.TestCase):
                 photo_id="this is a dog in New Zealand").exists())
         user = User.objects.filter(open_id="todayisagoodday")
         self.assertEqual(user[0].city, "Beijing")
+        user_data = {
+            'name': "brisa",
+            'sex': 'M',
+            'head': "https://ThisIsABeautifulGirl",
+            'bigHead': "",
+            'city': "Beijing",
+            'fan': 20,
+            'follow': 20,
+        }
+        app.utils.update_registered_user(open_id="todayisagoodday",
+                                         user_data=user_data,
+                                         video_list=video_list,
+                                         count_dictionary=count_dictionary)
+        user = User.objects.filter(open_id="todayisagoodday")
+        self.assertEqual(user[0].sex, 0)
+        user_data = {
+            'name': "brisa",
+            'sex': '',
+            'head': "https://ThisIsABeautifulGirl",
+            'bigHead': "",
+            'city': "Beijing",
+            'fan': 20,
+            'follow': 20,
+        }
+        app.utils.update_registered_user(open_id="todayisagoodday",
+                                         user_data=user_data,
+                                         video_list=video_list,
+                                         count_dictionary=count_dictionary)
+        user = User.objects.filter(open_id="todayisagoodday")
+        self.assertEqual(user[0].sex, None)
 
     def test_is_registered(self):
         '''
@@ -318,6 +387,21 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(message1, expected_message1)
         self.assertEqual(code1, 200)
         self.assertEqual(code2, 200)
+
+    def test_get_videos_by_timestamp(self):
+        """
+        this is a test for get_videos_by_timestamp
+        """
+        open_id = "todayisagoodday"
+        before_time = datetime(2021, 3, 7, 12, 13, 13)
+        before_timestamp = app.times.datetime2timestamp(before_time)
+        after_time = datetime(2021, 3, 7, 12, 13, 14)
+        after_timestamp = app.times.datetime2timestamp(after_time)
+        exp_results = Video.objects.filter(create_time="2021-03-07 12:13:13")
+        results = app.utils.get_videos_by_timestamp(open_id,
+                                                    before_timestamp,
+                                                    after_timestamp)
+        self.assertEqual(exp_results[0].photo_id, results[0].photo_id)
 
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()

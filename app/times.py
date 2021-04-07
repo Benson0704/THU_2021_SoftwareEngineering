@@ -28,8 +28,9 @@ def datetime2timestamp(_datetime):
     return: timestamp length=10
     '''
     os.environ['TZ'] = 'UTC'
-    return time.mktime(
-        time.strptime(_datetime.strftime(STANDARD_DATE), STANDARD_DATE))
+    return int(
+        time.mktime(
+            time.strptime(_datetime.strftime(STANDARD_DATE), STANDARD_DATE)))
 
 
 def string2timestamp(_string):
