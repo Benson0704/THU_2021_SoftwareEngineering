@@ -101,7 +101,7 @@ def oauth_callback(request):
             },
             'open_id': open_id
         }
-        return app.utils.gen_response(200, str(data))
+        return app.utils.gen_response(200, data)
 
     return app.utils.gen_response(
         405, 'no such method')
