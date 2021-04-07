@@ -44,7 +44,7 @@ style-test:
   script:
     - pycodestyle logIn tests app manageWorks
     - PYCODESTYLE_RET=$?
-    - pylint logIn tests app manageWorks --disable=C0103,E1101,C0411,E722
+    - pylint logIn tests app manageWorks --disable=C0103,E1101,C0411,W0702
     - PYLINT_RET=$?
     - if [ $PYCODESTYLE_RET \> 0 ]; then exit $PYCODESTYLE_RET; fi;
     - exit $PYLINT_RET
