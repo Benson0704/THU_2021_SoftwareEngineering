@@ -111,7 +111,7 @@ def get_user_info(request):
     """
     if request.method == 'GET':
         _, user_info = app.utils.get_registered_user(
-            request.Get.get('open_id'))
+            request.GET.get('open_id'))
         return app.utils.gen_response(
             200, {
                 'user_data': {
