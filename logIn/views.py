@@ -10,6 +10,10 @@ import app.times
 
 
 def get_yesterday_change(open_id):
+    """
+    this function is used by the get_user_info_by_code
+     and get_user_info_by_id function to generate data
+    """
     video_change = 0
     like_change = 0
     comment_change = 0
@@ -34,7 +38,7 @@ def get_yesterday_change(open_id):
     return yesterday_change
 
 
-def oauth_callback(request):
+def get_user_info_by_code(request):
     """
     this function get the request from frontend
     return: code, data
@@ -108,7 +112,7 @@ def oauth_callback(request):
     return app.utils.gen_response(405, 'no such method')
 
 
-def get_user_info(request):
+def get_user_info_by_id(request):
     """
     this function get the user info for frontend
     return: userdata, videodata, open_id

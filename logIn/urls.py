@@ -7,6 +7,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('home', views.oauth_callback),
-    path('home/id', views.get_user_info)
+    path('home', views.get_user_info_by_code),
+    path('home/id', views.get_user_info_by_id)
 ]
