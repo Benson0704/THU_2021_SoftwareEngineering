@@ -111,7 +111,7 @@ def get_user_info(request):
     """
     if request.method == 'GET':
         _, user_info = app.utils.get_registered_user(
-            request.Get.get('open_id'))
+            request.GET.get('open_id'))
         return app.utils.gen_response(
             200, {
                 'user_data': {
@@ -132,12 +132,12 @@ def get_user_info(request):
                     'private_count':
                     user_info['private_count'],
                     'total_like_count':
-                    app.utils.get_total_like_count(request.Get.get('open_id')),
+                    app.utils.get_total_like_count(request.GET.get('open_id')),
                     'total_comment_total':
                     app.utils.get_total_comment_count(
                         request.Get.get('open_id')),
                     'total_view_count':
-                    app.utils.get_total_view_count(request.Get.get('open_id'))
+                    app.utils.get_total_view_count(request.GET.get('open_id'))
                 },
                 'open_id': request.Get.get('open_id')
             })
