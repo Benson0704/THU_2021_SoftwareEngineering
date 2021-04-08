@@ -6,7 +6,6 @@ import app.utils
 import app.times
 import app.api
 from app.models import User, Video, Label
-from django.views.decorators.csrf import csrf_exempt
 
 
 def get_video_time_sort(request):
@@ -55,7 +54,6 @@ def get_video_time_sort(request):
         return app.utils.gen_response(405)
 
 
-@csrf_exempt
 def get_label_list(request):
     """
     this function should respond to the requests relating to labels
