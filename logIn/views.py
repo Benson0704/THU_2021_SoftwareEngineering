@@ -132,19 +132,19 @@ def get_user_info_by_id(request):
                 },
                 'video_data': {
                     'video_count':
-                        user_info['video_count'],
+                    user_info['video_count'],
                     'public_count':
-                        user_info['public_count'],
+                    user_info['public_count'],
                     'friend_count':
-                        user_info['friend_count'],
+                    user_info['friend_count'],
                     'private_count':
-                        user_info['private_count'],
+                    user_info['private_count'],
                     'total_like_count':
-                        app.utils.get_total_like_count(open_id),
-                    'total_comment_total':
-                        app.utils.get_total_comment_count(open_id),
+                    app.utils.get_total_like_count(open_id),
+                    'total_comment_count':
+                    app.utils.get_total_comment_count(open_id),
                     'total_view_count':
-                        app.utils.get_total_view_count(open_id)
+                    app.utils.get_total_view_count(open_id)
                 },
                 "yesterday_change": get_yesterday_change(open_id),
                 'open_id': open_id
