@@ -9,6 +9,31 @@ import app.utils
 import app.times
 
 
+def get_yesterday_change(open_id):
+    video_change = 0
+    like_change = 0
+    comment_change = 0
+    view_change = 0
+    time = app.times.datetime2string(datetime.now())
+    today_time = time.split(' ')[0] + " 00:00:00"
+    today_timestamp = app.times.string2timestamp(today_time)
+    yesterday_timestamp = today_timestamp - 24 * 60 * 60
+    yesterday_videos = app.utils.get_videos_by_timestamp(
+        open_id, yesterday_timestamp, today_timestamp)
+    for video in yesterday_videos:
+        video_change += 1
+        like_change += video.like_count
+        comment_change += video.comment_count
+        view_change += video.view_change
+    yesterday_change = {
+        "video_change": video_change,
+        "like_change": like_change,
+        "comment_change": comment_change,
+        "view_change": view_change
+    }
+    return yesterday_change
+
+
 def oauth_callback(request):
     """
     this function get the request from frontend
@@ -56,22 +81,6 @@ def oauth_callback(request):
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(open_id)
 
-        video_change = 0
-        like_change = 0
-        comment_change = 0
-        view_change = 0
-        time = app.times.datetime2string(datetime.now())
-        today_time = time.split(' ')[0] + " 00:00:00"
-        today_timestamp = app.times.string2timestamp(today_time)
-        yesterday_timestamp = today_timestamp - 24 * 60 * 60
-        yesterday_videos = app.utils.get_videos_by_timestamp(
-            open_id, yesterday_timestamp, today_timestamp)
-        for video in yesterday_videos:
-            video_change += 1
-            like_change += video.like_count
-            comment_change += video.comment_count
-            view_change += video.view_change
-
         data = {
             'user_data': {
                 "name": name,
@@ -91,12 +100,7 @@ def oauth_callback(request):
                 'total_comment_count': total_comment_count,
                 'total_view_count': total_view_count
             },
-            "yesterday_change": {
-                "video_change": video_change,
-                "like_change": like_change,
-                "comment_change": comment_change,
-                "view_change": view_change
-            },
+            "yesterday_change": get_yesterday_change(open_id),
             'open_id': open_id
         }
         return app.utils.gen_response(200, data)
@@ -124,21 +128,22 @@ def get_user_info(request):
                 },
                 'video_data': {
                     'video_count':
-                    user_info['video_count'],
+                        user_info['video_count'],
                     'public_count':
-                    user_info['public_count'],
+                        user_info['public_count'],
                     'friend_count':
-                    user_info['friend_count'],
+                        user_info['friend_count'],
                     'private_count':
-                    user_info['private_count'],
+                        user_info['private_count'],
                     'total_like_count':
-                    app.utils.get_total_like_count(request.GET.get('open_id')),
+                        app.utils.get_total_like_count(request.GET.get('open_id')),
                     'total_comment_total':
-                    app.utils.get_total_comment_count(
-                        request.Get.get('open_id')),
+                        app.utils.get_total_comment_count(
+                            request.GET.get('open_id')),
                     'total_view_count':
-                    app.utils.get_total_view_count(request.GET.get('open_id'))
+                        app.utils.get_total_view_count(request.GET.get('open_id'))
                 },
-                'open_id': request.Get.get('open_id')
+                "yesterday_change": get_yesterday_change(request.GET.get('open_id')),
+                'open_id': request.GET.get('open_id')
             })
     return app.utils.gen_response(405)
