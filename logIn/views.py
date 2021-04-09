@@ -14,14 +14,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_job, register_events
 
 try:
-    print("start fetch data")
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
 
     @register_job(scheduler, "interval", seconds=20)
     def timely_fetch_data():
-        print("in function")
         for open_id in app.utils.get_all_open_id():
             print(open_id)
             app.api.manage_data(open_id)
@@ -32,6 +30,7 @@ try:
 except Exception as e:
     print(e)
     scheduler.shutdown()
+
 
 def get_yesterday_change(open_id):
     """
