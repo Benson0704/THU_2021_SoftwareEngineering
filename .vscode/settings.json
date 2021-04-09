@@ -1,4 +1,5 @@
 {
     "editor.snippetSuggestions": "bottom",
-    "editor.suggest.snippetsPreventQuickSuggestions": false
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "python.pythonPath": "/Users/eve/opt/anaconda3/bin/python"
 }

@@ -252,3 +252,12 @@ def gen_response(code: int, data=None):
     this function is for generating web response
     """
     return JsonResponse({'code': code, 'data': data}, status=code)
+
+def get_all_open_id():
+    """
+    this function should return all users' open_id
+    """
+    open_id_list = []
+    for user in User.objects.all():
+        open_id_list.append(user.open_id)
+    return open_id_list

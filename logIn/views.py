@@ -8,6 +8,30 @@ import app.api
 import app.utils
 import app.times
 
+import app.api, app.utils
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, register_job, register_events
+
+try:
+    print("start fetch data")
+    scheduler = BackgroundScheduler()
+    scheduler.add_jobstore(DjangoJobStore(), "default")
+
+
+    @register_job(scheduler, "interval", seconds=20)
+    def timely_fetch_data():
+        print("in function")
+        for open_id in app.utils.get_all_open_id():
+            print(open_id)
+            app.api.manage_data(open_id)
+
+
+    register_events(scheduler)
+    scheduler.start()
+except Exception as e:
+    print(e)
+    scheduler.shutdown()
 
 def get_yesterday_change(open_id):
     """
@@ -132,19 +156,19 @@ def get_user_info_by_id(request):
                 },
                 'video_data': {
                     'video_count':
-                    user_info['video_count'],
+                        user_info['video_count'],
                     'public_count':
-                    user_info['public_count'],
+                        user_info['public_count'],
                     'friend_count':
-                    user_info['friend_count'],
+                        user_info['friend_count'],
                     'private_count':
-                    user_info['private_count'],
+                        user_info['private_count'],
                     'total_like_count':
-                    app.utils.get_total_like_count(open_id),
+                        app.utils.get_total_like_count(open_id),
                     'total_comment_count':
-                    app.utils.get_total_comment_count(open_id),
+                        app.utils.get_total_comment_count(open_id),
                     'total_view_count':
-                    app.utils.get_total_view_count(open_id)
+                        app.utils.get_total_view_count(open_id)
                 },
                 "yesterday_change": get_yesterday_change(open_id),
                 'open_id': open_id
