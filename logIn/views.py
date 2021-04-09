@@ -8,22 +8,19 @@ import app.api
 import app.utils
 import app.times
 
-import app.api, app.utils
-
 from apscheduler.schedulers.background import BackgroundScheduler
-from django_apscheduler.jobstores import DjangoJobStore, register_job, register_events
+from django_apscheduler.jobstores import DjangoJobStore, \
+    register_job, register_events
 
 try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
-
 
     @register_job(scheduler, "interval", seconds=20)
     def timely_fetch_data():
         for open_id in app.utils.get_all_open_id():
             print(open_id)
             app.api.manage_data(open_id)
-
 
     register_events(scheduler)
     scheduler.start()
