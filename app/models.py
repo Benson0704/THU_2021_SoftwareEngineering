@@ -1,5 +1,5 @@
 '''
-这个文件定义了后端的两个类
+这个文件定义了后端的四个类
 '''
 
 from django.db import models
