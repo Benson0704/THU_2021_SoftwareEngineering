@@ -91,7 +91,7 @@ class Analyse(models.Model):
     total_view_count = models.IntegerField(default=0)
     total_comment_count = models.IntegerField(default=0)
     total_like_count = models.IntegerField(default=0)
-    
+
     class Meta:
         '''
         double linking: analysis
