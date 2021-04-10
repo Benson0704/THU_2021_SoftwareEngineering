@@ -23,7 +23,6 @@ try:
         to fetch data and store data from api
         """
         for open_id in app.utils.get_all_open_id():
-            print(open_id)
             app.api.manage_data(open_id)
 
     register_events(scheduler)
