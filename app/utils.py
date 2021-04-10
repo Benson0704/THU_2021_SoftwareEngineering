@@ -117,6 +117,7 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
             video.comment_count = video_list[i]['comment_count']
             video.view_count = video_list[i]['view_count']
             video.pending = video_list[i]['pending']
+            video.save()
 
 
 def initialize_new_user(open_id, user_data, video_list, count_dictionary):
