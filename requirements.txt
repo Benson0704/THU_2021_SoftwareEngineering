@@ -20,3 +20,4 @@ requests~=2.24.0
 oauthlib~=3.1.0
 
 APScheduler~=3.7.0
+django-apscheduler~=0.5.2
