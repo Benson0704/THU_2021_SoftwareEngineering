@@ -10,6 +10,7 @@ from app.models import User, Video
 import jwt
 import json
 from django.http import JsonResponse
+
 config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
@@ -105,6 +106,17 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
                 view_count=video_list[i]['view_count'],
                 pending=video_list[i]['pending'])
             video.save()
+        else:
+            video = Video.objects.get(photo_id=new_video_list[i])
+            video.caption = video_list[i]['caption']
+            video.cover = video_list[i]['cover']
+            video.play_url = video_list[i]['play_url']
+            video.create_time = app.times.timestamp2string(
+                video.video_list[i]['create_time'])  # timestamp2str
+            video.like_count = video_list[i]['like_count']
+            video.comment_count = video_list[i]['comment_count']
+            video.view_count = video_list[i]['view_count']
+            video.pending = video_list[i]['pending']
 
 
 def initialize_new_user(open_id, user_data, video_list, count_dictionary):
