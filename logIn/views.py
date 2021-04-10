@@ -18,6 +18,10 @@ try:
 
     @register_job(scheduler, "interval", seconds=20)
     def timely_fetch_data():
+        """
+        this function is supposed to run in period
+        to fetch data and store data from api
+        """
         for open_id in app.utils.get_all_open_id():
             print(open_id)
             app.api.manage_data(open_id)
