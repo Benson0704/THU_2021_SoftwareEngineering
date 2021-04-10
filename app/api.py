@@ -35,6 +35,8 @@ def get_data(open_id, url, access_token):
     data = requests.get(url=url, params=params).json()
     if data.get("result") != 1 and app.utils.is_registered(open_id) is True:
         access_token = refresh_access_token(open_id)
+        if access_token == "Token is not available.":
+            return None
         params = {"access_token": access_token, "app_id": config["app_id"]}
         data = requests.get(url=url, params=params).json()
     return data
@@ -68,7 +70,7 @@ def get_all_data(open_id, access_token):
     return: user_data, video_list, count_data
     """
     user_url = "https://open.kuaishou.com/openapi/user_info"
-    video_url = "https://open.kuaishou.com/openapi/photo/list"
+    video_url = "https://open.kuaishou.com/openapi/tsinghua/photo/list"
     count_url = "https://open.kuaishou.com/openapi/photo/count"
     user_data = get_data(open_id, user_url, access_token).get("user_info")
     video_data = get_data(open_id, video_url, access_token).get("video_list")
@@ -95,4 +97,6 @@ def manage_data(open_id):
     """
     access_token = app.utils.get_token(open_id)[0]
     data = get_all_data(open_id, access_token)
+    if data[0] is None or data[1] is None or data[2] is None:
+        return
     store_data(open_id, data[0], data[1], data[2])
