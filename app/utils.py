@@ -236,30 +236,6 @@ def get_token(open_id):
     return access_token, refresh_token
 
 
-def encoding_message(code, message=None):
-    """
-    this function is for encoding data using jwt to pass to frontend
-    """
-    origin = {}
-    if message:
-        origin = {"code": code, "data": message}
-    else:
-        origin = {"code": code}
-    encode_jwt = jwt.encode(origin, SECRET_KEY, algorithm='HS256')
-    encode_str = str(encode_jwt, 'utf-8')
-    return encode_str
-
-
-def decoding_message(token):
-    """
-    this function is for decoding jwt into json
-    """
-    message = jwt.decode(token, SECRET_KEY, algorithm='HS256')
-    if "data" in message:
-        return message["code"], message["data"]
-    return message["code"]
-
-
 def gen_response(code: int, data=None):
     """
     this function is for generating web response
