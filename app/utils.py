@@ -7,7 +7,6 @@ all functions not used to handle frontend request DIRECTLY should write here
 import app.times
 import app.tokens
 from app.models import User, Video
-import jwt
 import json
 from django.http import JsonResponse
 
