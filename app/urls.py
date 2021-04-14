@@ -20,5 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('logIn.urls')),
     path('api/video/', include('manageWorks.urls')),
-    path('api/video/', include('analyseWorks.urls')),
+    path('api/user/', include('analyseWorks.urls')),
 ]

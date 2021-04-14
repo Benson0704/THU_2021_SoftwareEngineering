@@ -97,18 +97,24 @@ class TestAnalyseWorks(TestCase):
         new_analyse.save()
 
     def test_get_videos_info_by_time_photoid_lost(self):
+        """
+        this is a test for get_videos_info_by_time(error:openid_lost)
+        """
         payload = {
             'begin_timestamp': 00000000000,
             'term_timestamp': 00000000000,
         }
-        response = self.client.get('/api/video/single',
+        response = self.client.get('/api/user/single',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_videos_info_by_time(self):
-        time1 = datetime(2022, 4, 12, 12, 13, 10)
-        time2 = datetime(2022, 4, 13, 0, 0, 0)
+        """
+        this is a test for get_videos_info_by_time
+        """
+        time1 = datetime(2022, 4, 12, 0, 0, 0)
+        time2 = datetime(2022, 4, 12, 23, 59, 59)
         payload = {
             'photo_id': "Welcome to world 1st university",
             'begin_timestamp': app.times.datetime2timestamp(time1),
@@ -119,54 +125,60 @@ class TestAnalyseWorks(TestCase):
         expected_res['caption'] = "World 1st university"
         expected_res['cover'] = "https://World1stuniversity"
         expected_res['play_url'] = "https://PlayWorld1stuniversity"
-        expected_res['create_time'] = '2022-04-07 12:13:15'
+        expected_res['create_time'] = '2022-04-07T12:13:15'
         expected_res['pending'] = False
         expected_res['like_count'] = 20
         expected_res['comment_count'] = 10
         expected_res['view_count'] = 40
         expected_count_list = []
         temp = {
-            'like_count': 3,
+            'like_count': 2,
             'comment_count': 1,
             'view_count': 5
         }
         expected_count_list.append(temp)
         expected_res['count_list'] = expected_count_list
-        response = self.client.get('/api/video/single',
+        response = self.client.get('/api/user/single',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_res, response.json()['data'])
 
     def test_get_all_videos_info_openid_lost(self):
+        """
+        this is a test for get_all_videos_info(error:openid_lost)
+        """
         payload = {
             'begin_timestamp': 00000000000,
             'term_timestamp': 00000000000,
         }
-        response = self.client.get('/api/video/global_day',
+        response = self.client.get('/api/user/global_day',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_all_videos_info(self):
+        """
+        this is a test for get_all_videos_info
+        """
         time1 = datetime(2022, 4, 14, 0, 0, 0)
-        time2 = datetime(2022, 4, 14, 59, 59, 59)
+        time2 = datetime(2022, 4, 14, 23, 59, 59)
         payload = {
             'open_id': "justhavesomefun",
-            'begin_timestamp': 00000000000,
-            'term_timestamp': 00000000000,
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
         }
         expected_recent_data = {
-            'like_count': 8,
-            'comment_count': 2,
-            'view_count': 13
+            'like_count': 10,
+            'comment_count': 3,
+            'view_count': 18
         }
         expected_count_list = [{
             'like_count': 5,
             'comment_count': 1,
             'view_count': 8
         }]
-        response = self.client.get('/api/video/global_day',
+        response = self.client.get('/api/user/global_day',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
