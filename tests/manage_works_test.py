@@ -32,9 +32,9 @@ class TestManageWorks(TestCase):
                                     public_count=2,
                                     friend_count=0,
                                     private_count=0,
-                                    total_like_count=40,
-                                    total_comment_count=20,
-                                    total_view_count=80,
+                                    total_like_count=60,
+                                    total_comment_count=30,
+                                    total_view_count=120,
                                     access_token="9XZzf6up5SH8U1JFUKs=\n",
                                     refresh_token="9XZzf6up5SH8U1JFUKs=\n")
         brisa.save()
@@ -47,9 +47,9 @@ class TestManageWorks(TestCase):
             cover="https://HogwardsSunrise",
             play_url="https://PlayHogwardsSunrise",
             create_time='2022-04-07 12:13:15',
-            like_count=20,
-            comment_count=10,
-            view_count=40,
+            like_count=30,
+            comment_count=15,
+            view_count=60,
             pending=False,
             labels="")
         new_video.save()
@@ -60,9 +60,9 @@ class TestManageWorks(TestCase):
                                          cover="https://EarthView",
                                          play_url="https://PlayEarthView",
                                          create_time='2022-04-07 12:13:17',
-                                         like_count=20,
-                                         comment_count=10,
-                                         view_count=40,
+                                         like_count=30,
+                                         comment_count=15,
+                                         view_count=60,
                                          pending=False,
                                          labels="")
         new_video.save()
@@ -107,9 +107,9 @@ class TestManageWorks(TestCase):
                 "cover": "https://EarthView",
                 "play_url": "https://PlayEarthView",
                 "create_time": app.times.datetime2timestamp(time3),
-                "like_count": 20,
-                "comment_count": 10,
-                "view_count": 40,
+                "like_count": 30,
+                "comment_count": 15,
+                "view_count": 60,
                 "pending": False,
                 "labels": [""]
             }, {
@@ -118,9 +118,9 @@ class TestManageWorks(TestCase):
                 "cover": "https://HogwardsSunrise",
                 "play_url": "https://PlayHogwardsSunrise",
                 "create_time": app.times.datetime2timestamp(time4),
-                "like_count": 20,
-                "comment_count": 10,
-                "view_count": 40,
+                "like_count": 30,
+                "comment_count": 15,
+                "view_count": 60,
                 "pending": False,
                 "labels": [""]
             }]
