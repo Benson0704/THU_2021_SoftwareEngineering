@@ -115,7 +115,7 @@ class TestAnalyseWorks(TestCase):
             'term_timestamp': app.times.datetime2timestamp(time2),
         }
         expected_res = {}
-        expected_res['photo_id'] = "justhavesomefun"
+        expected_res['photo_id'] = "Welcome to world 1st university"
         expected_res['caption'] = "World 1st university"
         expected_res['cover'] = "https://World1stuniversity"
         expected_res['play_url'] = "https://PlayWorld1stuniversity"
@@ -149,7 +149,31 @@ class TestAnalyseWorks(TestCase):
         self.assertEqual(400, response.json()['code'])
 
     def test_get_all_videos_info(self):
-        
+        time1 = datetime(2022, 4, 14, 0, 0, 0)
+        time2 = datetime(2022, 4, 15, 0, 0, 0)
+        payload = {
+            'open_id': "justhavesomefun"
+            'begin_timestamp': 00000000000,
+            'term_timestamp': 00000000000,
+        }
+        expected_recent_data = {
+            'like_count': 8,
+            'comment_count': 2,
+            'view_count': 13
+        }
+        expected_count_list = [{
+            'like_count': 5,
+            'comment_count': 1,
+            'view_count': 8
+        }]
+        response = self.client.get('/api/video/global_day',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_recent_data,
+                         response.json()['data']['recent_data'])
+        self.assertEqual(expected_count_list,
+                         response.json()['data']['count_list'])
 
     def tearDown(self):
         """
