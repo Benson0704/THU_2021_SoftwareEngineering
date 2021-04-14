@@ -20,8 +20,8 @@ class TestManageWorks(TestCase):
         this is the constructin of tests
         """
         User.objects.filter(open_id="todayissunny").delete()
-        brisa = User.objects.create(open_id="todayissunny",
-                                    name="brisa",
+        brisa2 = User.objects.create(open_id="todayissunny",
+                                    name="brisa2",
                                     sex=0,
                                     head="https://ThisGirlIsBeautiful",
                                     bigHead="",
@@ -37,11 +37,11 @@ class TestManageWorks(TestCase):
                                     total_view_count=120,
                                     access_token="9XZzf6up5SH8U1JFUKs=\n",
                                     refresh_token="9XZzf6up5SH8U1JFUKs=\n")
-        brisa.save()
+        brisa2.save()
         Video.objects.filter(
             photo_id='this is a sunrise photo in Hogwards').delete()
         new_video = Video.objects.create(
-            user=brisa,
+            user=brisa2,
             photo_id="this is a sunrise photo in Hogwards",
             caption="hogwards sunrise",
             cover="https://HogwardsSunrise",
@@ -54,7 +54,7 @@ class TestManageWorks(TestCase):
             labels="")
         new_video.save()
         Video.objects.filter(photo_id='this is a photo on Earth').delete()
-        new_video = Video.objects.create(user=brisa,
+        new_video = Video.objects.create(user=brisa2,
                                          photo_id="this is a photo on Earth",
                                          caption="Earth view",
                                          cover="https://EarthView",
@@ -67,7 +67,7 @@ class TestManageWorks(TestCase):
                                          labels="")
         new_video.save()
         Label.objects.filter(label_name='scene').delete()
-        new_label = Label.objects.create(user=brisa, label_name="scene", num=0)
+        new_label = Label.objects.create(user=brisa2, label_name="scene", num=0)
         new_label.save()
 
     def test_get_video_time_openid_lost(self):
