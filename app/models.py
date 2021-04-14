@@ -81,7 +81,7 @@ class Label(models.Model):
 
 class Analyse(models.Model):
     '''
-    表示一段时间内数量的统计值
+    表示一段时间内数量的统计值(按天统计)
     '''
     video = models.ForeignKey(Video,
                               on_delete=models.CASCADE,
@@ -97,3 +97,22 @@ class Analyse(models.Model):
         double linking: analysis
         '''
         db_table = 'analysis'
+
+class AnalyseHour(models.Model):
+    '''
+    表示24h内数量的统计值
+    '''
+    video = models.ForeignKey(Video,
+                              on_delete=models.CASCADE,
+                              related_name='analysisHour')  # 外键绑定视频
+    user_id = models.CharField(max_length=50)  # 用户id
+    sum_time = models.DateTimeField(default=0)
+    total_view_count = models.IntegerField(default=0)
+    total_comment_count = models.IntegerField(default=0)
+    total_like_count = models.IntegerField(default=0)
+
+    class Meta:
+        '''
+        double linking: analysisHour
+        '''
+        db_table = 'analysisHour'

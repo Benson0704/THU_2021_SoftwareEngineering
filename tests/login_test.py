@@ -356,6 +356,11 @@ class TestLogin(unittest.TestCase):
                                                     after_timestamp)
         self.assertEqual(exp_results[0].photo_id, results[0].photo_id)
 
+    def test_get_all_open_id(self):
+        open_id_list = app.utils.get_all_open_id()
+        open_id = "todayisagoodday"
+        self.assertTrue(open_id in open_id_list)
+
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
         new_user = User.objects.filter(open_id="Test open_id")

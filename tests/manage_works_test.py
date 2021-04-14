@@ -1,5 +1,5 @@
 '''
-this file should be a .py file as tests for manageWorks function
+this file should be a .py file as tests for manageWorks module
 finished: 4.7
 '''
 from django.test import TestCase
