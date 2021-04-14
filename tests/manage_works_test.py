@@ -21,22 +21,22 @@ class TestManageWorks(TestCase):
         """
         User.objects.filter(open_id="todayissunny").delete()
         brisa2 = User.objects.create(open_id="todayissunny",
-                                    name="brisa2",
-                                    sex=0,
-                                    head="https://ThisGirlIsBeautiful",
-                                    bigHead="",
-                                    city="Chengdu",
-                                    fan=40,
-                                    follow=40,
-                                    video_count=2,
-                                    public_count=2,
-                                    friend_count=0,
-                                    private_count=0,
-                                    total_like_count=60,
-                                    total_comment_count=30,
-                                    total_view_count=120,
-                                    access_token="9XZzf6up5SH8U1JFUKs=\n",
-                                    refresh_token="9XZzf6up5SH8U1JFUKs=\n")
+                                     name="brisa2",
+                                     sex=0,
+                                     head="https://ThisGirlIsBeautiful",
+                                     bigHead="",
+                                     city="Chengdu",
+                                     fan=40,
+                                     follow=40,
+                                     video_count=2,
+                                     public_count=2,
+                                     friend_count=0,
+                                     private_count=0,
+                                     total_like_count=60,
+                                     total_comment_count=30,
+                                     total_view_count=120,
+                                     access_token="9XZzf6up5SH8U1JFUKs=\n",
+                                     refresh_token="9XZzf6up5SH8U1JFUKs=\n")
         brisa2.save()
         Video.objects.filter(
             photo_id='this is a sunrise photo in Hogwards').delete()
@@ -67,7 +67,8 @@ class TestManageWorks(TestCase):
                                          labels="")
         new_video.save()
         Label.objects.filter(label_name='scene').delete()
-        new_label = Label.objects.create(user=brisa2, label_name="scene", num=0)
+        new_label = Label.objects.create(user=brisa2,
+                                         label_name="scene", num=0)
         new_label.save()
 
     def test_get_video_time_openid_lost(self):
