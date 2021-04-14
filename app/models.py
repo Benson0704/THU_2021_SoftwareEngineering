@@ -98,6 +98,7 @@ class Analyse(models.Model):
         '''
         db_table = 'analysis'
 
+
 class AnalyseHour(models.Model):
     '''
     表示24h内数量的统计值

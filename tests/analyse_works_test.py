@@ -128,7 +128,7 @@ class TestAnalyseWorks(TestCase):
         temp = {
             'like_count': 3,
             'comment_count': 1,
-            'view_count': 5          
+            'view_count': 5
         }
         expected_count_list.append(temp)
         expected_res['count_list'] = expected_count_list
@@ -150,9 +150,9 @@ class TestAnalyseWorks(TestCase):
 
     def test_get_all_videos_info(self):
         time1 = datetime(2022, 4, 14, 0, 0, 0)
-        time2 = datetime(2022, 4, 15, 0, 0, 0)
+        time2 = datetime(2022, 4, 14, 59, 59, 59)
         payload = {
-            'open_id': "justhavesomefun"
+            'open_id': "justhavesomefun",
             'begin_timestamp': 00000000000,
             'term_timestamp': 00000000000,
         }
