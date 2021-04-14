@@ -357,6 +357,9 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(exp_results[0].photo_id, results[0].photo_id)
 
     def test_get_all_open_id(self):
+        """
+        this is a test for get_all_open_id
+        """
         open_id_list = app.utils.get_all_open_id()
         open_id = "todayisagoodday"
         self.assertTrue(open_id in open_id_list)
