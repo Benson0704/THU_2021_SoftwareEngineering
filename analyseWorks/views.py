@@ -53,14 +53,14 @@ def get_videos_info_by_time(request):
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
-                        count_list[i + 1]['like_count'] -
-                        count_list[i]['like_count'],
+                        count_list[i + 1]['like_count']
+                        - count_list[i]['like_count'],
                         'comment_count':
-                        count_list[i + 1]['comment_count'] -
-                        count_list[i]['comment_count'],
+                        count_list[i + 1]['comment_count']
+                        - count_list[i]['comment_count'],
                         'view_count':
-                        count_list[i + 1]['view_count'] -
-                        count_list[i]['view_count']
+                        count_list[i + 1]['view_count']
+                        - count_list[i]['view_count']
                     })
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
@@ -119,14 +119,14 @@ def get_all_videos_info(request):
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
-                        count_list[i + 1]['like_count'] -
-                        count_list[i]['like_count'],
+                        count_list[i + 1]['like_count']
+                        - count_list[i]['like_count'],
                         'comment_count':
-                        count_list[i + 1]['comment_count'] -
-                        count_list[i]['comment_count'],
+                        count_list[i + 1]['comment_count']
+                        - count_list[i]['comment_count'],
                         'view_count':
-                        count_list[i + 1]['view_count'] -
-                        count_list[i]['view_count']
+                        count_list[i + 1]['view_count']
+                        - count_list[i]['view_count']
                     })
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
