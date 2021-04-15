@@ -8,28 +8,28 @@ import app.api
 import app.utils
 import app.times
 
-# from apscheduler.schedulers.background import BackgroundScheduler
-# from django_apscheduler.jobstores import DjangoJobStore, \
-#     register_job, register_events
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, \
+    register_job, register_events
 
-# try:
-#     scheduler = BackgroundScheduler()
-#     scheduler.add_jobstore(DjangoJobStore(), "default")
+try:
+    scheduler = BackgroundScheduler()
+    scheduler.add_jobstore(DjangoJobStore(), "default")
 
-#     @register_job(scheduler, "interval", seconds=20)
-#     def timely_fetch_data():
-#         """
-#         this function is supposed to run in period
-#         to fetch data and store data from api
-#         """
-#         for open_id in app.utils.get_all_open_id():
-#             app.api.manage_data(open_id)
+    @register_job(scheduler, scheduler, 'cron', day_of_week='mon-sun', hour='0', minute='00', second='00',id='task_time')
+    def timely_fetch_data():
+        """
+        this function is supposed to run in period
+        to fetch data and store data from api
+        """
+        for open_id in app.utils.get_all_open_id():
+            app.api.manage_data(open_id)
 
-#     register_events(scheduler)
-#     scheduler.start()
-# except Exception as e:
-#     print(e)
-#     scheduler.shutdown()
+    register_events(scheduler)
+    scheduler.start()
+except Exception as e:
+    print(e)
+    # scheduler.shutdown()
 
 
 def get_yesterday_change(open_id):
