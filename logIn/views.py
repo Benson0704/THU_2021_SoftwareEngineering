@@ -16,7 +16,8 @@ try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
-    @register_job(scheduler, scheduler, 'cron', day_of_week='mon-sun', hour='0', minute='00', second='00',id='task_time')
+    @register_job(scheduler, scheduler, 'cron', day_of_week='mon-sun',
+                  hour='0', minute='00', second='00', id='task_time')
     def timely_fetch_data():
         """
         this function is supposed to run in period
