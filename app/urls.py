@@ -20,6 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('logIn.urls')),
     path('api/video/', include('manageWorks.urls')),
-    path('api/analysis/', include('analyseWorks.urls'),
-    path('api/analysis/', 'analyseFans.urls'))
+    path('api/analysis/', include('analyseWorks.urls')),
+    path('api/analysis/', include('analyseFans.urls'))
 ]
