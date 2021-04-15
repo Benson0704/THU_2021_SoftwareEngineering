@@ -4,7 +4,7 @@ this is a module for analyse the information of videos
 
 import app.utils
 import app.times
-from app.models import User, Video, Analyse
+from app.models import Video, Analyse
 
 
 def get_videos_info_by_time(request):
@@ -113,7 +113,7 @@ def get_all_videos_info(request):
                         analyse.total_comment_count
                     count_list[-1]['view_count'] += analyse.total_view_count
                     begin_timestamp += 86400
-                    if(begin_timestamp > term_timestamp):
+                    if begin_timestamp > term_timestamp:
                         break
             for i, dic in enumerate(count_list):
                 if dic != count_list[-1]:
