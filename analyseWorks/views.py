@@ -79,7 +79,8 @@ def get_all_videos_info(request):
             open_id = request.GET.get('open_id')
             begin_timestamp = int(request.GET.get('begin_timestamp'))
             term_timestamp = int(request.GET.get('term_timestamp'))
-            recent_data = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
+            recent_data = {'like_count': 0, 'comment_count': 0,
+                           'view_count': 0}
             analyse_list = Analyse.objects.filter(
                 user_id=open_id).order_by('-sum_time')
             for analyse in analyse_list:
@@ -109,10 +110,10 @@ def get_all_videos_info(request):
                     })
                     count_list[-1]['like_count'] += analyse.total_like_count
                     count_list[-1]['comment_count'] += \
-                    analyse.total_comment_count
+                        analyse.total_comment_count
                     count_list[-1]['view_count'] += analyse.total_view_count
                     begin_timestamp += 86400
-                    if(begin_timestamp>term_timestamp):
+                    if(begin_timestamp > term_timestamp):
                         break
             for i, dic in enumerate(count_list):
                 if dic != count_list[-1]:
