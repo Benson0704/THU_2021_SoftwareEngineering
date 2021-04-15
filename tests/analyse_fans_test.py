@@ -9,6 +9,7 @@ import pytest
 import app.times
 from datetime import datetime
 
+
 @pytest.mark.django_db
 class TestAnalyseWorks(TestCase):
     '''
@@ -20,10 +21,10 @@ class TestAnalyseWorks(TestCase):
         """
         User.objects.filter(open_id="Icannotmakeupanewname").delete()
         brisa3 = User.objects.create(open_id="Icannotmakeupanewname",
-                                    name="brisa3",
-                                    sex=1,
-                                    video_count=1,
-                                    public_count=1)
+                                     name="brisa3",
+                                     sex=1,
+                                     video_count=1,
+                                     public_count=1)
         brisa3.save()
         Video.objects.filter(
             photo_id='today is dropping dirt').delete()
@@ -68,40 +69,40 @@ class TestAnalyseWorks(TestCase):
         )
         new_analysisHour.save()
 
-    def test_get_fans_info_openid_lost(self):
-        """
-        this is a test for get_fans_info(error:openid_lost)
-        """
-        payload = {
-            'begin_timestamp': 00000000000,
-            'term_timestamp': 00000000000,
-        }
-        response = self.client.get('/api/analysis/globalhour',
-                                   data=payload,
-                                   content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
-
-    # def test_get_fans_info(self):
+    # def test_get_fans_info_openid_lost(self):
     #     """
-    #     this is a test for get_fans_info
+    #     this is a test for get_fans_info(error:openid_lost)
     #     """
-    #     time1 = datetime(2022, 4, 5, 9, 0, 0)
-    #     time2 = datetime(2022, 4, 5, 10, 0, 0)
     #     payload = {
-    #         'open_id': "Icannotmakeupanewname",
-    #         'begin_timestamp': app.times.datetime2timestamp(time1),
-    #         'term_timestamp': app.times.datetime2timestamp(time2),
+    #         'begin_timestamp': 00000000000,
+    #         'term_timestamp': 00000000000,
     #     }
     #     response = self.client.get('/api/analysis/globalhour',
     #                                data=payload,
     #                                content_type="application/json")
-    #     expected_count_list = [{
-    #         'view_count': 2,
-    #         'comment_count': 1,
-    #         'like_count': 2
-    #     }]
-    #     self.assertEqual(200, response.json()['code'])
-    #     self.assertEqual(expected_count_list, response.json()['data']['count_list'])
+    #     self.assertEqual(400, response.json()['code'])
+
+    def test_get_fans_info(self):
+        """
+        this is a test for get_fans_info
+        """
+        time1 = datetime(2022, 4, 5, 9, 0, 0)
+        time2 = datetime(2022, 4, 5, 10, 0, 0)
+        payload = {
+            'open_id': "Icannotmakeupanewname",
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
+        }
+        response = self.client.get('/api/analysis/globalhour',
+                                   data=payload,
+                                   content_type="application/json")
+        expected_count_list = [{
+            'view_count': 2,
+            'comment_count': 1,
+            'like_count': 2
+        }]
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_count_list, response.json()['data']['count_list'])
 
     def tearDown(self):
         """
