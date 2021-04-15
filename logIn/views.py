@@ -16,15 +16,35 @@ try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
-    @register_job(scheduler, scheduler, 'cron', day_of_week='mon-sun',
-                  hour='0', minute='00', second='00', id='task_time')
-    def timely_fetch_data():
+    @register_job(scheduler, 'cron', day_of_week='mon-sun',
+                  hour='0-23', id='task_time')
+    def hourly_fetch_data():
         """
         this function is supposed to run in period
         to fetch data and store data from api
         """
         for open_id in app.utils.get_all_open_id():
+            access_token = app.utils.get_token(open_id)[0]
+            data = app.api.get_all_data(open_id, access_token)
             app.api.manage_data(open_id)
+            app.api.store_data(open_id, data[0], data[1], data[2])
+            app.utils.analyse_hour_data(open_id, data[1])
+
+
+    @register_job(scheduler, 'cron', day_of_week='mon-sun',
+                  hour='0', id='task_time')
+    def daily_fetch_data():
+        """
+        this function is supposed to run in period
+        to fetch data and store data from api
+        """
+        for open_id in app.utils.get_all_open_id():
+            access_token = app.utils.get_token(open_id)[0]
+            data = app.api.get_all_data(open_id, access_token)
+            app.api.manage_data(open_id)
+            app.api.store_data(open_id, data[0], data[1], data[2])
+            app.utils.analyse_daily_data(open_id, data[1])
+
 
     register_events(scheduler)
     scheduler.start()

@@ -3,10 +3,11 @@ this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 '''
+from datetime import datetime
 
 import app.times
 import app.tokens
-from app.models import User, Video
+from app.models import User, Video, Analyse, AnalyseHour
 import json
 from django.http import JsonResponse
 
@@ -250,3 +251,35 @@ def get_all_open_id():
     for user in User.objects.all():
         open_id_list.append(user.open_id)
     return open_id_list
+
+
+def analyse_hour_data(open_id, video_list):
+    """
+    本函数接口用于把每小时的数据放入AnalyseHour表中
+    """
+    for video in video_list:
+        photo_id = video.get("photo_id")
+        video_object = Video.objects.filter(photo_id=photo_id)
+        data = AnalyseHour(video=video_object,
+                           user_id=open_id,
+                           sum_time=app.times.timestamp2string(datetime.now()),
+                           total_view_count=video.get("view_count"),
+                           total_comment_count=video.get("comment_count"),
+                           total_like_count=video.get("like_count"))
+        data.save()
+
+
+def analyse_daily_data(open_id, video_list):
+    """
+    本函数接口用于把每天的数据放入Analyse表中
+    """
+    for video in video_list:
+        photo_id = video.get("photo_id")
+        video_object = Video.objects.filter(photo_id=photo_id)
+        data = Analyse(video=video_object,
+                       user_id=open_id,
+                       sum_time=app.times.timestamp2string(datetime.now()),
+                       total_view_count=video.get("view_count"),
+                       total_comment_count=video.get("comment_count"),
+                       total_like_count=video.get("like_count"))
+        data.save()
