@@ -253,33 +253,33 @@ def get_all_open_id():
     return open_id_list
 
 
-def analyse_hour_data(open_id, video_list):
+def analyse_hour_data(open_id, video_list, time):
     """
     本函数接口用于把每小时的数据放入AnalyseHour表中
     """
-    for video in video_list:
-        photo_id = video.get("photo_id")
-        video_object = Video.objects.filter(photo_id=photo_id)
+    for vid in video_list:
+        photo_id = vid.get("photo_id")
+        video_object = Video.objects.get(photo_id=photo_id)
         data = AnalyseHour(video=video_object,
                            user_id=open_id,
-                           sum_time=app.times.timestamp2string(datetime.now()),
-                           total_view_count=video.get("view_count"),
-                           total_comment_count=video.get("comment_count"),
-                           total_like_count=video.get("like_count"))
+                           sum_time=time,
+                           total_view_count=vid.get("view_count"),
+                           total_comment_count=vid.get("comment_count"),
+                           total_like_count=vid.get("like_count"))
         data.save()
 
 
-def analyse_daily_data(open_id, video_list):
+def analyse_daily_data(open_id, video_list, time):
     """
     本函数接口用于把每天的数据放入Analyse表中
     """
-    for video in video_list:
-        photo_id = video.get("photo_id")
-        video_object = Video.objects.filter(photo_id=photo_id)
+    for vid in video_list:
+        photo_id = vid.get("photo_id")
+        video_object = Video.objects.get(photo_id=photo_id)
         data = Analyse(video=video_object,
                        user_id=open_id,
-                       sum_time=app.times.timestamp2string(datetime.now()),
-                       total_view_count=video.get("view_count"),
-                       total_comment_count=video.get("comment_count"),
-                       total_like_count=video.get("like_count"))
+                       sum_time=time,
+                       total_view_count=vid.get("view_count"),
+                       total_comment_count=vid.get("comment_count"),
+                       total_like_count=vid.get("like_count"))
         data.save()
