@@ -101,7 +101,7 @@ class TestAnalyseWorks(TestCase):
     #         'like_count': 2
     #     }]
     #     self.assertEqual(200, response.json()['code'])
-    #     self.assertEqual(expected_count_list, response.json()['data'])
+    #     self.assertEqual(expected_count_list, response.json()['data']['count_list'])
 
     def tearDown(self):
         """
