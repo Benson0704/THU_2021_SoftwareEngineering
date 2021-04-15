@@ -16,15 +16,37 @@ try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
-    @register_job(scheduler, scheduler, 'cron', day_of_week='mon-sun',
-                  hour='0', minute='00', second='00', id='task_time')
-    def timely_fetch_data():
+    @register_job(scheduler, 'cron', day_of_week='mon-sun',
+                  hour='0-23', id='hourly_task', misfire_grace_time=3600)
+    def hourly_fetch_data():
         """
-        this function is supposed to run in period
+        this function is supposed to run in hourly period
         to fetch data and store data from api
         """
         for open_id in app.utils.get_all_open_id():
+            access_token = app.utils.get_token(open_id)[0]
+            data = app.api.get_all_data(open_id, access_token)
             app.api.manage_data(open_id)
+            app.api.store_data(open_id, data[0], data[1], data[2])
+            now_time = app.times.datetime2string(datetime.now())
+            time = now_time.split(':')[0] + ":00:00"
+            app.utils.analyse_hour_data(open_id, data[1], time)
+
+    @register_job(scheduler, 'cron', day_of_week='mon-sun',
+                  hour='11', id='daily_task')
+    def daily_fetch_data():
+        """
+        this function is supposed to run in daily period
+        to fetch data and store data from api
+        """
+        for open_id in app.utils.get_all_open_id():
+            access_token = app.utils.get_token(open_id)[0]
+            data = app.api.get_all_data(open_id, access_token)
+            app.api.manage_data(open_id)
+            app.api.store_data(open_id, data[0], data[1], data[2])
+            now_time = app.times.datetime2string(datetime.now())
+            time = now_time.split(':')[0] + "00:00"
+            app.utils.analyse_daily_data(open_id, data[1], time)
 
     register_events(scheduler)
     scheduler.start()
@@ -52,7 +74,7 @@ def get_yesterday_change(open_id):
         video_change += 1
         like_change += video.like_count
         comment_change += video.comment_count
-        view_change += video.view_change
+        view_change += video.view_count
     yesterday_change = {
         "video_change": video_change,
         "like_change": like_change,
