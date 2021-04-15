@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'logIn', 'app',
-    'manageWorks', 'analyseWorks', 'analyseFans'
+    'manageWorks', 'analyseWorks', 'analyseFans',
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [

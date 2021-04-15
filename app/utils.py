@@ -7,9 +7,9 @@ all functions not used to handle frontend request DIRECTLY should write here
 import app.times
 import app.tokens
 from app.models import User, Video
-import jwt
 import json
 from django.http import JsonResponse
+
 config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
 
@@ -104,6 +104,18 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
                 comment_count=video_list[i]['comment_count'],
                 view_count=video_list[i]['view_count'],
                 pending=video_list[i]['pending'])
+            video.save()
+        else:
+            video = Video.objects.get(photo_id=new_video_list[i])
+            video.caption = video_list[i]['caption']
+            video.cover = video_list[i]['cover']
+            video.play_url = video_list[i]['play_url']
+            video.create_time = app.times.timestamp2string(
+                video_list[i]['create_time'])  # timestamp2str
+            video.like_count = video_list[i]['like_count']
+            video.comment_count = video_list[i]['comment_count']
+            video.view_count = video_list[i]['view_count']
+            video.pending = video_list[i]['pending']
             video.save()
 
 
@@ -223,32 +235,18 @@ def get_token(open_id):
     return access_token, refresh_token
 
 
-def encoding_message(code, message=None):
-    """
-    this function is for encoding data using jwt to pass to frontend
-    """
-    origin = {}
-    if message:
-        origin = {"code": code, "data": message}
-    else:
-        origin = {"code": code}
-    encode_jwt = jwt.encode(origin, SECRET_KEY, algorithm='HS256')
-    encode_str = str(encode_jwt, 'utf-8')
-    return encode_str
-
-
-def decoding_message(token):
-    """
-    this function is for decoding jwt into json
-    """
-    message = jwt.decode(token, SECRET_KEY, algorithm='HS256')
-    if "data" in message:
-        return message["code"], message["data"]
-    return message["code"]
-
-
 def gen_response(code: int, data=None):
     """
     this function is for generating web response
     """
     return JsonResponse({'code': code, 'data': data}, status=code)
+
+
+def get_all_open_id():
+    """
+    this function should return all users' open_id
+    """
+    open_id_list = []
+    for user in User.objects.all():
+        open_id_list.append(user.open_id)
+    return open_id_list

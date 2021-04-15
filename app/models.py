@@ -1,5 +1,5 @@
 '''
-这个文件定义了后端的两个类
+这个文件定义了后端的四个类
 '''
 
 from django.db import models
@@ -77,3 +77,43 @@ class Label(models.Model):
         double linking: labels
         '''
         db_table = 'labels'
+
+
+class Analyse(models.Model):
+    '''
+    表示一段时间内数量的统计值(按天统计)
+    '''
+    video = models.ForeignKey(Video,
+                              on_delete=models.CASCADE,
+                              related_name='analysis')  # 外键绑定视频
+    user_id = models.CharField(max_length=50)  # 用户id
+    sum_time = models.DateTimeField(default=0)
+    total_view_count = models.IntegerField(default=0)
+    total_comment_count = models.IntegerField(default=0)
+    total_like_count = models.IntegerField(default=0)
+
+    class Meta:
+        '''
+        double linking: analysis
+        '''
+        db_table = 'analysis'
+
+
+class AnalyseHour(models.Model):
+    '''
+    表示24h内数量的统计值
+    '''
+    video = models.ForeignKey(Video,
+                              on_delete=models.CASCADE,
+                              related_name='analysisHour')  # 外键绑定视频
+    user_id = models.CharField(max_length=50)  # 用户id
+    sum_time = models.DateTimeField(default=0)
+    total_view_count = models.IntegerField(default=0)
+    total_comment_count = models.IntegerField(default=0)
+    total_like_count = models.IntegerField(default=0)
+
+    class Meta:
+        '''
+        double linking: analysisHour
+        '''
+        db_table = 'analysisHour'

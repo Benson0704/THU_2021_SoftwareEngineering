@@ -1,5 +1,5 @@
 '''
-this file should be a .py file as tests for manageWorks function
+this file should be a .py file as tests for manageWorks module
 finished: 4.7
 '''
 from django.test import TestCase
@@ -20,54 +20,55 @@ class TestManageWorks(TestCase):
         this is the constructin of tests
         """
         User.objects.filter(open_id="todayissunny").delete()
-        brisa = User.objects.create(open_id="todayissunny",
-                                    name="brisa",
-                                    sex=0,
-                                    head="https://ThisGirlIsBeautiful",
-                                    bigHead="",
-                                    city="Chengdu",
-                                    fan=40,
-                                    follow=40,
-                                    video_count=2,
-                                    public_count=2,
-                                    friend_count=0,
-                                    private_count=0,
-                                    total_like_count=40,
-                                    total_comment_count=20,
-                                    total_view_count=80,
-                                    access_token="9XZzf6up5SH8U1JFUKs=\n",
-                                    refresh_token="9XZzf6up5SH8U1JFUKs=\n")
-        brisa.save()
+        brisa2 = User.objects.create(open_id="todayissunny",
+                                     name="brisa2",
+                                     sex=0,
+                                     head="https://ThisGirlIsBeautiful",
+                                     bigHead="",
+                                     city="Chengdu",
+                                     fan=40,
+                                     follow=40,
+                                     video_count=2,
+                                     public_count=2,
+                                     friend_count=0,
+                                     private_count=0,
+                                     total_like_count=60,
+                                     total_comment_count=30,
+                                     total_view_count=120,
+                                     access_token="9XZzf6up5SH8U1JFUKs=\n",
+                                     refresh_token="9XZzf6up5SH8U1JFUKs=\n")
+        brisa2.save()
         Video.objects.filter(
             photo_id='this is a sunrise photo in Hogwards').delete()
         new_video = Video.objects.create(
-            user=brisa,
+            user=brisa2,
             photo_id="this is a sunrise photo in Hogwards",
             caption="hogwards sunrise",
             cover="https://HogwardsSunrise",
             play_url="https://PlayHogwardsSunrise",
             create_time='2022-04-07 12:13:15',
-            like_count=20,
-            comment_count=10,
-            view_count=40,
+            like_count=30,
+            comment_count=15,
+            view_count=60,
             pending=False,
             labels="")
         new_video.save()
         Video.objects.filter(photo_id='this is a photo on Earth').delete()
-        new_video = Video.objects.create(user=brisa,
+        new_video = Video.objects.create(user=brisa2,
                                          photo_id="this is a photo on Earth",
                                          caption="Earth view",
                                          cover="https://EarthView",
                                          play_url="https://PlayEarthView",
                                          create_time='2022-04-07 12:13:17',
-                                         like_count=20,
-                                         comment_count=10,
-                                         view_count=40,
+                                         like_count=30,
+                                         comment_count=15,
+                                         view_count=60,
                                          pending=False,
                                          labels="")
         new_video.save()
         Label.objects.filter(label_name='scene').delete()
-        new_label = Label.objects.create(user=brisa, label_name="scene", num=0)
+        new_label = Label.objects.create(user=brisa2,
+                                         label_name="scene", num=0)
         new_label.save()
 
     def test_get_video_time_openid_lost(self):
@@ -107,9 +108,9 @@ class TestManageWorks(TestCase):
                 "cover": "https://EarthView",
                 "play_url": "https://PlayEarthView",
                 "create_time": app.times.datetime2timestamp(time3),
-                "like_count": 20,
-                "comment_count": 10,
-                "view_count": 40,
+                "like_count": 30,
+                "comment_count": 15,
+                "view_count": 60,
                 "pending": False,
                 "labels": [""]
             }, {
@@ -118,9 +119,9 @@ class TestManageWorks(TestCase):
                 "cover": "https://HogwardsSunrise",
                 "play_url": "https://PlayHogwardsSunrise",
                 "create_time": app.times.datetime2timestamp(time4),
-                "like_count": 20,
-                "comment_count": 10,
-                "view_count": 40,
+                "like_count": 30,
+                "comment_count": 15,
+                "view_count": 60,
                 "pending": False,
                 "labels": [""]
             }]
