@@ -47,9 +47,7 @@ def get_fans_info(request):
                         count_list[i + 1]['view_count']
                         - count_list[i]['view_count']
                     })
-            return app.utils.gen_response(200, {
-                'count_list': res_list
-            })
+            return app.utils.gen_response(200, res_list)
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
