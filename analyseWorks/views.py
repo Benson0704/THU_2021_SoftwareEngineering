@@ -53,14 +53,14 @@ def get_videos_info_by_time(request):
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
-                        count_list[i + 1]['like_count'] - \
-                            count_list[i]['like_count'],
+                        count_list[i + 1]['like_count']
+                        - count_list[i]['like_count'],
                         'comment_count':
-                        count_list[i + 1]['comment_count'] - \
-                            count_list[i]['comment_count'],
+                        count_list[i + 1]['comment_count']
+                        - count_list[i]['comment_count'],
                         'view_count':
-                        count_list[i + 1]['view_count'] - \
-                            count_list[i]['view_count']
+                        count_list[i + 1]['view_count']
+                        - count_list[i]['view_count']
                     })
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
@@ -84,8 +84,8 @@ def get_all_videos_info(request):
             analyse_list = Analyse.objects.filter(
                 user_id=open_id).order_by('-sum_time')
             for analyse in analyse_list:
-                if(app.times.datetime2timestamp(analyse.sum_time) + \
-                   86400 * 3 == term_timestamp):
+                if(app.times.datetime2timestamp(analyse.sum_time)
+                   + 86400 * 3 == term_timestamp):
                     recent_data['like_count'] += analyse.total_like_count
                     recent_data['comment_count'] += analyse.total_comment_count
                     recent_data['view_count'] += analyse.total_view_count
@@ -119,14 +119,14 @@ def get_all_videos_info(request):
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
-                        count_list[i + 1]['like_count'] - \
-                            count_list[i]['like_count'],
+                        count_list[i + 1]['like_count']
+                        - count_list[i]['like_count'],
                         'comment_count':
-                        count_list[i + 1]['comment_count'] - \
-                            count_list[i]['comment_count'],
+                        count_list[i + 1]['comment_count']
+                        - count_list[i]['comment_count'],
                         'view_count':
-                        count_list[i + 1]['view_count'] - \
-                            count_list[i]['view_count']
+                        count_list[i + 1]['view_count']
+                        - count_list[i]['view_count']
                     })
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
