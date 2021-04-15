@@ -6,7 +6,7 @@ import app.times
 from app.models import AnalyseHour
 
 
-def get_all_videos_info(request):
+def get_fans_info(request):
     '''
     returns the a user's all videos' comment etc infos
     timestamp tackle method:[ , ]
