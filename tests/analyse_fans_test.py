@@ -69,18 +69,18 @@ class TestAnalyseWorks(TestCase):
         )
         new_analysisHour.save()
 
-    # def test_get_fans_info_openid_lost(self):
-    #     """
-    #     this is a test for get_fans_info(error:openid_lost)
-    #     """
-    #     payload = {
-    #         'begin_timestamp': 00000000000,
-    #         'term_timestamp': 00000000000,
-    #     }
-    #     response = self.client.get('/api/analysis/globalhour',
-    #                                data=payload,
-    #                                content_type="application/json")
-    #     self.assertEqual(400, response.json()['code'])
+    def test_get_fans_info_openid_lost(self):
+        """
+        this is a test for get_fans_info(error:openid_lost)
+        """
+        payload = {
+            'begin_timestamp': 00000000000,
+            'term_timestamp': 00000000000,
+        }
+        response = self.client.get('/api/analysis/globalhour',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(400, response.json()['code'])
 
     def test_get_fans_info(self):
         """
