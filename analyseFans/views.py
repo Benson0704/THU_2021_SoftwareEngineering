@@ -19,7 +19,7 @@ def get_fans_info(request):
             count_list = []
             res_list = []
             res={}
-            analyse_list = AnalyseHour.objects.filter(
+            analyse_list = AnalyseHour.objects.get(
                 user_id=open_id).order_by('sum_time')
             for analyse in analyse_list:
                 if begin_timestamp == app.times.datetime2timestamp(
