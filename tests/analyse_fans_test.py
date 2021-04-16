@@ -16,9 +16,9 @@ class TestAnalyseWorks(TestCase):
     This is a unittest for analyseWorks
     '''
     def setUp(self):
-        """
+        '''
         this is constructin of tests for analyse fans
-        """
+        '''
         User.objects.filter(open_id="Icannotmakeupanewname").delete()
         brisa3 = User.objects.create(open_id="Icannotmakeupanewname",
                                      name="brisa3",
