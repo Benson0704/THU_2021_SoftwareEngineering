@@ -16,7 +16,7 @@ class TestAnalyseWorks(TestCase):
     '''
     def setUp(self):
         """
-        this is the constructin of tests
+        this is the constructin of tests for analyse works
         """
         User.objects.filter(open_id="justhavesomefun").delete()
         brisa = User.objects.create(open_id="justhavesomefun",
