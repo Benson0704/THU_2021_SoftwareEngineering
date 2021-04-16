@@ -17,7 +17,7 @@ class TestAnalyseWorks(TestCase):
     '''
     def setUp(self):
         """
-        this is the constructin of tests for analyse fans
+        this is constructin of tests for analyse fans
         """
         User.objects.filter(open_id="Icannotmakeupanewname").delete()
         brisa3 = User.objects.create(open_id="Icannotmakeupanewname",
