@@ -13,7 +13,7 @@ from datetime import datetime
 @pytest.mark.django_db
 class TestAnalyseWorks(TestCase):
     '''
-    This is a unittest for analyseWorks
+    This is a unittest for analyseFans
     '''
     def setUp(self):
         '''
