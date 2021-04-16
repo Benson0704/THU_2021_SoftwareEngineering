@@ -15,9 +15,9 @@ def get_videos_info_by_time(request):
     '''
     if request.method == 'GET':
         try:
-            photo_id = request.GET.get('photo_id')
-            begin_timestamp = int(request.GET.get('begin_timestamp'))
-            term_timestamp = int(request.GET.get('term_timestamp'))
+            photo_id = request.GET['photo_id']
+            begin_timestamp = int(request.GET['begin_timestamp'])
+            term_timestamp = int(request.GET['term_timestamp'])
             video = Video.objects.get(photo_id=photo_id)
             analyse_list = []
             analyse_list = (Analyse.objects.filter(
@@ -69,9 +69,9 @@ def get_all_videos_info(request):
     '''
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
-            begin_timestamp = int(request.GET.get('begin_timestamp'))
-            term_timestamp = int(request.GET.get('term_timestamp'))
+            open_id = request.GET['open_id']
+            begin_timestamp = int(request.GET['begin_timestamp'])
+            term_timestamp = int(request.GET['term_timestamp'])
             recent_data = {
                 'like_count': 0,
                 'comment_count': 0,

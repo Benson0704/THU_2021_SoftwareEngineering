@@ -1,6 +1,7 @@
 """
 this is a module for analyse the information of fans
 """
+import json
 import app.utils
 import app.times
 from app.models import AnalyseHour
@@ -13,9 +14,9 @@ def get_fans_info(request):
     '''
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
-            begin_timestamp = int(request.GET.get('begin_timestamp'))
-            term_timestamp = int(request.GET.get('term_timestamp'))
+            open_id = request.GET['open_id']
+            begin_timestamp = int(request.GET['begin_timestamp'])
+            term_timestamp = int(request.GET['term_timestamp'])
             count_list = []
             res_list = []
             res={}
