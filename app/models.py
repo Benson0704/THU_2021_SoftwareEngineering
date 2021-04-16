@@ -159,10 +159,10 @@ class feedback(models.Model):
     user = models.CharField(max_length=100)  # 反馈的用户
 
     class Meta:
-            '''
-            double linking: feedback
-            '''
-            db_table = 'feedback'
+        '''
+        double linking: feedback
+        '''
+        db_table = 'feedback'
 
 
 class request(models.Model):
@@ -172,7 +172,7 @@ class request(models.Model):
                              on_delete=models.CASCADE,
                              related_name='request')  # 外键绑定用户
     request_type = models.CharField(max_length=500,
-                                    null=True)  #  请求类型
+                                    null=True)  # 请求类型
 
     class Meta:
         '''
