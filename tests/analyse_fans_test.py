@@ -5,8 +5,8 @@ this file should be a .py file as tests for analyseFans module
 
 from django.test import TestCase
 from app.models import User, Video, AnalyseHour
-import pytest
 import app.times
+import pytest
 from datetime import datetime
 
 
