@@ -148,6 +148,9 @@ class Message(models.Model):
 
 
 class feedback(models.Model):
+    """
+    construct model feedback
+    """
     message = models.ForeignKey(Message,
                                 on_delete=models.CASCADE,
                                 related_name='feedback')  # 外键绑定消息
@@ -167,6 +170,9 @@ class feedback(models.Model):
 
 
 class request(models.Model):
+    """
+    construct model request
+    """
     create_time = models.DateTimeField(default=0)  # 创建时间
     timecost = models.IntegerField(default=0)  # 耗时情况
     user = models.ForeignKey(User,
