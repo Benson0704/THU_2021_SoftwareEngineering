@@ -11,9 +11,9 @@ from datetime import datetime
 
 @pytest.mark.django_db
 class TestAnalyseWorks(TestCase):
-    '''
+    """
     This is a unittest for analyseWorks
-    '''
+    """
     def setUp(self):
         """
         this is the constructin of tests for analyse works
