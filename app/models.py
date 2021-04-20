@@ -1,6 +1,6 @@
 '''
-这个文件定义了后端的八个类
-modified: 4.17
+这个文件定义了后端的11个类
+modified: 4.20
 '''
 
 from django.db import models
