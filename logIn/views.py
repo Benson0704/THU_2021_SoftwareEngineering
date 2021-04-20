@@ -7,6 +7,7 @@ from datetime import datetime
 import app.api
 import app.utils
 import app.times
+import notice.views
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
@@ -22,6 +23,7 @@ try:
         """
         this function is supposed to run in hourly period
         to fetch data and store data from api
+        also add flow alarm for the notice module
         """
         for open_id in app.utils.get_all_open_id():
             access_token = app.utils.get_token(open_id)[0]
@@ -31,6 +33,14 @@ try:
             now_time = app.times.datetime2string(datetime.now())
             time = now_time.split(':')[0] + ":00:00"
             app.utils.analyse_hour_data(open_id, data[1], time)
+            now_timestamp = app.times.string2timestamp(time)
+            one_hour_before_time = now_timestamp - 60 * 60
+            one_day_before_time = now_timestamp - 24 * 60 * 60
+            flow = app.utils.get_flow(open_id, one_day_before_time,
+                                      one_hour_before_time, now_timestamp)
+            print(flow)
+            if flow is not None:
+                notice.views.flows.append(flow)
 
     @register_job(scheduler, 'cron', day_of_week='mon-sun',
                   hour='11', id='daily_task')
@@ -45,7 +55,7 @@ try:
             app.api.manage_data(open_id)
             app.api.store_data(open_id, data[0], data[1], data[2])
             now_time = app.times.datetime2string(datetime.now())
-            time = now_time.split(':')[0] + "00:00"
+            time = now_time.split(':')[0] + ":00:00"
             app.utils.analyse_daily_data(open_id, data[1], time)
 
     register_events(scheduler)
@@ -94,7 +104,8 @@ def get_user_info_by_code(request):
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
         if result != 1:
-            return app.utils.gen_response(404, token_data.get("error_msg"))
+            return app.utils.gen_response(
+                404, token_data.get("error_msg"))
 
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")

@@ -1,7 +1,6 @@
 """
 this is a module for analyse the information of fans
 """
-import json
 import app.utils
 import app.times
 from app.models import AnalyseHour
