@@ -36,7 +36,8 @@ try:
             now_timestamp = app.times.string2timestamp(time)
             one_hour_before_time = now_timestamp - 60 * 60
             one_day_before_time = now_timestamp - 24 * 60 * 60
-            flow = app.utils.get_flow(open_id, one_day_before_time, one_hour_before_time, now_timestamp)
+            flow = app.utils.get_flow(open_id, one_day_before_time,
+                                      one_hour_before_time, now_timestamp)
             print(flow)
             if flow is not None:
                 notice.views.flows.append(flow)

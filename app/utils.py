@@ -298,12 +298,12 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     """
     analyse_list = AnalyseHour.objects.filter(
         user_id=open_id).order_by('sum_time')
-    one_day_before_count = {
+    one_day_count = {
         'like_count': 0,
         'comment_count': 0,
         'view_count': 0
     }
-    one_hour_before_count = {
+    one_hour_count = {
         'like_count': 0,
         'comment_count': 0,
         'view_count': 0
@@ -316,21 +316,15 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     for analyse in analyse_list:
         if one_day_before_time == app.times.datetime2timestamp(
                 analyse.sum_time):
-            one_day_before_count['like_count'] \
-                += analyse.total_like_count
-            one_day_before_count['comment_count'] \
-                += analyse.total_comment_count
-            one_day_before_count['view_count'] \
-                += analyse.total_view_count
+            one_day_count['like_count'] += analyse.total_like_count
+            one_day_count['comment_count'] += analyse.total_comment_count
+            one_day_count['view_count'] += analyse.total_view_count
 
         if one_hour_before_time == app.times.datetime2timestamp(
                 analyse.sum_time):
-            one_hour_before_count['like_count'] \
-                += analyse.total_like_count
-            one_hour_before_count['comment_count'] \
-                += analyse.total_comment_count
-            one_hour_before_count['view_count'] \
-                += analyse.total_view_count
+            one_hour_count['like_count'] += analyse.total_like_count
+            one_hour_count['comment_count'] += analyse.total_comment_count
+            one_hour_count['view_count'] += analyse.total_view_count
 
         if now_time == app.times.datetime2timestamp(
                 analyse.sum_time):
@@ -338,33 +332,29 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
             now_count['comment_count'] += analyse.total_comment_count
             now_count['view_count'] += analyse.total_view_count
 
-    if one_day_before_time['like_count'] is 0 \
-            or one_hour_before_time['like_count'] is 0:
+    if one_day_count['like_count'] == 0 \
+            or one_hour_count['like_count'] == 0:
         return None
 
-    likes_change = now_count["like_count"] \
-                   - one_hour_before_count['like_count']
-    comments_change = now_count["comment_count"] \
-                      - one_hour_before_count['comment_count']
-    views_change = now_count["view_count"] \
-                   - one_hour_before_count['view_count']
+    likes_change = now_count["like_count"] - one_hour_count['like_count']
+    comments_change = \
+        now_count["comment_count"] - one_hour_count['comment_count']
+    views_change = now_count["view_count"] - one_hour_count['view_count']
 
-    likes_change_daily = now_count["like_count"] \
-                         - one_day_before_count['like_count']
-    comments_change_daily = now_count["comment_count"] \
-                            - one_day_before_count['comment_count']
-    views_change_daily = now_count["view_count"] \
-                         - one_day_before_count['view_count']
+    likes_before = now_count["like_count"] - one_day_count['like_count']
+    comments_before = \
+        now_count["comment_count"] - one_day_count['comment_count']
+    views_before = now_count["view_count"] - one_day_count['view_count']
 
-    if likes_change > 0.2 * likes_change_daily \
-            or comments_change > 0.2 * comments_change_daily \
-            or views_change > 0.2 * views_change_daily:
+    if likes_change > 0.2 * likes_before \
+            or comments_change > 0.2 * comments_before \
+            or views_change > 0.2 * views_before:
         flow = {"likes_change": likes_change,
                 "comments_change": comments_change,
                 "views_change": views_change,
-                "likes_before": likes_change_daily,
-                "comments_before": comments_change_daily,
-                "views_before": views_change_daily,
+                "likes_before": likes_before,
+                "comments_before": comments_before,
+                "views_before": views_before,
                 "timestamp": now_time}
         return flow
     else:
