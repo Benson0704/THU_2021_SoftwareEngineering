@@ -179,7 +179,7 @@ class TestAnalyseWorks(TestCase):
             'comment_count': 1,
             'view_count': 8
         }]
-        response = self.client.get('/api/analysis/global_day',
+        response = self.client.get('/api/analysis/globalday',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])

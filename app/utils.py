@@ -357,5 +357,4 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
                 "views_before": views_before,
                 "timestamp": now_time}
         return flow
-    else:
-        return None
+    return None
