@@ -69,7 +69,7 @@ def get_label_list(request):
             except:  # fake in test
                 pass
             user = User.objects.get(open_id=open_id)
-            labels = user.label.all()
+            labels = user.label.all().order_by('-num')
             return_list = []
             for label in labels:
                 return_list.append({
