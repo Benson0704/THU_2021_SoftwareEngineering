@@ -2,6 +2,21 @@
 this module provides necessary functions and auxiliary functions
 WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
+
+FUNCTION TEMPLATE for view:
+    if request.method == 'POST':
+        try:
+            ret = request.body
+            ret = json.loads(ret.decode('utf-8'))
+        except:
+            return app.utils.gen_response(400)
+        return app.utils.gen_response(405)
+    if request.method == 'GET':
+        try:
+            open_id = request.GET.get('open_id')
+        except:
+            return app.utils.gen_response(400)
+        return app.utils.gen_response(405)
 '''
 import app.times
 import app.tokens
