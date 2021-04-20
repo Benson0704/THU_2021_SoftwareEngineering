@@ -1,3 +1,6 @@
-from django.shortcuts import render
+"""
+this is a module for getting notice information
+for user and admin
+"""
 
-# Create your views here.
+flows = []
