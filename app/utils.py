@@ -281,3 +281,11 @@ def analyse_daily_data(open_id, video_list, time):
                        total_comment_count=vid.get("comment_count"),
                        total_like_count=vid.get("like_count"))
         data.save()
+
+
+def is_administrator(open_id):
+    """
+    本函数用于判断一个人的身份是否为管理员
+    """
+    user = User.objects.get(open_id=open_id)
+    return user.identity
