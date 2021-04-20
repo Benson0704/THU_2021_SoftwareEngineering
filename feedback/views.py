@@ -4,10 +4,13 @@ this is a module for getting and reply feedbacks
 import json
 import app.utils
 import app.times
-from app.models import User
 
 
 def operate_feedback_user(request):
+    """
+    this function operate feedback for user
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             pass
@@ -23,6 +26,10 @@ def operate_feedback_user(request):
 
 
 def operate_feedback_admin(request):
+    """
+    this function operate feedback for admin
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             pass

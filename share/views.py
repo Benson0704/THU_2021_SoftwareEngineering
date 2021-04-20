@@ -50,6 +50,10 @@ def delete_share(request):
 
 
 def get_my_sharing_user(request):
+    """
+    this function return the user' sharing user
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
@@ -79,6 +83,10 @@ def get_my_sharing_user(request):
 
 
 def get_user_share_to_me(request):
+    """
+    this function operate the shared users
+    return: code, data
+     """
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
