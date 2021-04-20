@@ -10,13 +10,13 @@ FUNCTION TEMPLATE for view:
             ret = json.loads(ret.decode('utf-8'))
         except:
             return app.utils.gen_response(400)
-        return app.utils.gen_response(405)
+    return app.utils.gen_response(405)
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
         except:
             return app.utils.gen_response(400)
-        return app.utils.gen_response(405)
+    return app.utils.gen_response(405)
 '''
 import app.times
 import app.tokens

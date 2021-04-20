@@ -75,7 +75,7 @@ def get_my_sharing_user(request):
                                           }})
         except:
             return app.utils.gen_response(400)
-        return app.utils.gen_response(405)
+    return app.utils.gen_response(405)
 
 
 def get_user_share_to_me(request):
@@ -104,4 +104,4 @@ def get_user_share_to_me(request):
                                           }})
         except:
             return app.utils.gen_response(400)
-        return app.utils.gen_response(405)
+    return app.utils.gen_response(405)
