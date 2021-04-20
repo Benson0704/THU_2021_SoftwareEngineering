@@ -10,9 +10,9 @@ class User(models.Model):
     '''
     用户类
     '''
-    open_id = models.TextField(max_length=500, unique=True,
+    open_id = models.CharField(max_length=250, unique=True,
                                primary_key=True)  # 用户id，用户唯一标志
-    name = models.TextField(max_length=500, unique=True)  # 用户昵称
+    name = models.CharField(max_length=250, unique=True)  # 用户昵称
     sex = models.BooleanField(null=True)  # 性别设置为bool，1为F，0为M，可空
     head = models.TextField(max_length=500, null=True)  # 头像地址
     bigHead = models.TextField(max_length=500, null=True)  # 大头像地址
