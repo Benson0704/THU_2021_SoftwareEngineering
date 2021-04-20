@@ -9,59 +9,59 @@ import app.utils
 import app.times
 import notice.views
 
-# from apscheduler.schedulers.background import BackgroundScheduler
-# from django_apscheduler.jobstores import DjangoJobStore, \
-#     register_job, register_events
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, \
+    register_job, register_events
 
-# try:
-#     scheduler = BackgroundScheduler()
-#     scheduler.add_jobstore(DjangoJobStore(), "default")
+try:
+    scheduler = BackgroundScheduler()
+    scheduler.add_jobstore(DjangoJobStore(), "default")
 
-#     @register_job(scheduler, 'cron', day_of_week='mon-sun',
-#                   hour='0-23', id='hourly_task', misfire_grace_time=3600)
-#     def hourly_fetch_data():
-#         """
-#         this function is supposed to run in hourly period
-#         to fetch data and store data from api
-#         also add flow alarm for the notice module
-#         """
-#         for open_id in app.utils.get_all_open_id():
-#             access_token = app.utils.get_token(open_id)[0]
-#             data = app.api.get_all_data(open_id, access_token)
-#             app.api.manage_data(open_id)
-#             app.api.store_data(open_id, data[0], data[1], data[2])
-#             now_time = app.times.datetime2string(datetime.now())
-#             time = now_time.split(':')[0] + ":00:00"
-#             app.utils.analyse_hour_data(open_id, data[1], time)
-#             now_timestamp = app.times.string2timestamp(time)
-#             one_hour_before_time = now_timestamp - 60 * 60
-#             one_day_before_time = now_timestamp - 24 * 60 * 60
-#             flow = app.utils.get_flow(open_id, one_day_before_time,
-#                                       one_hour_before_time, now_timestamp)
-#             print(flow)
-#             if flow is not None:
-#                 notice.views.flows.append(flow)
+    @register_job(scheduler, 'cron', day_of_week='mon-sun',
+                  hour='0-23', id='hourly_task', misfire_grace_time=3600)
+    def hourly_fetch_data():
+        """
+        this function is supposed to run in hourly period
+        to fetch data and store data from api
+        also add flow alarm for the notice module
+        """
+        for open_id in app.utils.get_all_open_id():
+            access_token = app.utils.get_token(open_id)[0]
+            data = app.api.get_all_data(open_id, access_token)
+            app.api.manage_data(open_id)
+            app.api.store_data(open_id, data[0], data[1], data[2])
+            now_time = app.times.datetime2string(datetime.now())
+            time = now_time.split(':')[0] + ":00:00"
+            app.utils.analyse_hour_data(open_id, data[1], time)
+            now_timestamp = app.times.string2timestamp(time)
+            one_hour_before_time = now_timestamp - 60 * 60
+            one_day_before_time = now_timestamp - 24 * 60 * 60
+            flow = app.utils.get_flow(open_id, one_day_before_time,
+                                      one_hour_before_time, now_timestamp)
+            print(flow)
+            if flow is not None:
+                notice.views.flows.append(flow)
 
-#     @register_job(scheduler, 'cron', day_of_week='mon-sun',
-#                   hour='11', id='daily_task')
-#     def daily_fetch_data():
-#         """
-#         this function is supposed to run in daily period
-#         to fetch data and store data from api
-#         """
-#         for open_id in app.utils.get_all_open_id():
-#             access_token = app.utils.get_token(open_id)[0]
-#             data = app.api.get_all_data(open_id, access_token)
-#             app.api.manage_data(open_id)
-#             app.api.store_data(open_id, data[0], data[1], data[2])
-#             now_time = app.times.datetime2string(datetime.now())
-#             time = now_time.split(':')[0] + ":00:00"
-#             app.utils.analyse_daily_data(open_id, data[1], time)
+    @register_job(scheduler, 'cron', day_of_week='mon-sun',
+                  hour='11', id='daily_task')
+    def daily_fetch_data():
+        """
+        this function is supposed to run in daily period
+        to fetch data and store data from api
+        """
+        for open_id in app.utils.get_all_open_id():
+            access_token = app.utils.get_token(open_id)[0]
+            data = app.api.get_all_data(open_id, access_token)
+            app.api.manage_data(open_id)
+            app.api.store_data(open_id, data[0], data[1], data[2])
+            now_time = app.times.datetime2string(datetime.now())
+            time = now_time.split(':')[0] + ":00:00"
+            app.utils.analyse_daily_data(open_id, data[1], time)
 
-#     register_events(scheduler)
-#     scheduler.start()
-# except Exception as e:
-#     print(e)
+    register_events(scheduler)
+    scheduler.start()
+except Exception as e:
+    print(e)
     # scheduler.shutdown()
 
 
