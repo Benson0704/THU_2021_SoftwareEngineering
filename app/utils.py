@@ -290,6 +290,7 @@ def is_administrator(open_id):
     user = User.objects.get(open_id=open_id)
     return user.identity
 
+
 def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     """
     本函数用于得到一个用户的流量预警变化
@@ -315,15 +316,21 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     for analyse in analyse_list:
         if one_day_before_time == app.times.datetime2timestamp(
                 analyse.sum_time):
-            one_day_before_count['like_count'] += analyse.total_like_count
-            one_day_before_count['comment_count'] += analyse.total_comment_count
-            one_day_before_count['view_count'] += analyse.total_view_count
+            one_day_before_count['like_count'] \
+                += analyse.total_like_count
+            one_day_before_count['comment_count'] \
+                += analyse.total_comment_count
+            one_day_before_count['view_count'] \
+                += analyse.total_view_count
 
         if one_hour_before_time == app.times.datetime2timestamp(
                 analyse.sum_time):
-            one_hour_before_count['like_count'] += analyse.total_like_count
-            one_hour_before_count['comment_count'] += analyse.total_comment_count
-            one_hour_before_count['view_count'] += analyse.total_view_count
+            one_hour_before_count['like_count'] \
+                += analyse.total_like_count
+            one_hour_before_count['comment_count'] \
+                += analyse.total_comment_count
+            one_hour_before_count['view_count'] \
+                += analyse.total_view_count
 
         if now_time == app.times.datetime2timestamp(
                 analyse.sum_time):
@@ -335,13 +342,19 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
             or one_hour_before_time['like_count'] is 0:
         return None
 
-    likes_change = now_count["like_count"] - one_hour_before_count['like_count']
-    comments_change = now_count["comment_count"] - one_hour_before_count['comment_count']
-    views_change = now_count["view_count"] - one_hour_before_count['view_count']
+    likes_change = now_count["like_count"] \
+                   - one_hour_before_count['like_count']
+    comments_change = now_count["comment_count"] \
+                      - one_hour_before_count['comment_count']
+    views_change = now_count["view_count"] \
+                   - one_hour_before_count['view_count']
 
-    likes_change_daily = now_count["like_count"] - one_day_before_count['like_count']
-    comments_change_daily = now_count["comment_count"] - one_day_before_count['comment_count']
-    views_change_daily = now_count["view_count"] - one_day_before_count['view_count']
+    likes_change_daily = now_count["like_count"] \
+                         - one_day_before_count['like_count']
+    comments_change_daily = now_count["comment_count"] \
+                            - one_day_before_count['comment_count']
+    views_change_daily = now_count["view_count"] \
+                         - one_day_before_count['view_count']
 
     if likes_change > 0.2 * likes_change_daily \
             or comments_change > 0.2 * comments_change_daily \
@@ -356,4 +369,3 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
         return flow
     else:
         return None
-

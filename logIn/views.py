@@ -7,12 +7,11 @@ from datetime import datetime
 import app.api
 import app.utils
 import app.times
+import notice.views
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
-
-import notice.views
 
 try:
     scheduler = BackgroundScheduler()
@@ -41,7 +40,6 @@ try:
             print(flow)
             if flow is not None:
                 notice.views.flows.append(flow)
-
 
     @register_job(scheduler, 'cron', day_of_week='mon-sun',
                   hour='11', id='daily_task')
@@ -105,7 +103,8 @@ def get_user_info_by_code(request):
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
         if result != 1:
-            return app.utils.gen_response(404, token_data.get("error_msg"))
+            return app.utils.gen_response(
+                404, token_data.get("error_msg"))
 
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
