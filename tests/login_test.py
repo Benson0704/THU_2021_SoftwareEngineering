@@ -38,8 +38,8 @@ class TestLogin(unittest.TestCase):
         brisa.save()
         User.objects.filter(open_id="I am invisible").delete()
         temp = User.objects.create(open_id="I am invisible",
-                                    name="temp",
-                                    identity=True)
+                                   name="temp",
+                                   identity=True)
         temp.save()
         Video.objects.filter(
             photo_id='this is a sunset photo in Hogwards').delete()
