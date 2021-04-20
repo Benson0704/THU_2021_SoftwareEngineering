@@ -29,10 +29,8 @@ class User(models.Model):
     access_token = models.CharField(max_length=2500, null=True)
     refresh_token = models.CharField(max_length=2500, null=True)
     identity = models.BooleanField(default=False)  # 表示用户是否为管理员 1:是 0:否
-    auth_user = models.TextField(max_length=50000,
-                                 default="")  # 授权的用户
-    authed_user = models.TextField(max_length=50000,
-                                   default="")  # 谁授权给我
+    auth_user = models.TextField(max_length=50000, default="")  # 授权的用户
+    authed_user = models.TextField(max_length=50000, default="")  # 谁授权给我
 
     class Meta:
         '''
@@ -58,8 +56,7 @@ class Video(models.Model):
     comment_count = models.IntegerField(default=0)  # 作品评论数
     view_count = models.IntegerField(default=0)  # 作品观看数
     pending = models.BooleanField()  # 作品状态（是否正在处理，不能观看）
-    labels = models.CharField(max_length=100, default="",
-                              null=True)  # 表示视频的标签
+    labels = models.CharField(max_length=100, default="", null=True)  # 表示视频的标签
 
     class Meta:
         '''
@@ -131,8 +128,7 @@ class Message(models.Model):
     '''
     content = models.CharField(max_length=5000,
                                default='default message')  # 消息内容
-    title = models.CharField(max_length=1000,
-                             default='default title')  # 消息标题
+    title = models.CharField(max_length=1000, default='default title')  # 消息标题
     create_time = models.DateTimeField(default=0)  # 创建时间
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
@@ -147,7 +143,7 @@ class Message(models.Model):
         db_table = 'message'
 
 
-class feedback(models.Model):
+class Feedback(models.Model):
     """
     construct model feedback
     """
@@ -156,8 +152,7 @@ class feedback(models.Model):
                                 related_name='feedback')  # 外键绑定消息
     content = models.CharField(max_length=5000,
                                default='default feedback')  # 反馈内容
-    title = models.CharField(max_length=1000,
-                             default='default title')  # 反馈标题
+    title = models.CharField(max_length=1000, default='default title')  # 反馈标题
     create_time = models.DateTimeField(default=0)  # 创建时间
     manager = models.CharField(max_length=100)  # 管理员
     user = models.CharField(max_length=100)  # 反馈的用户
@@ -169,7 +164,7 @@ class feedback(models.Model):
         db_table = 'feedback'
 
 
-class request(models.Model):
+class Request(models.Model):
     """
     construct model request
     """
@@ -178,8 +173,7 @@ class request(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='request')  # 外键绑定用户
-    request_type = models.CharField(max_length=500,
-                                    null=True)  # 请求类型
+    request_type = models.CharField(max_length=500, null=True)  # 请求类型
 
     class Meta:
         '''
