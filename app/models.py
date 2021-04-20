@@ -10,9 +10,9 @@ class User(models.Model):
     '''
     用户类
     '''
-    open_id = models.CharField(max_length=50, unique=True,
+    open_id = models.CharField(max_length=500, unique=True,
                                primary_key=True)  # 用户id，用户唯一标志
-    name = models.CharField(max_length=50, unique=True)  # 用户昵称
+    name = models.CharField(max_length=500, unique=True)  # 用户昵称
     sex = models.BooleanField(null=True)  # 性别设置为bool，1为F，0为M，可空
     head = models.CharField(max_length=500, null=True)  # 头像地址
     bigHead = models.CharField(max_length=500, null=True)  # 大头像地址
@@ -29,8 +29,8 @@ class User(models.Model):
     access_token = models.CharField(max_length=2500, null=True)
     refresh_token = models.CharField(max_length=2500, null=True)
     identity = models.BooleanField(default=False)  # 表示用户是否为管理员 1:是 0:否
-    auth_user = models.TextField(max_length=50000, default="")  # 授权的用户
-    authed_user = models.TextField(max_length=50000, default="")  # 谁授权给我
+    auth_user = models.TextField(max_length=500000, default="")  # 授权的用户
+    authed_user = models.TextField(max_length=500000, default="")  # 谁授权给我
 
     class Meta:
         '''
@@ -126,7 +126,7 @@ class Message(models.Model):
     '''
     消息类，有一个自增的id主键
     '''
-    content = models.CharField(max_length=5000,
+    content = models.TextField(max_length=500000,
                                default='default message')  # 消息内容
     title = models.CharField(max_length=1000, default='default title')  # 消息标题
     create_time = models.DateTimeField(default=0)  # 创建时间
@@ -134,7 +134,7 @@ class Message(models.Model):
                              on_delete=models.CASCADE,
                              related_name='message')  # 外键绑定用户
     status = models.BooleanField(default=False)  # 消息是否被处理 1:是 0:否
-    manager = models.CharField(max_length=100, null=True)  # 处理的管理员
+    manager = models.CharField(max_length=1000, null=True)  # 处理的管理员
 
     class Meta:
         '''
@@ -150,12 +150,12 @@ class Feedback(models.Model):
     message = models.ForeignKey(Message,
                                 on_delete=models.CASCADE,
                                 related_name='feedback')  # 外键绑定消息
-    content = models.CharField(max_length=5000,
+    content = models.TextField(max_length=500000,
                                default='default feedback')  # 反馈内容
     title = models.CharField(max_length=1000, default='default title')  # 反馈标题
     create_time = models.DateTimeField(default=0)  # 创建时间
-    manager = models.CharField(max_length=100)  # 管理员
-    user = models.CharField(max_length=100)  # 反馈的用户
+    manager = models.CharField(max_length=1000)  # 管理员
+    user = models.CharField(max_length=1000)  # 反馈的用户
 
     class Meta:
         '''
@@ -173,10 +173,49 @@ class Request(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='request')  # 外键绑定用户
-    request_type = models.CharField(max_length=500, null=True)  # 请求类型
+    request_type = models.CharField(max_length=1000, null=True)  # 请求类型
 
     class Meta:
         '''
         double linking: request
         '''
         db_table = 'request'
+
+
+class Notice(models.Model):
+    """
+    construct model notice
+    """
+    publish_user = models.CharField(max_length=1000)  # 发布者
+    create_time = models.DateTimeField(default=0)  # 创建时间
+    content = models.TextField(max_length=500000,
+                               default='default feedback')  # 公告内容
+    title = models.CharField(max_length=1000, default='default title')  # 公告标题
+
+    class Meta:
+        '''
+        double linking: notice
+        '''
+        db_table = 'notice'
+
+
+class Warn(models.Model):
+    """
+    construct model warn
+    """
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='warn')  # 外键绑定用户
+    likes_change = models.IntegerField(default=0)
+    comments_change = models.IntegerField(default=0)
+    views_change = models.IntegerField(default=0)
+    likes_before = models.IntegerField(default=0)
+    comments_before = models.IntegerField(default=0)
+    views_before = models.IntegerField(default=0)
+    warn_time = models.DateTimeField(default=0)  # 预警时间
+
+    class Meta:
+        '''
+        double linking: warn
+        '''
+        db_table = 'warn'
