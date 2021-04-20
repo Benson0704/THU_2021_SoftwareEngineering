@@ -4,16 +4,16 @@ WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 
 FUNCTION TEMPLATE for view:
+    if request.method == 'GET':
+        try:
+            open_id = request.GET.get('open_id')
+        except:
+            return app.utils.gen_response(400)
+    return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
             ret = request.body
             ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(400)
-    return app.utils.gen_response(405)
-    if request.method == 'GET':
-        try:
-            open_id = request.GET.get('open_id')
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
@@ -313,21 +313,9 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     """
     analyse_list = AnalyseHour.objects.filter(
         user_id=open_id).order_by('sum_time')
-    one_day_count = {
-        'like_count': 0,
-        'comment_count': 0,
-        'view_count': 0
-    }
-    one_hour_count = {
-        'like_count': 0,
-        'comment_count': 0,
-        'view_count': 0
-    }
-    now_count = {
-        'like_count': 0,
-        'comment_count': 0,
-        'view_count': 0
-    }
+    one_day_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
+    one_hour_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
+    now_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
     for analyse in analyse_list:
         if one_day_before_time == app.times.datetime2timestamp(
                 analyse.sum_time):
@@ -341,8 +329,7 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
             one_hour_count['comment_count'] += analyse.total_comment_count
             one_hour_count['view_count'] += analyse.total_view_count
 
-        if now_time == app.times.datetime2timestamp(
-                analyse.sum_time):
+        if now_time == app.times.datetime2timestamp(analyse.sum_time):
             now_count['like_count'] += analyse.total_like_count
             now_count['comment_count'] += analyse.total_comment_count
             now_count['view_count'] += analyse.total_view_count
@@ -364,12 +351,14 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     if likes_change > 0.2 * likes_before \
             or comments_change > 0.2 * comments_before \
             or views_change > 0.2 * views_before:
-        flow = {"likes_change": likes_change,
-                "comments_change": comments_change,
-                "views_change": views_change,
-                "likes_before": likes_before,
-                "comments_before": comments_before,
-                "views_before": views_before,
-                "timestamp": now_time}
+        flow = {
+            "likes_change": likes_change,
+            "comments_change": comments_change,
+            "views_change": views_change,
+            "likes_before": likes_before,
+            "comments_before": comments_before,
+            "views_before": views_before,
+            "timestamp": now_time
+        }
         return flow
     return None
