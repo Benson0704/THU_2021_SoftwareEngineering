@@ -36,6 +36,11 @@ class TestLogin(unittest.TestCase):
                                     access_token="9XZzf6up5SH8U1JFUKs=\n",
                                     refresh_token="9XZzf6up5SH8U1JFUKs=\n")
         brisa.save()
+        User.objects.filter(open_id="I am invisible").delete()
+        temp = User.objects.create(open_id="I am invisible",
+                                   name="temp",
+                                   identity=True)
+        temp.save()
         Video.objects.filter(
             photo_id='this is a sunset photo in Hogwards').delete()
         new_video = Video.objects.create(
@@ -363,6 +368,22 @@ class TestLogin(unittest.TestCase):
         open_id_list = app.utils.get_all_open_id()
         open_id = "todayisagoodday"
         self.assertTrue(open_id in open_id_list)
+
+    def test_is_administrator_no(self):
+        """
+        this is a test for is_administrator, result: no
+        """
+        open_id = "todayisagoodday"
+        re = app.utils.is_administrator(open_id=open_id)
+        self.assertFalse(re)
+
+    def test_is_administrator_yes(self):
+        """
+        this is a test for is_administrator, result: yes
+        """
+        open_id = "I am invisible"
+        re = app.utils.is_administrator(open_id=open_id)
+        self.assertTrue(re)
 
     def tearDown(self):
         User.objects.filter(open_id="todayisagoodday").delete()
