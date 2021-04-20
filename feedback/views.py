@@ -9,6 +9,10 @@ from app.models import User, Message, Feedback
 
 
 def operate_feedback_user(request):
+    """
+    this function operate feedback for user
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
@@ -68,6 +72,10 @@ def operate_feedback_user(request):
 
 
 def operate_feedback_admin(request):
+    """
+    this function operate feedback for admin
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             messages = Message.objects.all().order_by('-create_time')
