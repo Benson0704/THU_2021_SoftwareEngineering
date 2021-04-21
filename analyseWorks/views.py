@@ -126,10 +126,18 @@ def get_all_videos_info(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
-            return app.utils.gen_response(200, {
-                'recent_data': recent_data,
-                'count_list': res_list
-            })
+            a = []
+            for i in analyse_list:
+                a.append(i.sum_time)
+            return app.utils.gen_response(
+                200, {
+                    'recent_data': recent_data,
+                    'count_list': res_list,
+                    'begin': begin_timestamp,
+                    'given_begin': int(request.GET['begin_timestamp']),
+                    'given_term': int(request.GET['term_timestamp']),
+                    'times': a
+                })
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
