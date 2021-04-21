@@ -55,7 +55,7 @@ def operate_notice_admin(request):
                                           }})
         except:
             return app.utils.gen_response(400)
-    return app.utils.gen_response(405)
+        return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
             ret = request.body
