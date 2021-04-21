@@ -26,20 +26,20 @@ class TestAppTimes(TestCase):
                                                identity=True)
         feedback_user.save()
         feedback_manager.save()
-        message_solved = Message.objects.create(content="message solved",
-                                                title="title",
-                                                create_time="2021-06-05 11:11:11",
-                                                user=feedback_user,
-                                                status=True,
-                                                manager="feedbackmanager")
-        message_unsolved = Message.objects.create(content="message unsolved",
-                                                  title="untitle",
-                                                  create_time="2021-06-06 11:11:11",
-                                                  user=feedback_user,
-                                                  status=False)
-        message_solved.save()
-        message_unsolved.save()
-        feedback = Feedback.objects.create(message=message_solved,
+        somessage = Message.objects.create(content="message solved",
+                                           title="title",
+                                           create_time="2021-06-05 11:11:11",
+                                           user=feedback_user,
+                                           status=True,
+                                           manager="feedbackmanager")
+        unmessage = Message.objects.create(content="message unsolved",
+                                           title="untitle",
+                                           create_time="2021-06-06 11:11:11",
+                                           user=feedback_user,
+                                           status=False)
+        somessage.save()
+        unmessage.save()
+        feedback = Feedback.objects.create(message=somessage,
                                            content="feedback content",
                                            title="feedback title",
                                            create_time="2021-06-05 21:11:11",
@@ -126,9 +126,7 @@ class TestAppTimes(TestCase):
         this is a test for operate_feedback_admin
         method: get  error: none
         """
-        # payload = {}
         response = self.client.get('/api/feedback/admin',
-                                    # data=payload,
                                     content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         print(response)
