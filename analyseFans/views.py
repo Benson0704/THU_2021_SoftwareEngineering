@@ -22,7 +22,7 @@ def get_fans_info(request):
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
             begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
-            while begin_timestamp > term_timestamp + 1:
+            while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):

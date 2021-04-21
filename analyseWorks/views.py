@@ -35,7 +35,7 @@ def get_videos_info_by_time(request):
             count_list = []
             res_list = []
             begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
-            while begin_timestamp > term_timestamp + 1:
+            while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
@@ -112,7 +112,7 @@ def get_all_videos_info(request):
             analyse_list = Analyse.objects.filter(
                 user_id=open_id).order_by('sum_time')
             begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
-            while begin_timestamp > term_timestamp + 1:
+            while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
