@@ -96,7 +96,7 @@ def operate_feedback_admin(request):
                         app.times.datetime2timestamp(message.create_time)
                     })
                 if message.status == 1 and len(solved_list) < 3:
-                    feedback = message.feedback
+                    feedback = message.feedback.all()
                     solved_list.append({
                         'title':
                         message.title,
@@ -107,9 +107,9 @@ def operate_feedback_admin(request):
                         'user_name':
                         message.user.name,
                         'response':
-                        feedback.content,
+                        feedback[0].content,
                         'response_timestamp':
-                        app.times.datetime2timestamp((feedback.create_time))
+                        app.times.datetime2timestamp((feedback[0].create_time))
                     })
             return app.utils.gen_response(
                 200, {
@@ -126,8 +126,9 @@ def operate_feedback_admin(request):
             ret = json.loads(ret.decode('utf-8'))
             message = Message.objects.get(
                 user=User.objects.get(open_id=ret['user_open_id']),
-                create_time=ret['timestamp'])
+                create_time=app.times.timestamp2datetime(ret['timestamp']))
             message.save()
+            print(message.title)
             feedback = Feedback(user=ret['user_open_id'],
                                 create_time=app.times.timestamp2datetime(
                                     time.time()),
