@@ -37,6 +37,16 @@ def get_fans_info(request):
                 if begin_timestamp > term_timestamp:
                     break
             for i, dic in enumerate(count_list):
+                if len(count_list) == 1:
+                    res_list.append({
+                        'like_count':
+                        count_list[i]['like_count'],
+                        'comment_count':
+                        count_list[i]['comment_count'],
+                        'view_count':
+                        count_list[i]['view_count']
+                    })
+                    break
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':

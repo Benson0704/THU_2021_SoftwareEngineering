@@ -46,6 +46,16 @@ def get_videos_info_by_time(request):
                 if begin_timestamp > term_timestamp + 1:
                     break
             for i, dic in enumerate(count_list):
+                if len(count_list) == 1:
+                    res_list.append({
+                        'like_count':
+                        count_list[i]['like_count'],
+                        'comment_count':
+                        count_list[i]['comment_count'],
+                        'view_count':
+                        count_list[i]['view_count']
+                    })
+                    break
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
@@ -114,6 +124,16 @@ def get_all_videos_info(request):
                 if begin_timestamp > term_timestamp + 1:
                     break
             for i, dic in enumerate(count_list):
+                if len(count_list) == 1:
+                    res_list.append({
+                        'like_count':
+                        count_list[i]['like_count'],
+                        'comment_count':
+                        count_list[i]['comment_count'],
+                        'view_count':
+                        count_list[i]['view_count']
+                    })
+                    break
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
@@ -128,7 +148,7 @@ def get_all_videos_info(request):
                     })
             a = []
             for i in analyse_list:
-                a.append(i.sum_time)
+                a.append(app.times.datetime2timestamp(i.sum_time))
             return app.utils.gen_response(
                 200, {
                     'recent_data': recent_data,
@@ -136,7 +156,8 @@ def get_all_videos_info(request):
                     'begin': begin_timestamp,
                     'given_begin': int(request.GET['begin_timestamp']),
                     'given_term': int(request.GET['term_timestamp']),
-                    'times': a
+                    'times': a,
+                    'tmp': count_list
                 })
         except:
             return app.utils.gen_response(400)
