@@ -125,7 +125,7 @@ def get_all_videos_info(request):
                     })
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
-                'count_list': res_list
+                'count_list': res_list+count_list,'t':list(analyse_list)
             })
         except:
             return app.utils.gen_response(400)
