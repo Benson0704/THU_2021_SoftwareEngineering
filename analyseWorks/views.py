@@ -125,7 +125,7 @@ def get_all_videos_info(request):
                     })
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
-                'count_list': res_list+count_list,'t':analyse_list[0].sum_time
+                'count_list': res_list+count_list,'t':app.times.datetime2timestamp(analyse_list[0].sum_time),'a':begin_timestamp,'b':int(request.GET['begin_timestamp']),'c':int(request.GET['term_timestamp'])
             })
         except:
             return app.utils.gen_response(400)
