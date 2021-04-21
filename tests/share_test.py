@@ -3,9 +3,7 @@ this file should be a .py file as tests for share module
 '''
 from django.test import TestCase
 from app.models import User
-import app.times
 import pytest
-from datetime import datetime
 
 
 @pytest.mark.django_db
