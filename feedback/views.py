@@ -127,7 +127,6 @@ def operate_feedback_admin(request):
             message = Message.objects.get(
                 user=User.objects.get(open_id=ret['user_open_id']),
                 create_time=ret['timestamp'])
-            message.status = 1
             message.save()
             feedback = Feedback(user=ret['user_open_id'],
                                 create_time=app.times.timestamp2datetime(
@@ -136,6 +135,12 @@ def operate_feedback_admin(request):
                                 manager=ret['open_id'],
                                 content=ret['response'])
             feedback.save()
+            if message.status == 0:
+                message.status = 1
+                message.save()
+                return app.utils.gen_response(200)
+            if message.status == 1:
+                return app.utils.gen_response(210)
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
