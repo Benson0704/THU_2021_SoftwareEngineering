@@ -38,7 +38,7 @@ class TestShare(TestCase):
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(400, response.json()['code'])
-    
+ 
     def test_add_share(self):
         '''
         This is a unittest for add_share
@@ -52,12 +52,12 @@ class TestShare(TestCase):
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        expected_result = "test shared"
+        expected_result = "test shared_&_"
         sharer = User.objects.get(open_id="test sharer")
         shared = User.objects.get(open_id="test shared")
-        self.assertEqual(sharer.auth_user,expected_result)
+        self.assertEqual(sharer.auth_user, expected_result)
         expected_result = "test sharer_&_"
-        self.assertEqual(shared.authd_user,expected_result)
+        self.assertEqual(shared.authed_user, expected_result)
 
     def test_delete_share_id_lost(self):
         '''
@@ -90,8 +90,8 @@ class TestShare(TestCase):
         '''
         payload = {}
         response = self.client.get('/api/share/sharing',
-                                    data=payload,
-                                    content_type="application/json")
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_my_sharing_user(self):
@@ -124,8 +124,8 @@ class TestShare(TestCase):
         '''
         payload = {}
         response = self.client.get('/api/share/shared',
-                                    data=payload,
-                                    content_type="application/json")
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
     def test_get_user_share_to_me(self):
