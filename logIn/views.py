@@ -17,7 +17,6 @@ try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
-
     @register_job(scheduler, 'cron', day_of_week='mon-sun',
                   hour='0-23', id='hourly_task', misfire_grace_time=3600)
     def hourly_fetch_data():
@@ -40,7 +39,6 @@ try:
             app.utils.store_flow(open_id, one_day_before_time,
                                  one_hour_before_time, now_timestamp)
 
-
     @register_job(scheduler, 'cron', day_of_week='mon-sun',
                   hour='11', id='daily_task')
     def daily_fetch_data():
@@ -56,7 +54,6 @@ try:
             now_time = app.times.datetime2string(datetime.now())
             time = now_time.split(':')[0] + ":00:00"
             app.utils.analyse_daily_data(open_id, data[1], time)
-
 
     register_events(scheduler)
     scheduler.start()
