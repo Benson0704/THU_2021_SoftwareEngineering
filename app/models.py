@@ -1,6 +1,6 @@
 '''
-这个文件定义了后端的八个类
-modified: 4.17
+这个文件定义了后端的11个类
+modified: 4.21
 '''
 
 from django.db import models
@@ -10,9 +10,9 @@ class User(models.Model):
     '''
     用户类
     '''
-    open_id = models.CharField(max_length=50, unique=True,
+    open_id = models.CharField(max_length=250, unique=True,
                                primary_key=True)  # 用户id，用户唯一标志
-    name = models.CharField(max_length=50, unique=True)  # 用户昵称
+    name = models.CharField(max_length=250, unique=True)  # 用户昵称
     sex = models.BooleanField(null=True)  # 性别设置为bool，1为F，0为M，可空
     head = models.CharField(max_length=500, null=True)  # 头像地址
     bigHead = models.CharField(max_length=500, null=True)  # 大头像地址
@@ -29,10 +29,8 @@ class User(models.Model):
     access_token = models.CharField(max_length=2500, null=True)
     refresh_token = models.CharField(max_length=2500, null=True)
     identity = models.BooleanField(default=False)  # 表示用户是否为管理员 1:是 0:否
-    auth_user = models.TextField(max_length=50000,
-                                 default="")  # 授权的用户
-    authed_user = models.TextField(max_length=50000,
-                                   default="")  # 谁授权给我
+    auth_user = models.TextField(max_length=500000, default="")  # 授权的用户
+    authed_user = models.TextField(max_length=500000, default="")  # 谁授权给我
 
     class Meta:
         '''
@@ -48,7 +46,7 @@ class Video(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='video')  # 用户
-    photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
+    photo_id = models.CharField(max_length=250, primary_key=True)  # 作品id
     caption = models.CharField(max_length=500,
                                default="Default Caption")  # 作品标题
     cover = models.CharField(max_length=500, default="Default Cover")  # 作品封面
@@ -58,8 +56,7 @@ class Video(models.Model):
     comment_count = models.IntegerField(default=0)  # 作品评论数
     view_count = models.IntegerField(default=0)  # 作品观看数
     pending = models.BooleanField()  # 作品状态（是否正在处理，不能观看）
-    labels = models.CharField(max_length=100, default="",
-                              null=True)  # 表示视频的标签
+    labels = models.CharField(max_length=100, default="", null=True)  # 表示视频的标签
 
     class Meta:
         '''
@@ -92,7 +89,7 @@ class Analyse(models.Model):
     video = models.ForeignKey(Video,
                               on_delete=models.CASCADE,
                               related_name='analysis')  # 外键绑定视频
-    user_id = models.CharField(max_length=50)  # 用户id
+    user_id = models.CharField(max_length=250)  # 用户id
     sum_time = models.DateTimeField(default=0)
     total_view_count = models.IntegerField(default=0)
     total_comment_count = models.IntegerField(default=0)
@@ -112,7 +109,7 @@ class AnalyseHour(models.Model):
     video = models.ForeignKey(Video,
                               on_delete=models.CASCADE,
                               related_name='analysisHour')  # 外键绑定视频
-    user_id = models.CharField(max_length=50)  # 用户id
+    user_id = models.CharField(max_length=250)  # 用户id
     sum_time = models.DateTimeField(default=0)
     total_view_count = models.IntegerField(default=0)
     total_comment_count = models.IntegerField(default=0)
@@ -129,16 +126,15 @@ class Message(models.Model):
     '''
     消息类，有一个自增的id主键
     '''
-    content = models.CharField(max_length=5000,
+    content = models.TextField(max_length=500000,
                                default='default message')  # 消息内容
-    title = models.CharField(max_length=1000,
-                             default='default title')  # 消息标题
+    title = models.TextField(max_length=1000, default='default title')  # 消息标题
     create_time = models.DateTimeField(default=0)  # 创建时间
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='message')  # 外键绑定用户
     status = models.BooleanField(default=False)  # 消息是否被处理 1:是 0:否
-    manager = models.CharField(max_length=100, null=True)  # 处理的管理员
+    manager = models.TextField(max_length=1000, null=True)  # 处理的管理员
 
     class Meta:
         '''
@@ -147,20 +143,19 @@ class Message(models.Model):
         db_table = 'message'
 
 
-class feedback(models.Model):
+class Feedback(models.Model):
     """
     construct model feedback
     """
     message = models.ForeignKey(Message,
                                 on_delete=models.CASCADE,
                                 related_name='feedback')  # 外键绑定消息
-    content = models.CharField(max_length=5000,
+    content = models.TextField(max_length=500000,
                                default='default feedback')  # 反馈内容
-    title = models.CharField(max_length=1000,
-                             default='default title')  # 反馈标题
+    title = models.TextField(max_length=1000, default='default title')  # 反馈标题
     create_time = models.DateTimeField(default=0)  # 创建时间
-    manager = models.CharField(max_length=100)  # 管理员
-    user = models.CharField(max_length=100)  # 反馈的用户
+    manager = models.TextField(max_length=1000)  # 管理员
+    user = models.TextField(max_length=1000)  # 反馈的用户
 
     class Meta:
         '''
@@ -169,7 +164,7 @@ class feedback(models.Model):
         db_table = 'feedback'
 
 
-class request(models.Model):
+class Request(models.Model):
     """
     construct model request
     """
@@ -178,11 +173,49 @@ class request(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='request')  # 外键绑定用户
-    request_type = models.CharField(max_length=500,
-                                    null=True)  # 请求类型
+    request_type = models.TextField(max_length=1000, null=True)  # 请求类型
 
     class Meta:
         '''
         double linking: request
         '''
         db_table = 'request'
+
+
+class Notice(models.Model):
+    """
+    construct model notice
+    """
+    publish_user = models.TextField(max_length=1000)  # 发布者
+    create_time = models.DateTimeField(default=0)  # 创建时间
+    content = models.TextField(max_length=500000,
+                               default='default feedback')  # 公告内容
+    title = models.TextField(max_length=1000, default='default title')  # 公告标题
+
+    class Meta:
+        '''
+        double linking: notice
+        '''
+        db_table = 'notice'
+
+
+class Warn(models.Model):
+    """
+    construct model warn
+    """
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='warn')  # 外键绑定用户
+    likes_change = models.IntegerField(default=0)
+    comments_change = models.IntegerField(default=0)
+    views_change = models.IntegerField(default=0)
+    likes_before = models.IntegerField(default=0)
+    comments_before = models.IntegerField(default=0)
+    views_before = models.IntegerField(default=0)
+    warn_time = models.DateTimeField(default=0)  # 预警时间
+
+    class Meta:
+        '''
+        double linking: warn
+        '''
+        db_table = 'warn'

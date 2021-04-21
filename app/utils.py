@@ -4,6 +4,12 @@ WARNING!:
 all functions not used to handle frontend request DIRECTLY should write here
 
 FUNCTION TEMPLATE for view:
+    if request.method == 'GET':
+        try:
+            open_id = request.GET.get('open_id')
+        except:
+            return app.utils.gen_response(400)
+    return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
             ret = request.body
@@ -11,16 +17,10 @@ FUNCTION TEMPLATE for view:
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
-    if request.method == 'GET':
-        try:
-            open_id = request.GET.get('open_id')
-        except:
-            return app.utils.gen_response(400)
-    return app.utils.gen_response(405)
 '''
 import app.times
 import app.tokens
-from app.models import User, Video, Analyse, AnalyseHour
+from app.models import User, Video, Analyse, AnalyseHour, Warn
 import json
 from django.http import JsonResponse
 
@@ -306,28 +306,15 @@ def is_administrator(open_id):
     return user.identity
 
 
-def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
+def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     """
-    本函数用于得到一个用户的流量预警变化
-    没有需要预警的则返回None
+    本函数用于存储一个用户的流量预警变化
     """
     analyse_list = AnalyseHour.objects.filter(
         user_id=open_id).order_by('sum_time')
-    one_day_count = {
-        'like_count': 0,
-        'comment_count': 0,
-        'view_count': 0
-    }
-    one_hour_count = {
-        'like_count': 0,
-        'comment_count': 0,
-        'view_count': 0
-    }
-    now_count = {
-        'like_count': 0,
-        'comment_count': 0,
-        'view_count': 0
-    }
+    one_day_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
+    one_hour_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
+    now_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
     for analyse in analyse_list:
         if one_day_before_time == app.times.datetime2timestamp(
                 analyse.sum_time):
@@ -341,15 +328,14 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
             one_hour_count['comment_count'] += analyse.total_comment_count
             one_hour_count['view_count'] += analyse.total_view_count
 
-        if now_time == app.times.datetime2timestamp(
-                analyse.sum_time):
+        if now_time == app.times.datetime2timestamp(analyse.sum_time):
             now_count['like_count'] += analyse.total_like_count
             now_count['comment_count'] += analyse.total_comment_count
             now_count['view_count'] += analyse.total_view_count
 
     if one_day_count['like_count'] == 0 \
             or one_hour_count['like_count'] == 0:
-        return None
+        return
 
     likes_change = now_count["like_count"] - one_hour_count['like_count']
     comments_change = \
@@ -364,12 +350,23 @@ def get_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     if likes_change > 0.2 * likes_before \
             or comments_change > 0.2 * comments_before \
             or views_change > 0.2 * views_before:
-        flow = {"likes_change": likes_change,
-                "comments_change": comments_change,
-                "views_change": views_change,
-                "likes_before": likes_before,
-                "comments_before": comments_before,
-                "views_before": views_before,
-                "timestamp": now_time}
-        return flow
-    return None
+        user = User.objects.get(open_id=open_id)
+        data = Warn(user=user,
+                    likes_change=likes_change,
+                    comments_change=comments_change,
+                    views_change=views_change,
+                    likes_before=likes_before,
+                    comments_before=comments_before,
+                    views_before=views_before,
+                    warn_time=now_time
+                    )
+        data.save()
+
+
+def get_flow(open_id):
+    """
+    本函数接口通过用户的open_id得到存储在数据库中的所有流量预警
+    """
+    user = User.objects.get(open_id=open_id)
+    flow_list = Warn.objects.filter(user=user).order_by('-warn_time')
+    return flow_list
