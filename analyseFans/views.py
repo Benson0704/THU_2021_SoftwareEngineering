@@ -25,12 +25,12 @@ def get_fans_info(request):
                 begin_timestamp,
                 app.times.datetime2timestamp(analyse_list[0].sum_time))
             while begin_timestamp <= term_timestamp + 1:
+                count_list.append({
+                    'like_count': 0,
+                    'comment_count': 0,
+                    'view_count': 0
+                })
                 for analyse in analyse_list:
-                    count_list.append({
-                        'like_count': 0,
-                        'comment_count': 0,
-                        'view_count': 0
-                    })
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
                         count_list[-1][
