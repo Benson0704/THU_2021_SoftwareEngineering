@@ -38,7 +38,7 @@ class TestShare(TestCase):
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(400, response.json()['code'])
- 
+
     def test_add_share(self):
         '''
         This is a unittest for add_share
