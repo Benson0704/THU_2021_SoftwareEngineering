@@ -127,7 +127,7 @@ class TestAppTimes(TestCase):
         method: get  error: none
         """
         response = self.client.get('/api/feedback/admin',
-                                    content_type="application/json")
+                                   content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         print(response)
         unsolved_lists = response.json()['data']['data']['unsolved_feedbacks']
