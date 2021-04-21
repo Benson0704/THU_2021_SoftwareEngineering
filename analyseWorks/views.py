@@ -34,7 +34,9 @@ def get_videos_info_by_time(request):
             res['view_count'] = video.view_count
             count_list = []
             res_list = []
-            begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
+            begin_timestamp = max(
+                begin_timestamp,
+                app.times.datetime2timestamp(analyse_list[0].sum_time))
             while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
@@ -111,16 +113,19 @@ def get_all_videos_info(request):
             res_list = []
             analyse_list = Analyse.objects.filter(
                 user_id=open_id).order_by('sum_time')
-            begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
+            begin_timestamp = max(
+                begin_timestamp,
+                app.times.datetime2timestamp(analyse_list[0].sum_time))
             while begin_timestamp <= term_timestamp + 1:
+                count_list.append({
+                    'like_count': 0,
+                    'comment_count': 0,
+                    'view_count': 0
+                })
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
-                        count_list.append({
-                            'like_count': 0,
-                            'comment_count': 0,
-                            'view_count': 0
-                        })
+
                         count_list[-1][
                             'like_count'] += analyse.total_like_count
                         count_list[-1]['comment_count'] += \

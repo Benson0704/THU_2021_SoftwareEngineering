@@ -21,16 +21,18 @@ def get_fans_info(request):
             res = {}
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
-            begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
+            begin_timestamp = max(
+                begin_timestamp,
+                app.times.datetime2timestamp(analyse_list[0].sum_time))
             while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
+                    count_list.append({
+                        'like_count': 0,
+                        'comment_count': 0,
+                        'view_count': 0
+                    })
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
-                        count_list.append({
-                            'like_count': 0,
-                            'comment_count': 0,
-                            'view_count': 0
-                        })
                         count_list[-1][
                             'like_count'] += analyse.total_like_count
                         count_list[-1][
