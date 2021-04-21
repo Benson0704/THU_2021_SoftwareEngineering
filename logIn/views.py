@@ -12,8 +12,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
 
-from app.models import User, Label
-
 try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
@@ -31,11 +29,6 @@ try:
         to fetch data and store data from api
         also add flow alarm for the notice module
         """
-        user = User.objects.get(open_id='f198ebf54d7a86c614bf5724501f4d09')
-        label = Label(user=user,
-                      label_name='hahaha',
-                      num=50)
-        label.save()
         for open_id in app.utils.get_all_open_id():
             access_token = app.utils.get_token(open_id)[0]
             data = app.api.get_all_data(open_id, access_token)
@@ -155,6 +148,10 @@ def get_user_info_by_code(request):
         time = app.times.datetime2string(datetime.now())
         today_time = time.split(' ')[0] + " 00:00:00"
         app.utils.analyse_hour_data(open_id, data[1], today_time)
+        app.utils.analyse_daily_data(open_id, data[1], today_time)
+        today_time = time.split(' ')[0] + " 01:00:00"
+        app.utils.analyse_hour_data(open_id, data[1], today_time)
+        app.utils.analyse_daily_data(open_id, data[1], today_time)
 
         data = {
             'user_data': {
