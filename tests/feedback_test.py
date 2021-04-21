@@ -121,6 +121,45 @@ class TestAppTimes(TestCase):
     #     message = Message.objects.get(title="test title")
     #     self.assertEqual(message.content, "test content")
 
+    def test_operate_feedback_admin_get(self):
+        """
+        this is a test for operate_feedback_admin
+        method: get  error: none
+        """
+        payload = {}
+        response = self.client.get('/api/feedback/admin',
+                                    data=payload,
+                                    content_type="application/json")
+        unsolved_lists = response.json()['data']['unsolved_feedbacks']
+        solved_lists = response.json()['data']['solved_feedbacks']
+        unsolved_title = []
+        solved_title = []
+        for list in unsolved_lists:
+            unsolved_title.append(list['title'])
+        for list in solved_lists:
+            solved_title.append(list['title'])
+        expected_solved = "title"
+        expected_unsolved = "untitle"
+        self.assertEqual(200, response.json()['code'])
+        self.assertTrue(expected_solved in solved_title)
+        self.assertTrue(expected_unsolved in unsolved_title)
+
+    def test_operate_feedback_admin_post(self):
+        """
+        this is a test for operate_feedback_admin
+        method: post error: none
+        """
+        time = datetime(2021, 6, 6, 11, 11, 11)
+        payload = {
+            'user_open_id': "feedbackuser",
+            'timestamp': app.times.datetime2timestamp(time),
+            'open_id': "feedbackmanager",
+            'response': "test response"
+        }
+        response = self.client.post('/api/feedback/admin',
+                                    data=payload,
+                                    content_type="application/json")
+
     def teardown(self):
         """
         this is the deconstructin of tests for feedback
