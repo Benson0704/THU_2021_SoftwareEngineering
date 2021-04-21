@@ -145,17 +145,19 @@ def get_user_info_by_code(request):
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(
             open_id)  # delete these lines
-        app.models.Analyse.objects.all().delete()
-        app.models.AnalyseHour.objects.all().delete()
+        for i in app.models.Analyse.objects.all():
+            i.delete()
+        for i in app.models.AnalyseHour.objects.all():
+            i.delete()
         time = app.times.timestamp2string(tm.time() - 86400 * 2)
-        for i in range(1, 24):
+        for i in range(1, 10):
             today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
             app.utils.analyse_hour_data(open_id, data[1], today_time)
         time = app.times.timestamp2string(tm.time() - 86400)
         today_time = time.split(' ')[0] + " 00:00:00"
         app.utils.analyse_hour_data(open_id, data[1], today_time)
         app.utils.analyse_daily_data(open_id, data[1], today_time)
-        for i in range(1, 24):
+        for i in range(1, 10):
             today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
             app.utils.analyse_hour_data(open_id, data[1], today_time)
         time = app.times.datetime2string(datetime.now())
