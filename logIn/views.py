@@ -16,8 +16,13 @@ try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
-    @register_job(scheduler, 'cron', day_of_week='mon-sun',
-                  hour='0-23', id='hourly_task', misfire_grace_time=3600)
+    @register_job(scheduler,
+                  'cron',
+                  day_of_week='mon-sun',
+                  hour='0-23',
+                  minute='25',
+                  id='hourly_task',
+                  misfire_grace_time=3600)
     def hourly_fetch_data():
         """
         this function is supposed to run in hourly period
@@ -38,8 +43,11 @@ try:
             app.utils.store_flow(open_id, one_day_before_time,
                                  one_hour_before_time, now_timestamp)
 
-    @register_job(scheduler, 'cron', day_of_week='mon-sun',
-                  hour='11', id='daily_task')
+    @register_job(scheduler,
+                  'cron',
+                  day_of_week='mon-sun',
+                  hour='11',
+                  id='daily_task')
     def daily_fetch_data():
         """
         this function is supposed to run in daily period
@@ -100,8 +108,7 @@ def get_user_info_by_code(request):
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
         if result != 1:
-            return app.utils.gen_response(
-                404, token_data.get("error_msg"))
+            return app.utils.gen_response(404, token_data.get("error_msg"))
 
         access_token = token_data.get("access_token")
         open_id = token_data.get("open_id")
@@ -185,19 +192,19 @@ def get_user_info_by_id(request):
                 },
                 'video_data': {
                     'video_count':
-                        user_info['video_count'],
+                    user_info['video_count'],
                     'public_count':
-                        user_info['public_count'],
+                    user_info['public_count'],
                     'friend_count':
-                        user_info['friend_count'],
+                    user_info['friend_count'],
                     'private_count':
-                        user_info['private_count'],
+                    user_info['private_count'],
                     'total_like_count':
-                        app.utils.get_total_like_count(open_id),
+                    app.utils.get_total_like_count(open_id),
                     'total_comment_count':
-                        app.utils.get_total_comment_count(open_id),
+                    app.utils.get_total_comment_count(open_id),
                     'total_view_count':
-                        app.utils.get_total_view_count(open_id)
+                    app.utils.get_total_view_count(open_id)
                 },
                 "yesterday_change": get_yesterday_change(open_id),
                 'open_id': open_id
