@@ -18,7 +18,7 @@ def get_fans_info(request):
             term_timestamp = int(request.GET['term_timestamp'])
             count_list = []
             res_list = []
-            res={}
+            res = {}
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
             for analyse in analyse_list:
@@ -30,23 +30,24 @@ def get_fans_info(request):
                         'view_count': 0
                     })
                     count_list[-1]['like_count'] += analyse.total_like_count
-                    count_list[-1]['comment_count'] += analyse.total_comment_count
+                    count_list[-1][
+                        'comment_count'] += analyse.total_comment_count
                     count_list[-1]['view_count'] += analyse.total_view_count
-                    begin_timestamp += 3600
-                    if begin_timestamp > term_timestamp:
-                        break
+                begin_timestamp += 3600
+                if begin_timestamp > term_timestamp:
+                    break
             for i, dic in enumerate(count_list):
                 if dic != count_list[-1]:
                     res_list.append({
                         'like_count':
-                        count_list[i + 1]['like_count']
-                        - count_list[i]['like_count'],
+                        count_list[i + 1]['like_count'] -
+                        count_list[i]['like_count'],
                         'comment_count':
-                        count_list[i + 1]['comment_count']
-                        - count_list[i]['comment_count'],
+                        count_list[i + 1]['comment_count'] -
+                        count_list[i]['comment_count'],
                         'view_count':
-                        count_list[i + 1]['view_count']
-                        - count_list[i]['view_count']
+                        count_list[i + 1]['view_count'] -
+                        count_list[i]['view_count']
                     })
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
