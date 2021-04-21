@@ -41,7 +41,9 @@ def delete_share(request):
             ret = json.loads(ret.decode('utf-8'))
             sharer_openid = ret['sharer_open_id']
             shared_openid = ret['shared_open_id']
+            print(shared_openid)
             sharer_user = User.objects.get(open_id=sharer_openid)
+            print(sharer_user)
             sharer_user.auth_user.replace(shared_openid + '_&_', '')
             sharer_user.save()
             shared_user = User.objects.get(open_id=shared_openid)
@@ -60,7 +62,7 @@ def get_my_sharing_user(request):
     """
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
+            open_id = request.GET['open_id']
             user = User.objects.get(open_id=open_id)
             if user.auth_user == '':
                 return app.utils.gen_response(200,

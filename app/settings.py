@@ -26,9 +26,8 @@ SECRET_KEY = '$7z)6d^qie^0d%ji5#nhr5w_v-i%04wxd@jm00d^@j*2gn8m@0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(config['DEBUG'])
 
-ALLOWED_HOSTS = [
-    'backend-fullhouse.app.secoder.net', 'backend.fullhouse.secoder.local'
-]
+ALLOWED_HOSTS = ['backend-fullhouse.app.secoder.net',
+                 'backend.fullhouse.secoder.local']
 
 # Application definition
 
@@ -36,13 +35,15 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'logIn', 'app',
-    'manageWorks', 'analyseWorks', 'analyseFans', 'django_apscheduler'
+    'manageWorks', 'analyseWorks', 'analyseFans',
+    'django_apscheduler'
 ]
-# 'django.middleware.csrf.CsrfViewMiddleware',
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -79,9 +80,7 @@ DATABASES = {
         'USER': 'root',  # 数据库用户
         'PASSWORD': config['PASSWORD'],  # 密码
         'PORT': 3306,  # mysql的端口默认3306
-        'OPTIONS': {
-            'charset': 'utf8mb4'
-        },
+        'OPTIONS': {'charset': 'utf8mb4'},
         'TEST': {
             'CHARSET': 'utf8mb4',
             'COLLATION': 'utf8mb4_unicode_ci'
