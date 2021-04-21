@@ -7,7 +7,6 @@ from datetime import datetime
 import app.api
 import app.utils
 import app.times
-import notice.views
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
@@ -36,11 +35,8 @@ try:
             now_timestamp = app.times.string2timestamp(time)
             one_hour_before_time = now_timestamp - 60 * 60
             one_day_before_time = now_timestamp - 24 * 60 * 60
-            flow = app.utils.get_flow(open_id, one_day_before_time,
-                                      one_hour_before_time, now_timestamp)
-            print(flow)
-            if flow is not None:
-                notice.views.flows.append(flow)
+            app.utils.store_flow(open_id, one_day_before_time,
+                                 one_hour_before_time, now_timestamp)
 
     @register_job(scheduler, 'cron', day_of_week='mon-sun',
                   hour='11', id='daily_task')
