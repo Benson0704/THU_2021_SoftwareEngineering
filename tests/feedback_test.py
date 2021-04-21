@@ -132,7 +132,7 @@ class TestAppTimes(TestCase):
         print(response)
         unsolved_lists = response.json()['data']['data']['unsolved_feedbacks']
         unsolved_title = []
-        for list in unsolved_lists:
+        for lists in unsolved_lists:
             unsolved_title.append(list['title'])
         expected_unsolved = "untitle"
         self.assertTrue(expected_unsolved in unsolved_title)
@@ -181,7 +181,7 @@ class TestAppTimes(TestCase):
                                     content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
-    def teardown(self):
+    def tearDown(self):
         """
         this is the deconstructin of tests for feedback
         """
