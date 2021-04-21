@@ -9,7 +9,7 @@ from datetime import datetime
 
 
 @pytest.mark.django_db
-class TestAppTimes(TestCase):
+class TestFeedback(TestCase):
     '''
     This is a unittest for feedback module
     '''
