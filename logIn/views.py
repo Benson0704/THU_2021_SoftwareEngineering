@@ -7,7 +7,7 @@ from datetime import datetime
 import app.api
 import app.utils
 import app.times
-
+import app.models
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
@@ -143,7 +143,17 @@ def get_user_info_by_code(request):
 
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)
-        total_view_count = app.utils.get_total_view_count(open_id)
+        total_view_count = app.utils.get_total_view_count(
+            open_id)  # delete these lines
+        app.models.Analyse.all().delete()
+        app.models.AnalyseHour.all().delete()
+        time = app.times.timestamp2string(time.time() - 86400)
+        for i in range(23):
+            today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
+            app.utils.analyse_hour_data(open_id, data[1], today_time)
+        time = app.times.datetime2string(datetime.now())
+        today_time = time.split(' ')[0] + " 00:00:00"
+        app.utils.analyse_daily_data(open_id, data[1], today_time)
 
         data = {
             'user_data': {

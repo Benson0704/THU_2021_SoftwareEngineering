@@ -125,7 +125,6 @@ def get_all_videos_info(request):
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
-
                         count_list[-1][
                             'like_count'] += analyse.total_like_count
                         count_list[-1]['comment_count'] += \

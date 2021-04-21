@@ -65,10 +65,7 @@ def get_my_sharing_user(request):
             open_id = request.GET['open_id']
             user = User.objects.get(open_id=open_id)
             if user.auth_user == '':
-                return app.utils.gen_response(200,
-                                              {'data': {
-                                                  'sharing_list': []
-                                              }})
+                return app.utils.gen_response(200, {'sharing_list': []})
             id_list = user.auth_user.split('_&_')
             res_list = []
             for ids in id_list:
@@ -79,10 +76,7 @@ def get_my_sharing_user(request):
                         'name': user.name,
                         'head': user.head
                     })
-            return app.utils.gen_response(200,
-                                          {'data': {
-                                              'sharing_list': res_list
-                                          }})
+            return app.utils.gen_response(200, {'sharing_list': res_list})
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
@@ -98,10 +92,7 @@ def get_user_share_to_me(request):
             open_id = request.GET.get('open_id')
             user = User.objects.get(open_id=open_id)
             if user.authed_user == '':
-                return app.utils.gen_response(200,
-                                              {'data': {
-                                                  'shared_list': []
-                                              }})
+                return app.utils.gen_response(200, {'shared_list': []})
             id_list = user.authed_user.split('_&_')
             res_list = []
             for ids in id_list:
@@ -112,10 +103,7 @@ def get_user_share_to_me(request):
                         'name': user.name,
                         'head': user.head
                     })
-            return app.utils.gen_response(200,
-                                          {'data': {
-                                              'shared_list': res_list
-                                          }})
+            return app.utils.gen_response(200, {'shared_list': res_list})
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
