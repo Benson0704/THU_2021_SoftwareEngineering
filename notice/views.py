@@ -5,7 +5,7 @@ for user and admin
 import json
 import app.utils
 import app.times
-from app.models import User, Notice
+from app.models import Notice
 
 
 def get_notice_user(request):
