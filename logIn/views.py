@@ -20,7 +20,7 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
-                  minute='43',
+                  minute='52',
                   id='hourly_task',
                   misfire_grace_time=3600)
     def hourly_fetch_data():
@@ -46,7 +46,7 @@ try:
     @register_job(scheduler,
                   'cron',
                   day_of_week='mon-sun',
-                  hour='11',
+                  hour='0',
                   id='daily_task')
     def daily_fetch_data():
         """
