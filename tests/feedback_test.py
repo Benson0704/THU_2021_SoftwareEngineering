@@ -133,7 +133,7 @@ class TestAppTimes(TestCase):
         unsolved_lists = response.json()['data']['data']['unsolved_feedbacks']
         unsolved_title = []
         for lists in unsolved_lists:
-            unsolved_title.append(list['title'])
+            unsolved_title.append(lists['title'])
         expected_unsolved = "untitle"
         self.assertTrue(expected_unsolved in unsolved_title)
 
