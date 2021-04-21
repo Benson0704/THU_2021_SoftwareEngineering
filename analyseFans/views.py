@@ -21,8 +21,8 @@ def get_fans_info(request):
             res = {}
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
-            for time in range(max(begin_timestamp, analyse_list[0].sum_time),
-                              term_timestamp + 2, 3600):
+            begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
+            while begin_timestamp > term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
                             analyse.sum_time):
@@ -37,6 +37,7 @@ def get_fans_info(request):
                             'comment_count'] += analyse.total_comment_count
                         count_list[-1][
                             'view_count'] += analyse.total_view_count
+                begin_timestamp += 3600
             for i, dic in enumerate(count_list):
                 if len(count_list) == 1:
                     res_list.append({

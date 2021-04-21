@@ -34,8 +34,8 @@ def get_videos_info_by_time(request):
             res['view_count'] = video.view_count
             count_list = []
             res_list = []
-            for time in range(max(begin_timestamp, analyse_list[0].sum_time),
-                              term_timestamp + 2, 86400):
+            begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
+            while begin_timestamp > term_timestamp + 1:
                 for analyse in analyse_list:
                     if time == app.times.datetime2timestamp(analyse.sum_time):
                         count_list.append({
@@ -46,6 +46,7 @@ def get_videos_info_by_time(request):
                             'view_count':
                             analyse.total_view_count
                         })
+                begin_timestamp += 86400
             for i, dic in enumerate(count_list):
                 if len(count_list) == 1:
                     res_list.append({
@@ -109,8 +110,8 @@ def get_all_videos_info(request):
             res_list = []
             analyse_list = Analyse.objects.filter(
                 user_id=open_id).order_by('sum_time')
-            for time in range(max(begin_timestamp, analyse_list[0].sum_time),
-                              term_timestamp + 2, 86400):
+            begin_timestamp = max(begin_timestamp, analyse_list[0].sum_time)
+            while begin_timestamp > term_timestamp + 1:
                 for analyse in analyse_list:
                     if time == app.times.datetime2timestamp(analyse.sum_time):
                         count_list.append({
@@ -124,6 +125,7 @@ def get_all_videos_info(request):
                             analyse.total_comment_count
                         count_list[-1][
                             'view_count'] += analyse.total_view_count
+                begin_timestamp += 86400
             for i, dic in enumerate(count_list):
                 if len(count_list) == 1:
                     res_list.append({
