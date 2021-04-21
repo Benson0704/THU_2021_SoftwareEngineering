@@ -1,5 +1,6 @@
 '''
 this file should be a .py file as tests for share module
+finish: 4.22
 '''
 from django.test import TestCase
 from app.models import User
