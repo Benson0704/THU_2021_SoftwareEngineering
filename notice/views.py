@@ -24,10 +24,7 @@ def get_notice_user(request):
                     'timestamp':
                     app.times.datetime2timestamp(notice.create_time)
                 })
-            flow_list = []
-            '''
-            need to get flows
-            '''
+            flow_list = app.utils.get_flow(open_id)
             return app.utils.gen_response(
                 200, {'data': {
                     'notices': notice_list,
