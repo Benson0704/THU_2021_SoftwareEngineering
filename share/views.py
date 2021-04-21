@@ -62,7 +62,7 @@ def get_my_sharing_user(request):
     """
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
+            open_id = request.GET['open_id']
             user = User.objects.get(open_id=open_id)
             if user.auth_user == '':
                 return app.utils.gen_response(200,
