@@ -9,10 +9,13 @@ from app.models import User, Notice
 
 
 def get_notice_user(request):
+    """
+    this function get notice for users
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
-            user = User.objects.get(open_id=open_id)
             notices = Notice.all().order_by('-create_time')
             notice_list = []
             for notice in notices:
@@ -36,6 +39,10 @@ def get_notice_user(request):
 
 
 def operate_notice_admin(request):
+    """
+    this function operate notice for admins
+    return: code, data
+    """
     if request.method == 'GET':
         try:
             notices = Notice.all().order_by('-create_time')

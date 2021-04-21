@@ -7,7 +7,6 @@ from datetime import datetime
 import app.api
 import app.utils
 import app.times
-import notice.views
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \

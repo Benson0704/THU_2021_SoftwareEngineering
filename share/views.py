@@ -86,7 +86,7 @@ def get_user_share_to_me(request):
     """
     this function operate the shared users
     return: code, data
-     """
+    """
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
