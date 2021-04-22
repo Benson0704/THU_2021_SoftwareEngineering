@@ -1,6 +1,6 @@
 '''
 这个文件定义了后端的11个类
-modified: 4.21
+modified: 4.20
 '''
 
 from django.db import models
@@ -10,9 +10,9 @@ class User(models.Model):
     '''
     用户类
     '''
-    open_id = models.CharField(max_length=250, unique=True,
+    open_id = models.CharField(max_length=500, unique=True,
                                primary_key=True)  # 用户id，用户唯一标志
-    name = models.CharField(max_length=250, unique=True)  # 用户昵称
+    name = models.CharField(max_length=500, unique=True)  # 用户昵称
     sex = models.BooleanField(null=True)  # 性别设置为bool，1为F，0为M，可空
     head = models.CharField(max_length=500, null=True)  # 头像地址
     bigHead = models.CharField(max_length=500, null=True)  # 大头像地址
@@ -46,7 +46,7 @@ class Video(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='video')  # 用户
-    photo_id = models.CharField(max_length=250, primary_key=True)  # 作品id
+    photo_id = models.CharField(max_length=50, primary_key=True)  # 作品id
     caption = models.CharField(max_length=500,
                                default="Default Caption")  # 作品标题
     cover = models.CharField(max_length=500, default="Default Cover")  # 作品封面
@@ -89,7 +89,7 @@ class Analyse(models.Model):
     video = models.ForeignKey(Video,
                               on_delete=models.CASCADE,
                               related_name='analysis')  # 外键绑定视频
-    user_id = models.CharField(max_length=250)  # 用户id
+    user_id = models.CharField(max_length=50)  # 用户id
     sum_time = models.DateTimeField(default=0)
     total_view_count = models.IntegerField(default=0)
     total_comment_count = models.IntegerField(default=0)
@@ -109,7 +109,7 @@ class AnalyseHour(models.Model):
     video = models.ForeignKey(Video,
                               on_delete=models.CASCADE,
                               related_name='analysisHour')  # 外键绑定视频
-    user_id = models.CharField(max_length=250)  # 用户id
+    user_id = models.CharField(max_length=50)  # 用户id
     sum_time = models.DateTimeField(default=0)
     total_view_count = models.IntegerField(default=0)
     total_comment_count = models.IntegerField(default=0)
@@ -128,13 +128,13 @@ class Message(models.Model):
     '''
     content = models.TextField(max_length=500000,
                                default='default message')  # 消息内容
-    title = models.TextField(max_length=1000, default='default title')  # 消息标题
+    title = models.CharField(max_length=1000, default='default title')  # 消息标题
     create_time = models.DateTimeField(default=0)  # 创建时间
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='message')  # 外键绑定用户
     status = models.BooleanField(default=False)  # 消息是否被处理 1:是 0:否
-    manager = models.TextField(max_length=1000, null=True)  # 处理的管理员
+    manager = models.CharField(max_length=1000, null=True)  # 处理的管理员
 
     class Meta:
         '''
@@ -152,10 +152,10 @@ class Feedback(models.Model):
                                 related_name='feedback')  # 外键绑定消息
     content = models.TextField(max_length=500000,
                                default='default feedback')  # 反馈内容
-    title = models.TextField(max_length=1000, default='default title')  # 反馈标题
+    title = models.CharField(max_length=1000, default='default title')  # 反馈标题
     create_time = models.DateTimeField(default=0)  # 创建时间
-    manager = models.TextField(max_length=1000)  # 管理员
-    user = models.TextField(max_length=1000)  # 反馈的用户
+    manager = models.CharField(max_length=1000)  # 管理员
+    user = models.CharField(max_length=1000)  # 反馈的用户
 
     class Meta:
         '''
@@ -173,7 +173,7 @@ class Request(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='request')  # 外键绑定用户
-    request_type = models.TextField(max_length=1000, null=True)  # 请求类型
+    request_type = models.CharField(max_length=1000, null=True)  # 请求类型
 
     class Meta:
         '''
@@ -186,11 +186,11 @@ class Notice(models.Model):
     """
     construct model notice
     """
-    publish_user = models.TextField(max_length=1000)  # 发布者
+    publish_user = models.CharField(max_length=1000)  # 发布者
     create_time = models.DateTimeField(default=0)  # 创建时间
     content = models.TextField(max_length=500000,
                                default='default feedback')  # 公告内容
-    title = models.TextField(max_length=1000, default='default title')  # 公告标题
+    title = models.CharField(max_length=1000, default='default title')  # 公告标题
 
     class Meta:
         '''
