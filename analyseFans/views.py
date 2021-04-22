@@ -3,6 +3,7 @@ this is a module for analyse the information of fans
 """
 import app.utils
 import app.times
+import datetime
 from app.models import AnalyseHour
 
 
@@ -14,8 +15,11 @@ def get_fans_info(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
-            begin_timestamp = int(request.GET['begin_timestamp'])
-            term_timestamp = int(request.GET['term_timestamp'])
+            now_time = app.times.datetime2string(datetime.now())
+            time = now_time.split(':')[0] + ":00:00"
+            app.utils.analyse_hour_data(open_id, data[1], time)
+            now_timestamp = app.times.string2timestamp(time)
+            begin_timestamp = now_timestamp - 24 * 60 * 60
             count_list = []
             res_list = []
             res = {}
@@ -24,7 +28,7 @@ def get_fans_info(request):
             begin_timestamp = max(
                 begin_timestamp,
                 app.times.datetime2timestamp(analyse_list[0].sum_time))
-            while begin_timestamp <= term_timestamp + 1:
+            while begin_timestamp <= now_timestamp:
                 count_list.append({
                     'like_count': 0,
                     'comment_count': 0,
@@ -63,8 +67,7 @@ def get_fans_info(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
-            res['count_list'] = res_list
-            res['a'] = count_list
+            res['count_list'] = count_list
             return app.utils.gen_response(200, res)
         except:
             return app.utils.gen_response(400)
