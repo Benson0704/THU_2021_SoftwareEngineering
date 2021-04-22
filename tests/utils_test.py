@@ -5,7 +5,7 @@ import unittest
 from datetime import datetime
 import app.utils
 import app.times
-from app.models import User, Video, AnalyseHour, Analyse
+from app.models import User, Video, AnalyseHour, Analyse, Warn
 import pytest
 
 
@@ -62,5 +62,50 @@ class TestUtils(unittest.TestCase):
         analysis = Analyse.objects.get(user_id="utils")
         self.assertTrue(analysis)
 
+    def test_store_flow(self):
+        """
+        this is a test for store_flow
+        """
+        tvideo = Video.objects.get(photo_id="test utils videos")
+        tuser = User.objects.get(open_id="utils")
+        open_id = "utils"
+        time1 = datetime(2021, 3, 7, 0, 0, 0)
+        time2 = datetime(2021, 3, 6, 0, 0, 0)
+        time3 = datetime(2021, 3, 6, 23, 0, 0)
+        one_day_before_time = app.times.datetime2timestamp(time2)
+        one_hour_before_time = app.times.datetime2timestamp(time3)
+        now_time = app.times.datetime2timestamp(time1)
+        analyse1 = AnalyseHour.objects.create(video=tvideo,
+                                              user_id="utils",
+                                              sum_time="2021-03-07 00:00:00",
+                                              total_comment_count=20,
+                                              total_like_count=40,
+                                              total_view_count=100)
+        analyse1.save()
+        analyse2 = AnalyseHour.objects.create(video=tvideo,
+                                              user_id="utils",
+                                              sum_time="2021-03-06 00:00:00",
+                                              total_comment_count=10,
+                                              total_like_count=20,
+                                              total_view_count=40)
+        analyse2.save()
+        analyse3 = AnalyseHour.objects.create(video=tvideo,
+                                              user_id="utils",
+                                              sum_time="2021-03-06 23:00:00",
+                                              total_comment_count=18,
+                                              total_like_count=24,
+                                              total_view_count=88)
+        analyse3.save()
+        app.utils.store_flow(open_id,
+                             one_day_before_time,
+                             one_hour_before_time,
+                             now_time)
+        warn = Warn.objects.get(user=tuser)
+        self.assertTrue(warn)
+        Warn.objects.filter(user=tuser).delete()
+
     def tearDown(self):
+        """
+        this is the deconstruction for tests
+        """
         User.objects.filter(open_id="utils").delete()

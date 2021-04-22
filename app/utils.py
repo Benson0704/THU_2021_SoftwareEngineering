@@ -353,15 +353,14 @@ def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
             or comments_change > 0.2 * comments_before \
             or views_change > 0.2 * views_before:
         user = User.objects.get(open_id=open_id)
-        data = Warn(user=user,
-                    likes_change=likes_change,
-                    comments_change=comments_change,
-                    views_change=views_change,
-                    likes_before=likes_before,
-                    comments_before=comments_before,
-                    views_before=views_before,
-                    warn_time=now_time
-                    )
+        data = Warn.objects.create(user=user,
+                                   likes_change=likes_change,
+                                   comments_change=comments_change,
+                                   views_change=views_change,
+                                   likes_before=likes_before,
+                                   comments_before=comments_before,
+                                   views_before=views_before,
+                                   warn_time=app.times.timestamp2datetime(now_time))
         data.save()
 
 
