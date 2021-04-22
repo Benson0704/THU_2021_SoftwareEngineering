@@ -64,7 +64,7 @@ def get_fans_info(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
-            res['count_list'] = count_list
+            res['count_list'] = res_list
             return app.utils.gen_response(200, res)
         except:
             return app.utils.gen_response(400)
