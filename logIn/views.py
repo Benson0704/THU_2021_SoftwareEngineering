@@ -3,11 +3,11 @@ this is a module for getting the information
 of users and videos in the login process
 """
 from datetime import datetime
-
+import time as tm
 import app.api
 import app.utils
 import app.times
-
+import app.models
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
@@ -20,9 +20,9 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
-                  minute='05',
                   id='hourly_task',
-                  misfire_grace_time=3600)
+                  misfire_grace_time=3600,
+                  replace_existing=True)
     def hourly_fetch_data():
         """
         this function is supposed to run in hourly period
@@ -46,8 +46,9 @@ try:
     @register_job(scheduler,
                   'cron',
                   day_of_week='mon-sun',
-                  hour='11',
-                  id='daily_task')
+                  hour='16',
+                  id='daily_task',
+                  replace_existing=True)
     def daily_fetch_data():
         """
         this function is supposed to run in daily period
@@ -143,7 +144,27 @@ def get_user_info_by_code(request):
 
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)
-        total_view_count = app.utils.get_total_view_count(open_id)
+        total_view_count = app.utils.get_total_view_count(
+            open_id)  # delete these lines
+        for i in app.models.Analyse.objects.all():
+            i.delete()
+        for i in app.models.AnalyseHour.objects.all():
+            i.delete()
+        time = app.times.timestamp2string(tm.time() - 86400 * 2)
+        for i in range(1, 10):
+            today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
+            app.utils.analyse_hour_data(open_id, data[1], today_time)
+        time = app.times.timestamp2string(tm.time() - 86400)
+        today_time = time.split(' ')[0] + " 00:00:00"
+        app.utils.analyse_hour_data(open_id, data[1], today_time)
+        app.utils.analyse_daily_data(open_id, data[1], today_time)
+        for i in range(1, 10):
+            today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
+            app.utils.analyse_hour_data(open_id, data[1], today_time)
+        time = app.times.datetime2string(datetime.now())
+        today_time = time.split(' ')[0] + " 00:00:00"
+        app.utils.analyse_hour_data(open_id, data[1], today_time)
+        app.utils.analyse_daily_data(open_id, data[1], today_time)
 
         data = {
             'user_data': {

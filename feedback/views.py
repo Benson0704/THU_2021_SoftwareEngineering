@@ -49,10 +49,8 @@ def operate_feedback_user(request):
                     })
             return app.utils.gen_response(
                 200, {
-                    'data': {
-                        'unsolved_feedbacks': unsolved_list,
-                        'solved_feedbacks': solved_list
-                    }
+                    'unsolved_feedbacks': unsolved_list,
+                    'solved_feedbacks': solved_list
                 })
         except:
             return app.utils.gen_response(400)
@@ -114,10 +112,8 @@ def operate_feedback_admin(request):
                     })
             return app.utils.gen_response(
                 200, {
-                    'data': {
-                        'unsolved_feedbacks': unsolved_list,
-                        'solved_feedbacks': solved_list
-                    }
+                    'unsolved_feedbacks': unsolved_list,
+                    'solved_feedbacks': solved_list
                 })
         except:
             return app.utils.gen_response(400)

@@ -9,7 +9,7 @@ from datetime import datetime
 
 
 @pytest.mark.django_db
-class TestAppTimes(TestCase):
+class TestFeedback(TestCase):
     '''
     This is a unittest for feedback module
     '''
@@ -87,9 +87,9 @@ class TestAppTimes(TestCase):
         }]
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_unsolved_list,
-                         response.json()['data']['data']['unsolved_feedbacks'])
+                         response.json()['data']['unsolved_feedbacks'])
         self.assertEqual(expected_solved_list,
-                         response.json()['data']['data']['solved_feedbacks'])
+                         response.json()['data']['solved_feedbacks'])
 
     def test_operate_feedback_user_post_openid_lost(self):
         """
@@ -130,7 +130,7 @@ class TestAppTimes(TestCase):
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         print(response)
-        unsolved_lists = response.json()['data']['data']['unsolved_feedbacks']
+        unsolved_lists = response.json()['data']['unsolved_feedbacks']
         unsolved_title = []
         for lists in unsolved_lists:
             unsolved_title.append(lists['title'])
