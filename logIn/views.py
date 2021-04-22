@@ -145,10 +145,13 @@ def get_user_info_by_code(request):
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(
             open_id)
-
+        if app.utils.is_administrator(open_id):
+            admin = 1
+        else:
+            admin = 0
         data = {
             'user_data': {
-                'admin': app.utils.is_administrator(open_id),
+                'admin': admin,
                 "name": name,
                 "sex": sex,
                 "fan": fan,
