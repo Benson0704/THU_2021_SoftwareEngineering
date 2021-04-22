@@ -76,11 +76,18 @@ class TestShare(TestCase):
         This is a unittest for delete_share
         error: none
         '''
-        payload = {}
+        payload = {
+            'sharer_open_id': "test sharer",
+            'shared_open_id': "test shared"
+        }
         response = self.client.post('/api/share/delete',
                                     data=payload,
                                     content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
+        sharer = User.objects.get(open_id="test sharer")
+        shared = User.objects.get(open_id="test shared")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual("", shared.authed_user)
+        self.assertEqual("", sharer.auth_user)
 
     def test_get_my_sharing_user_openid_lost(self):
         '''
