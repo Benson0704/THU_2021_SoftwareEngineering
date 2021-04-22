@@ -65,7 +65,7 @@ class TestNotice(TestCase):
         """
         response = self.client.get('/api/notice/admin',
                                    content_type="application/json")
-        notices = response.json()['data']['data']['notices']
+        notices = response.json()['data']['notices']
         notice_titles = []
         for notice in notices:
             notice_titles.append(notice['title'])
