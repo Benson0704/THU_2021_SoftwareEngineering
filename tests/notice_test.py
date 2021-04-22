@@ -15,6 +15,9 @@ class TestNotice(TestCase):
     This is a unittest for notice module
     '''
     def setUp(self):
+        """
+        this is the construction for notice test
+        """
         test_user = User.objects.create(open_id="test user",
                                         name="test user")
         test_user.save()
