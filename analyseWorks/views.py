@@ -155,6 +155,7 @@ def get_all_videos_info(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
+<<<<<<< HEAD
             a = []
             for i in analyse_list:
                 a.append(app.times.datetime2timestamp(i.sum_time))
@@ -169,6 +170,12 @@ def get_all_videos_info(request):
                     'times': a,
                     'tmp': count_list
                 })
+=======
+            return app.utils.gen_response(200, {
+                'recent_data': recent_data,
+                'count_list': res_list+count_list,'t':app.times.datetime2timestamp(analyse_list[0].sum_time),'a':begin_timestamp,'b':int(request.GET['begin_timestamp']),'c':int(request.GET['term_timestamp'])
+            })
+>>>>>>> jobTest
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
