@@ -1,5 +1,6 @@
 '''
 this file should be a .py file as tests for notice module
+finished: 4.22
 '''
 from django.test import TestCase
 from app.models import User, Warn, Notice
@@ -11,10 +12,12 @@ from datetime import datetime
 @pytest.mark.django_db
 class TestNotice(TestCase):
     '''
-    This is a 
-    unittest for notice module
+    This is a unittest for notice module
     '''
     def setUp(self):
+        """
+        this is the construction for notice test
+        """
         test_user = User.objects.create(open_id="test user",
                                         name="test user")
         test_user.save()
@@ -78,7 +81,7 @@ class TestNotice(TestCase):
         this is a test for operate_notice_admin
         method: post  error: id lost
         """
-        payload={}
+        payload = {}
         response = self.client.post('/api/notice/admin',
                                     data=payload,
                                     content_type="application/json")
@@ -90,7 +93,7 @@ class TestNotice(TestCase):
         method: post  error: none
         """
         time = datetime(2022, 3, 4, 12, 13, 11)
-        payload={
+        payload = {
             'open_id': "test user",
             'timestamp': app.times.datetime2timestamp(time),
             'content': "new notice",
