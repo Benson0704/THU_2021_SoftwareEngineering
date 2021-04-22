@@ -121,7 +121,7 @@ class TestShare(TestCase):
             'head': "head"
         }]
         self.assertEqual(expected_result,
-                         response.json()['data']['data']['sharing_list'])
+                         response.json()['data']['sharing_list'])
 
     def test_get_user_share_to_me_openid_lost(self):
         '''
@@ -155,7 +155,7 @@ class TestShare(TestCase):
             'head': "head"
         }]
         self.assertEqual(expected_result,
-                         response.json()['data']['data']['shared_list'])
+                         response.json()['data']['shared_list'])
 
     def tearDown(self):
         """
