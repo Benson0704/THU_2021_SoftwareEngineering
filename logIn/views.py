@@ -19,7 +19,7 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
-                  minute='12',
+                  minute='20',
                   id='hourly_task',
                   misfire_grace_time=3600,
                   replace_existing=True)
