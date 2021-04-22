@@ -273,12 +273,14 @@ def analyse_hour_data(open_id, video_list, time):
     for vid in video_list:
         photo_id = vid.get("photo_id")
         video_object = Video.objects.get(photo_id=photo_id)
-        data = AnalyseHour(video=video_object,
-                           user_id=open_id,
-                           sum_time=time,
-                           total_view_count=vid.get("view_count"),
-                           total_comment_count=vid.get("comment_count"),
-                           total_like_count=vid.get("like_count"))
+        print(time)
+        print(type(time))
+        data = AnalyseHour.objects.create(video=video_object,
+                                          user_id=open_id,
+                                          sum_time=time,
+                                          total_view_count=vid.get("view_count"),
+                                          total_comment_count=vid.get("comment_count"),
+                                          total_like_count=vid.get("like_count"))
         data.save()
 
 
@@ -289,12 +291,12 @@ def analyse_daily_data(open_id, video_list, time):
     for vid in video_list:
         photo_id = vid.get("photo_id")
         video_object = Video.objects.get(photo_id=photo_id)
-        data = Analyse(video=video_object,
-                       user_id=open_id,
-                       sum_time=time,
-                       total_view_count=vid.get("view_count"),
-                       total_comment_count=vid.get("comment_count"),
-                       total_like_count=vid.get("like_count"))
+        data = Analyse.objects.create(video=video_object,
+                                      user_id=open_id,
+                                      sum_time=time,
+                                      total_view_count=vid.get("view_count"),
+                                      total_comment_count=vid.get("comment_count"),
+                                      total_like_count=vid.get("like_count"))
         data.save()
 
 
