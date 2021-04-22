@@ -368,5 +368,16 @@ def get_flow(open_id):
     本函数接口通过用户的open_id得到存储在数据库中的所有流量预警
     """
     user = User.objects.get(open_id=open_id)
-    flow_list = Video.objects.filter(user=user).order_by('-warn_time')
+    flows = Warn.objects.filter(user=user).order_by('-warn_time')
+    flow_list = []
+    for flow in flows:
+        flow_list.append({
+            'like_change': flow.likes_change,
+            'comments_change': flow.comments_change,
+            'views_change': flow.views_change,
+            'likes_before': flow.likes_before,
+            'comments_before': flow.comments_before,
+            'views_before': flow.views_before,
+            'warn_time': app.times.datetime2timestamp(flow.warn_time)
+        })
     return flow_list
