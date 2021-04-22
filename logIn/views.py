@@ -3,7 +3,6 @@ this is a module for getting the information
 of users and videos in the login process
 """
 from datetime import datetime
-import time as tm
 import app.api
 import app.utils
 import app.times
@@ -20,6 +19,7 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
+                  minute='20',
                   id='hourly_task',
                   misfire_grace_time=3600,
                   replace_existing=True)
@@ -36,6 +36,7 @@ try:
             app.api.store_data(open_id, data[0], data[1], data[2])
             now_time = app.times.datetime2string(datetime.now())
             time = now_time.split(':')[0] + ":00:00"
+            print(time)
             app.utils.analyse_hour_data(open_id, data[1], time)
             now_timestamp = app.times.string2timestamp(time)
             one_hour_before_time = now_timestamp - 60 * 60
@@ -145,29 +146,14 @@ def get_user_info_by_code(request):
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(
-            open_id)  # delete these lines
-        for i in app.models.Analyse.objects.all():
-            i.delete()
-        for i in app.models.AnalyseHour.objects.all():
-            i.delete()
-        time = app.times.timestamp2string(tm.time() - 86400 * 2)
-        for i in range(1, 10):
-            today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
-            app.utils.analyse_hour_data(open_id, data[1], today_time)
-        time = app.times.timestamp2string(tm.time() - 86400)
-        today_time = time.split(' ')[0] + " 00:00:00"
-        app.utils.analyse_hour_data(open_id, data[1], today_time)
-        app.utils.analyse_daily_data(open_id, data[1], today_time)
-        for i in range(1, 10):
-            today_time = time.split(' ')[0] + " 0{}:00:00".format(str(i))
-            app.utils.analyse_hour_data(open_id, data[1], today_time)
-        time = app.times.datetime2string(datetime.now())
-        today_time = time.split(' ')[0] + " 00:00:00"
-        app.utils.analyse_hour_data(open_id, data[1], today_time)
-        app.utils.analyse_daily_data(open_id, data[1], today_time)
-
+            open_id)
+        if app.utils.is_administrator(open_id):
+            admin = 1
+        else:
+            admin = 0
         data = {
             'user_data': {
+                'admin': admin,
                 "name": name,
                 "sex": sex,
                 "fan": fan,

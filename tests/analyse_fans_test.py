@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 @pytest.mark.django_db
-class TestAnalyseWorks(TestCase):
+class TestAnalyseFans(TestCase):
     '''
     This is a unittest for analyseFans
     '''

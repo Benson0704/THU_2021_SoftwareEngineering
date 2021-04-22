@@ -5,7 +5,7 @@ import unittest
 import app.tokens
 
 
-class TestAppTimes(unittest.TestCase):
+class TestAppTokes(unittest.TestCase):
     '''
     This is a unittest for app.times
     '''
