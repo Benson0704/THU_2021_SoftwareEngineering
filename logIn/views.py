@@ -20,7 +20,6 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
-                  minute='05',
                   id='hourly_task',
                   misfire_grace_time=3600,
                   replace_existing=True)
@@ -146,14 +145,6 @@ def get_user_info_by_code(request):
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)
         total_view_count = app.utils.get_total_view_count(open_id)
-
-        time = app.times.datetime2string(datetime.now())
-        today_time = time.split(' ')[0] + " 00:00:00"
-        app.utils.analyse_hour_data(open_id, data[1], today_time)
-        app.utils.analyse_daily_data(open_id, data[1], today_time)
-        today_time = time.split(' ')[0] + " 01:00:00"
-        app.utils.analyse_hour_data(open_id, data[1], today_time)
-        app.utils.analyse_daily_data(open_id, data[1], today_time)
 
         data = {
             'user_data': {
