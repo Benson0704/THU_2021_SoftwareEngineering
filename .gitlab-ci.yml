@@ -55,3 +55,4 @@ deploy:
   only:
     - master
     - dev
+    - analyseFansTest
