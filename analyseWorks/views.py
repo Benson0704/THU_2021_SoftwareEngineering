@@ -50,7 +50,7 @@ def get_videos_info_by_time(request):
                             analyse.total_view_count
                         })
                 begin_timestamp += 86400
-            for i, dic in enumerate(count_list):
+            for i, _ in enumerate(count_list):
                 if len(count_list) == 1:
                     res_list.append({
                         'like_count':
@@ -61,7 +61,7 @@ def get_videos_info_by_time(request):
                         count_list[i]['view_count']
                     })
                     break
-                if dic != count_list[-1]:
+                if i != len(count_list) - 1:
                     res_list.append({
                         'like_count':
                         count_list[i + 1]['like_count'] -
@@ -132,7 +132,7 @@ def get_all_videos_info(request):
                         count_list[-1][
                             'view_count'] += analyse.total_view_count
                 begin_timestamp += 86400
-            for i, dic in enumerate(count_list):
+            for i, _ in enumerate(count_list):
                 if len(count_list) == 1:
                     res_list.append({
                         'like_count':
@@ -143,7 +143,7 @@ def get_all_videos_info(request):
                         count_list[i]['view_count']
                     })
                     break
-                if dic != count_list[-1]:
+                if i != len(count_list) - 1:
                     res_list.append({
                         'like_count':
                         count_list[i + 1]['like_count'] -
@@ -155,20 +155,12 @@ def get_all_videos_info(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
-            a = []
             for i in analyse_list:
                 a.append(app.times.datetime2timestamp(i.sum_time))
-            return app.utils.gen_response(
-                200, {
-                    'recent_data': recent_data,
-                    'count_list': res_list,
-                    'begin': begin_timestamp,
-                    'term': term_timestamp,
-                    'given_begin': int(request.GET['begin_timestamp']),
-                    'given_term': int(request.GET['term_timestamp']),
-                    'times': a,
-                    'tmp': count_list
-                })
+            return app.utils.gen_response(200, {
+                'recent_data': recent_data,
+                'count_list': res_list
+            })
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
