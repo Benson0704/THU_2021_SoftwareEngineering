@@ -41,9 +41,7 @@ def delete_share(request):
             ret = json.loads(ret.decode('utf-8'))
             sharer_openid = ret['sharer_open_id']
             shared_openid = ret['shared_open_id']
-            print(shared_openid)
             sharer_user = User.objects.get(open_id=sharer_openid)
-            print(sharer_user)
             sharer_user.auth_user.replace(shared_openid + '_&_', '')
             sharer_user.save()
             shared_user = User.objects.get(open_id=shared_openid)

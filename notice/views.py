@@ -15,8 +15,8 @@ def get_notice_user(request):
     """
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
-            notices = Notice.all().order_by('-create_time')
+            open_id = request.GET['open_id']
+            notices = Notice.objects.all().order_by('-create_time')
             notice_list = []
             for notice in notices:
                 notice_list.append({
@@ -28,6 +28,8 @@ def get_notice_user(request):
                         app.times.datetime2timestamp(notice.create_time)
                 })
             flow_list = app.utils.get_flow(open_id)
+            print(flow_list)
+            print(notice_list)
             return app.utils.gen_response(
                 200, {'data': {
                     'notices': notice_list,
@@ -45,7 +47,7 @@ def operate_notice_admin(request):
     """
     if request.method == 'GET':
         try:
-            notices = Notice.all().order_by('-create_time')
+            notices = Notice.objects.all().order_by('-create_time')
             notice_list = []
             for notice in notices:
                 notice_list.append({
