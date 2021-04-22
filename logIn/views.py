@@ -16,13 +16,14 @@ try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
 
-    @register_job(scheduler,
-                  'cron',
-                  day_of_week='mon-sun',
-                  hour='0-23',
-                  minute='38',
-                  id='hourly_task',
-                  misfire_grace_time=3600)
+    # @register_job(scheduler,
+    #               'cron',
+    #               day_of_week='mon-sun',
+    #               hour='0-23',
+    #               minute='38',
+    #               id='hourly_task',
+    #               misfire_grace_time=3600)
+    @register_job(scheduler, "interval", seconds=30, id='test_job')
     def hourly_fetch_data():
         """
         this function is supposed to run in hourly period
