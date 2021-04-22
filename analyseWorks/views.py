@@ -119,9 +119,9 @@ def get_videos_info_by_time(request):
                     })
             res['count_list'] = res_list
             res['tmp'] = count_list
+            res['length'] = len(analyse_list)
             return app.utils.gen_response(200, res)
-
-        except:
+        except Exception('bug: get_videos_info_by_time'):
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
 
@@ -205,6 +205,6 @@ def get_all_videos_info(request):
                 'recent_data': recent_data,
                 'count_list': res_list
             })
-        except:
+        except Exception('bug: get_all_videos_info'):
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
