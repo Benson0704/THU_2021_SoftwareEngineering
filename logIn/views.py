@@ -20,9 +20,10 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
-                  minute='05',
+                  minute='35',
                   id='hourly_task',
-                  misfire_grace_time=3600)
+                  misfire_grace_time=3600,
+                  replace_existing=True)
     def hourly_fetch_data():
         """
         this function is supposed to run in hourly period
