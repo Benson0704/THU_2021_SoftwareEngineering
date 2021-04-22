@@ -15,10 +15,8 @@ def get_fans_info(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
-            now_time = app.times.datetime2string(datetime.datetime.now())
-            time = now_time.split(':')[0] + ":00:00"
-            now_timestamp = app.times.string2timestamp(time)
-            begin_timestamp = now_timestamp - 24 * 60 * 60
+            begin_timestamp = int(request.GET['begin_timestamp'])
+            term_timestamp = int(request.GET['term_timestamp'])
             count_list = []
             res_list = []
             res = {}
@@ -27,7 +25,7 @@ def get_fans_info(request):
             begin_timestamp = max(
                 begin_timestamp,
                 app.times.datetime2timestamp(analyse_list[0].sum_time))
-            while begin_timestamp <= now_timestamp:
+            while begin_timestamp <= term_timestamp:
                 count_list.append({
                     'like_count': 0,
                     'comment_count': 0,
