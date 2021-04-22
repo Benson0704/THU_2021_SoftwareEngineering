@@ -15,16 +15,8 @@ def get_fans_info(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
-<<<<<<< HEAD
-            print(open_id)
-            now_time = app.times.datetime2string(datetime.now())
-            time = now_time.split(':')[0] + ":00:00"
-            print(open_id)
-            app.utils.analyse_hour_data(open_id, data[1], time)
-=======
             now_time = app.times.datetime2string(datetime.datetime.now())
             time = now_time.split(':')[0] + ":00:00"
->>>>>>> dev
             now_timestamp = app.times.string2timestamp(time)
             begin_timestamp = now_timestamp - 24 * 60 * 60
             count_list = []
@@ -32,6 +24,8 @@ def get_fans_info(request):
             res = {}
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
+            print(app.times.datetime2timestamp(analyse_list[0].sum_time))
+            print(now_timestamp)
             begin_timestamp = max(
                 begin_timestamp,
                 app.times.datetime2timestamp(analyse_list[0].sum_time))
