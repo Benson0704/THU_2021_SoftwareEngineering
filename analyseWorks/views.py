@@ -74,6 +74,7 @@ def get_videos_info_by_time(request):
                         count_list[i]['view_count']
                     })
             res['count_list'] = res_list
+            res['tmp'] = count_list
             return app.utils.gen_response(200, res)
         except:
             return app.utils.gen_response(400)
