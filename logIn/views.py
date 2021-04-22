@@ -19,6 +19,7 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
+                  minute='20',
                   id='hourly_task',
                   misfire_grace_time=3600,
                   replace_existing=True)
@@ -35,6 +36,7 @@ try:
             app.api.store_data(open_id, data[0], data[1], data[2])
             now_time = app.times.datetime2string(datetime.now())
             time = now_time.split(':')[0] + ":00:00"
+            print(time)
             app.utils.analyse_hour_data(open_id, data[1], time)
             now_timestamp = app.times.string2timestamp(time)
             one_hour_before_time = now_timestamp - 60 * 60
