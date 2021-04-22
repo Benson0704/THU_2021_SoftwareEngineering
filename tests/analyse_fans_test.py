@@ -41,6 +41,25 @@ class TestAnalyseWorks(TestCase):
             pending=False,
             labels="")
         new_video.save()
+
+    def test_get_fans_info_openid_lost(self):
+        """
+        this is a test for get_fans_info(error:openid_lost)
+        """
+        payload = {
+            'begin_timestamp': 00000000000,
+            'term_timestamp': 00000000000,
+        }
+        response = self.client.get('/api/analysis/globalhour',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(400, response.json()['code'])
+
+    def test_get_fans_info_double(self):
+        """
+        this is a test for get_fans_info
+        """
+        new_video = Video.objects.get(photo_id="today is dropping dirt")
         new_analysisHour = AnalyseHour.objects.create(
             video=new_video,
             user_id="Icannotmakeupanewname",
@@ -59,33 +78,6 @@ class TestAnalyseWorks(TestCase):
             total_view_count=7
         )
         new_analysisHour.save()
-        new_analysisHour = AnalyseHour.objects.create(
-            video=new_video,
-            user_id="Icannotmakeupanewname",
-            sum_time="2022-04-05 09:00:00",
-            total_comment_count=3,
-            total_like_count=5,
-            total_view_count=12
-        )
-        new_analysisHour.save()
-
-    def test_get_fans_info_openid_lost(self):
-        """
-        this is a test for get_fans_info(error:openid_lost)
-        """
-        payload = {
-            'begin_timestamp': 00000000000,
-            'term_timestamp': 00000000000,
-        }
-        response = self.client.get('/api/analysis/globalhour',
-                                   data=payload,
-                                   content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
-
-    def test_get_fans_info(self):
-        """
-        this is a test for get_fans_info
-        """
         time1 = datetime(2022, 4, 5, 9, 0, 0)
         time2 = datetime(2022, 4, 5, 10, 0, 0)
         payload = {
@@ -104,6 +96,41 @@ class TestAnalyseWorks(TestCase):
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
+        AnalyseHour.objects.filter(video=new_video).delete()
+
+    def test_get_fans_info_single(self):
+        """
+        this is a test for get_fans_info
+        """
+        new_video = Video.objects.get(photo_id="today is dropping dirt")
+        new_analysisHour = AnalyseHour.objects.create(
+            video=new_video,
+            user_id="Icannotmakeupanewname",
+            sum_time="2022-04-05 12:00:00",
+            total_comment_count=3,
+            total_like_count=5,
+            total_view_count=12
+        )
+        new_analysisHour.save()
+        time1 = datetime(2022, 4, 5, 11, 0, 0)
+        time2 = datetime(2022, 4, 5, 12, 0, 0)
+        payload = {
+            'open_id': "Icannotmakeupanewname",
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
+        }
+        response = self.client.get('/api/analysis/globalhour',
+                                   data=payload,
+                                   content_type="application/json")
+        expected_count_list = [{
+            'view_count': 12,
+            'comment_count': 3,
+            'like_count': 5
+        }]
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_count_list,
+                         response.json()['data']['count_list'])
+        AnalyseHour.objects.filter(video=new_video).delete()
 
     def tearDown(self):
         """

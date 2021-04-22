@@ -22,8 +22,7 @@ def get_fans_info(request):
             res = {}
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
-            print(app.times.datetime2timestamp(analyse_list[0].sum_time))
-            print(now_timestamp)
+            print(analyse_list)
             begin_timestamp = max(
                 begin_timestamp,
                 app.times.datetime2timestamp(analyse_list[0].sum_time))
@@ -66,7 +65,7 @@ def get_fans_info(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
-            res['count_list'] = count_list
+            res['count_list'] = res_list
             return app.utils.gen_response(200, res)
         except:
             return app.utils.gen_response(400)
