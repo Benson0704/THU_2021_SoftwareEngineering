@@ -22,7 +22,7 @@ class TestUtils(unittest.TestCase):
                                         name="test utils")
         test_user.save()
         test_video = Video.objects.create(
-            user = test_user,
+            user=test_user,
             photo_id="test utils videos",
             play_url="test utils play_url",
             pending=False,

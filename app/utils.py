@@ -275,12 +275,13 @@ def analyse_hour_data(open_id, video_list, time):
         video_object = Video.objects.get(photo_id=photo_id)
         print(time)
         print(type(time))
-        data = AnalyseHour.objects.create(video=video_object,
-                                          user_id=open_id,
-                                          sum_time=time,
-                                          total_view_count=vid.get("view_count"),
-                                          total_comment_count=vid.get("comment_count"),
-                                          total_like_count=vid.get("like_count"))
+        data = AnalyseHour.objects.create(
+            video=video_object,
+            user_id=open_id,
+            sum_time=time,
+            total_view_count=vid.get("view_count"),
+            total_comment_count=vid.get("comment_count"),
+            total_like_count=vid.get("like_count"))
         data.save()
 
 
@@ -291,12 +292,13 @@ def analyse_daily_data(open_id, video_list, time):
     for vid in video_list:
         photo_id = vid.get("photo_id")
         video_object = Video.objects.get(photo_id=photo_id)
-        data = Analyse.objects.create(video=video_object,
-                                      user_id=open_id,
-                                      sum_time=time,
-                                      total_view_count=vid.get("view_count"),
-                                      total_comment_count=vid.get("comment_count"),
-                                      total_like_count=vid.get("like_count"))
+        data = Analyse.objects.create(
+            video=video_object,
+            user_id=open_id,
+            sum_time=time,
+            total_view_count=vid.get("view_count"),
+            total_comment_count=vid.get("comment_count"),
+            total_like_count=vid.get("like_count"))
         data.save()
 
 
@@ -353,14 +355,15 @@ def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
             or comments_change > 0.2 * comments_before \
             or views_change > 0.2 * views_before:
         user = User.objects.get(open_id=open_id)
-        data = Warn.objects.create(user=user,
-                                   likes_change=likes_change,
-                                   comments_change=comments_change,
-                                   views_change=views_change,
-                                   likes_before=likes_before,
-                                   comments_before=comments_before,
-                                   views_before=views_before,
-                                   warn_time=app.times.timestamp2datetime(now_time))
+        data = Warn.objects.create(
+            user=user,
+            likes_change=likes_change,
+            comments_change=comments_change,
+            views_change=views_change,
+            likes_before=likes_before,
+            comments_before=comments_before,
+            views_before=views_before,
+            warn_time=app.times.timestamp2datetime(now_time))
         data.save()
 
 
