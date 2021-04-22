@@ -18,36 +18,28 @@ def return_response(begin_timestamp, term_timestamp, analyse_list, interval):
             if begin_timestamp == app.times.datetime2timestamp(
                     analyse.sum_time):
                 count_list.append({
-                    'like_count':
-                        analyse.total_like_count,
-                    'comment_count':
-                        analyse.total_comment_count,
-                    'view_count':
-                        analyse.total_view_count
+                    'like_count': analyse.total_like_count,
+                    'comment_count': analyse.total_comment_count,
+                    'view_count': analyse.total_view_count
                 })
         begin_timestamp += interval
     for i, dic in enumerate(count_list):
         if len(count_list) == 1:
             res_list.append({
-                'like_count':
-                    count_list[i]['like_count'],
-                'comment_count':
-                    count_list[i]['comment_count'],
-                'view_count':
-                    count_list[i]['view_count']
+                'like_count': count_list[i]['like_count'],
+                'comment_count': count_list[i]['comment_count'],
+                'view_count': count_list[i]['view_count']
             })
             break
         if dic != count_list[-1]:
             res_list.append({
                 'like_count':
-                    count_list[i + 1]['like_count'] -
-                    count_list[i]['like_count'],
+                count_list[i + 1]['like_count'] - count_list[i]['like_count'],
                 'comment_count':
-                    count_list[i + 1]['comment_count'] -
-                    count_list[i]['comment_count'],
+                count_list[i + 1]['comment_count'] -
+                count_list[i]['comment_count'],
                 'view_count':
-                    count_list[i + 1]['view_count'] -
-                    count_list[i]['view_count']
+                count_list[i + 1]['view_count'] - count_list[i]['view_count']
             })
         return res_list
 
@@ -121,7 +113,7 @@ def get_videos_info_by_time(request):
             res['tmp'] = count_list
             res['length'] = len(analyse_list)
             return app.utils.gen_response(200, res)
-        except ValueError('bug: get_videos_info_by_time'):
+        except ValueError:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
 
@@ -182,29 +174,29 @@ def get_all_videos_info(request):
                 if len(count_list) == 1:
                     res_list.append({
                         'like_count':
-                            count_list[i]['like_count'],
+                        count_list[i]['like_count'],
                         'comment_count':
-                            count_list[i]['comment_count'],
+                        count_list[i]['comment_count'],
                         'view_count':
-                            count_list[i]['view_count']
+                        count_list[i]['view_count']
                     })
                     break
                 if i != len(count_list) - 1:
                     res_list.append({
                         'like_count':
-                            count_list[i + 1]['like_count'] -
-                            count_list[i]['like_count'],
+                        count_list[i + 1]['like_count'] -
+                        count_list[i]['like_count'],
                         'comment_count':
-                            count_list[i + 1]['comment_count'] -
-                            count_list[i]['comment_count'],
+                        count_list[i + 1]['comment_count'] -
+                        count_list[i]['comment_count'],
                         'view_count':
-                            count_list[i + 1]['view_count'] -
-                            count_list[i]['view_count']
+                        count_list[i + 1]['view_count'] -
+                        count_list[i]['view_count']
                     })
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
                 'count_list': res_list
             })
-        except ValueError('bug: get_all_videos_info'):
+        except ValueError:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
