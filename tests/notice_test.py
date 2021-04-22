@@ -108,6 +108,7 @@ class TestNotice(TestCase):
 
     def tearDown(self):
         """
+        this is the deconstruction for notice tests
         """
         User.objects.filter(open_id="test user").delete()
-        Notice.objects.filter(publish_user="test user").delete
+        Notice.objects.filter(publish_user="test user").delete()

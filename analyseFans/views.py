@@ -22,6 +22,7 @@ def get_fans_info(request):
             res = {}
             analyse_list = AnalyseHour.objects.filter(
                 user_id=open_id).order_by('sum_time')
+            print(analyse_list)
             begin_timestamp = max(
                 begin_timestamp,
                 app.times.datetime2timestamp(analyse_list[0].sum_time))
