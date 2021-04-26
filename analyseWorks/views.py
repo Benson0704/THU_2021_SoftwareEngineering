@@ -7,43 +7,6 @@ import app.times
 from app.models import Video, Analyse
 
 
-def return_response(begin_timestamp, term_timestamp, analyse_list, interval):
-    count_list = []
-    res_list = []
-    begin_timestamp = max(
-        begin_timestamp,
-        app.times.datetime2timestamp(analyse_list[0].sum_time))
-    while begin_timestamp <= term_timestamp + 1:
-        for analyse in analyse_list:
-            if begin_timestamp == app.times.datetime2timestamp(
-                    analyse.sum_time):
-                count_list.append({
-                    'like_count': analyse.total_like_count,
-                    'comment_count': analyse.total_comment_count,
-                    'view_count': analyse.total_view_count
-                })
-        begin_timestamp += interval
-    for i, dic in enumerate(count_list):
-        if len(count_list) == 1:
-            res_list.append({
-                'like_count': count_list[i]['like_count'],
-                'comment_count': count_list[i]['comment_count'],
-                'view_count': count_list[i]['view_count']
-            })
-            break
-        if dic != count_list[-1]:
-            res_list.append({
-                'like_count':
-                count_list[i + 1]['like_count'] - count_list[i]['like_count'],
-                'comment_count':
-                count_list[i + 1]['comment_count'] -
-                count_list[i]['comment_count'],
-                'view_count':
-                count_list[i + 1]['view_count'] - count_list[i]['view_count']
-            })
-        return res_list
-
-
 def get_videos_info_by_time(request):
     '''
     returns the videos' comment etc infos
