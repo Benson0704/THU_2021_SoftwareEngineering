@@ -172,6 +172,13 @@ def get_all_videos_info(request):
                             0].total_comment_count
                     except Exception as exception:
                         continue
+            recent_data['like_count'] = user.total_like_count - recent_data[
+                'like_count']
+            recent_data['view_count'] = user.total_view_count - recent_data[
+                'view_count']
+            recent_data[
+                'comment_count'] = user.total_comment_count - recent_data[
+                    'comment_count']
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
                 'count_list': res_list
@@ -203,7 +210,8 @@ def test(request):
                                 total_view_count=ah.total_view_count,
                                 video=video,
                                 user_id=open_id,
-                                sum_time=1619539200)
+                                sum_time=app.times.timestamp2datetime(
+                                    1619539200))
                             analyse.save()
                             break
             res = {}
