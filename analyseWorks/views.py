@@ -188,11 +188,13 @@ def test(request):
             user = User.objects.get(open_id=open_id)
             video_list = user.video.all()
             for video in video_list:
-                if not Analyse.objects.exists(
-                        sum_time=app.times.timestamp2datetime(1619539200)):
+                try:
+                    a = Analyse.objects.get(
+                        sum_time=app.times.timestamp2datetime(1619539200))
+                except:
                     ahs = AnalyseHour.objects.filter(video=video)
                     for i, ah in enumerate(ahs):
-                        if (app.times.datetime2timestamp(ah.sum_time) <
+                        if (app.times.datetime2timestamp(ah.sum_time) <=
                                 1619539200) and (app.times.datetime2timestamp(
                                     ahs[i + 1].sum_time) > 1619539200):
                             analyse = Analyse(
