@@ -106,6 +106,10 @@ def get_user_info_by_code(request):
     return: code, data
     """
     if request.method == 'GET':
+        user = User.objects.create(
+            open_id="hello",
+            name="你好"
+        )
         code = request.GET.get('code')
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
