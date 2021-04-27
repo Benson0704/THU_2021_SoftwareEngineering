@@ -51,6 +51,7 @@ def test(request):
         return app.utils.gen_response(405)
 """
 import time
+import traceback
 import app.utils
 import app.times
 from app.models import User, Video, Analyse
@@ -148,7 +149,9 @@ def get_videos_info_by_time(request):
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
         except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+            return app.utils.gen_response(
+                400,
+                repr(exception) + '\n' + traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -227,5 +230,7 @@ def get_all_videos_info(request):
                 'count_list': res_list
             })
         except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+            return app.utils.gen_response(
+                400,
+                repr(exception) + '\n' + traceback.format_exc())
     return app.utils.gen_response(405)
