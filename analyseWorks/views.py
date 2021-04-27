@@ -125,19 +125,26 @@ def get_all_videos_info(request):
             for video in video_list:
                 analyses = video.analysis.all().order_by('sum_time')
                 for i, analyse in enumerate(analyses):
-                    if begin_timestamp <= analyse < term_timestamp:
-                        res_list[(analyse - begin_timestamp) / 86400 -
-                                 1]['like_count'] += analyses[
-                                     i + 1].total_like_count - analyses[
-                                         i].total_like_count
-                        res_list[(analyse - begin_timestamp) / 86400 -
-                                 1]['comment_count'] += analyses[
-                                     i + 1].total_comment_count - analyses[
-                                         i].total_comment_count
-                        res_list[(analyse - begin_timestamp) / 86400 -
-                                 1]['view_count'] += analyses[
-                                     i + 1].total_view_count - analyses[
-                                         i].total_view_count
+                    if begin_timestamp <= app.times.datetime2timestamp(
+                            analyse.sum_time) < term_timestamp:
+                        res_list[
+                            (app.times.datetime2timestamp(analyse.sum_time) -
+                             begin_timestamp) / 86400 -
+                            1]['like_count'] += analyses[
+                                i + 1].total_like_count - analyses[
+                                    i].total_like_count
+                        res_list[
+                            (app.times.datetime2timestamp(analyse.sum_time) -
+                             begin_timestamp) / 86400 -
+                            1]['comment_count'] += analyses[
+                                i + 1].total_comment_count - analyses[
+                                    i].total_comment_count
+                        res_list[
+                            (app.times.datetime2timestamp(analyse.sum_time) -
+                             begin_timestamp) / 86400 -
+                            1]['view_count'] += analyses[
+                                i + 1].total_view_count - analyses[
+                                    i].total_view_count
             begin = begin_timestamp
             while begin <= term_timestamp:
                 for video in video_list:
@@ -153,3 +160,31 @@ def get_all_videos_info(request):
         except Exception as exception:
             return app.utils.gen_response(400, str(exception))
     return app.utils.gen_response(405)
+
+
+def test(request):
+    if request.method == 'GET':
+        try:
+            open_id = request.GET['open_id']
+            user = User.objects.filter(open_id=open_id)
+            video_list = user.video.all()
+            res = {}
+            for video in video_list:
+                res[str(video.photo_id)]: []
+                analyses = video.analysis.all().order_by('sum_time')
+                for ana in analyses:
+                    res[str(video.photo_id)].append({
+                        'time':
+                        app.times.datetime2timestamp(ana.sum_time),
+                        'view':
+                        ana.total_view_count,
+                        'comment':
+                        ana.total_comment_count,
+                        'like':
+                        ana.total_like_count
+                    })
+            return app.utils.gen_response(200, res)
+        except Exception as exception:
+            return app.utils.gen_response(400, str(exception))
+    else:
+        return app.utils.gen_response(405)
