@@ -3,9 +3,9 @@ this is a module for getting the information
 of users and videos in the login process
 """
 from datetime import datetime
+from django.http import HttpResponse
 import app.api
 import app.utils
-from django.http import HttpResponse
 import app.times
 from app.models import User
 from apscheduler.schedulers.background import BackgroundScheduler
