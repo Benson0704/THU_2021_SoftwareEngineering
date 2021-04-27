@@ -130,7 +130,7 @@ def operate_feedback_admin(request):
                                     time.time()),
                                 message=message,
                                 manager=ret['open_id'],
-                                content=ret['response']).encodeURI(that.menuName)
+                                content=ret['response'])
             feedback.save()
             if message.status == 0:
                 message.status = 1
