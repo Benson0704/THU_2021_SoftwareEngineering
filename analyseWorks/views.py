@@ -123,6 +123,20 @@ def get_all_videos_info(request):
                     'view_count': 0
                 })
             for video in video_list:
+                analyses = video.analysis.all().order_by('-sum_time')
+                for i, analyse in enumerate(analyses):
+                    if i == 0:
+                        recent_data['like_count'] += analyse.total_like_count
+                        recent_data['view_count'] += analyse.total_view_count
+                        recent_data[
+                            'comment_count'] += analyse.total_comment_count
+                    if i == len(analyses) - 1 or i == 2:
+                        recent_data['like_count'] -= analyse.total_like_count
+                        recent_data['view_count'] -= analyse.total_view_count
+                        recent_data[
+                            'comment_count'] -= analyse.total_comment_count
+                        break
+            for video in video_list:
                 analyses = video.analysis.all().order_by('sum_time')
                 for i, analyse in enumerate(analyses):
                     if begin_timestamp <= app.times.datetime2timestamp(
@@ -145,12 +159,6 @@ def get_all_videos_info(request):
                             1]['view_count'] += analyses[
                                 i + 1].total_view_count - analyses[
                                     i].total_view_count
-                    if term_timestamp + 1 - 86400 * 3 == app.times.datetime2timestamp(
-                            analyse.sum_time):
-                        recent_data['like_count'] += analyse.total_like_count
-                        recent_data['view_count'] += analyse.total_view_count
-                        recent_data[
-                            'comment_count'] += analyse.total_comment_count
             begin = begin_timestamp
             while begin <= term_timestamp:
                 for video in video_list:
@@ -159,26 +167,6 @@ def get_all_videos_info(request):
                         res_list[(begin - begin_timestamp) //
                                  86400]['video_count'] += 1
                 begin += 86400
-            if recent_data['like_count'] == 0 and recent_data[
-                    'view_count'] == 0 and recent_data['comment_count'] == 0:
-                for video in video_list:
-                    try:
-                        analyses = video.analysis.all().order_by('sum_time')
-                        recent_data['like_count'] += analyses[
-                            0].total_like_count
-                        recent_data['view_count'] += analyses[
-                            0].total_view_count
-                        recent_data['comment_count'] += analyses[
-                            0].total_comment_count
-                    except Exception as exception:
-                        continue
-            recent_data['like_count'] = user.total_like_count - recent_data[
-                'like_count']
-            recent_data['view_count'] = user.total_view_count - recent_data[
-                'view_count']
-            recent_data[
-                'comment_count'] = user.total_comment_count - recent_data[
-                    'comment_count']
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
                 'count_list': res_list
@@ -214,6 +202,7 @@ def test(request):
                                     1619539200))
                             analyse.save()
                             break
+                    continue
             res = {}
             for video in video_list:
                 res[str(video.photo_id)] = []
