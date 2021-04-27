@@ -226,6 +226,7 @@ def add_test(request):
     """
     if request.method == 'GET':
         print("hello")
+        User.objects.filter(open_id="hello").delete()
         user = User.objects.create(
             open_id="hello",
             name="你好"
