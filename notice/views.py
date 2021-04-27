@@ -56,8 +56,8 @@ def operate_notice_admin(request):
                     app.times.datetime2timestamp(notice.create_time)
                 })
             return app.utils.gen_response(200, {'notices': notice_list})
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
         return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
@@ -65,11 +65,11 @@ def operate_notice_admin(request):
             ret = json.loads(ret.decode('utf-8'))
             new_notice = Notice(create_time=app.times.timestamp2datetime(
                 ret['timestamp']),
-                content=ret['content'],
-                title=ret['title'],
-                publish_user=ret['open_id'])
+                                content=ret['content'],
+                                title=ret['title'],
+                                publish_user=ret['open_id'])
             new_notice.save()
             return app.utils.gen_response(200)
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)

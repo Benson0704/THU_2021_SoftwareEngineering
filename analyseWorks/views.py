@@ -1,7 +1,7 @@
 """
 this is a module for analyse the information of videos
 """
-
+import time
 import app.utils
 import app.times
 from app.models import User, Video, Analyse, AnalyseHour
@@ -11,13 +11,15 @@ def get_register_time(request):
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
-            return app.utils.gen_response(
-                200, {
-                    'start_timestamp':
-                    app.times.datetime2timestamp(
-                        Analyse.objects.filter(
-                            user_id=open_id).order_by('sum_time')[0].sum_time)
-                })
+            try:
+                start = app.times.datetime2timestamp(
+                    Analyse.objects.filter(
+                        user_id=open_id).order_by('sum_time')[0].sum_time)
+            except Exception as exception:
+                start = app.times.string2timestamp(
+                    app.times.timestamp2string(time.time() +
+                                               86400).split(' ') + ' 00:00:00')
+            return app.utils.gen_response(200, {'start_timestamp': start})
         except Exception as exception:
             return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)

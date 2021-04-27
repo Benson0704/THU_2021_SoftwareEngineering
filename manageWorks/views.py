@@ -19,7 +19,7 @@ def get_video_time_sort(request):
             term_timestamp = request.GET.get('term_timestamp')
             try:
                 app.api.manage_data(open_id)
-            except:  # fake in test
+            except Exception as exception:  # fake in test
                 pass
             video_list = app.utils.get_videos_by_timestamp(
                 open_id, begin_timestamp, term_timestamp)
@@ -51,8 +51,8 @@ def get_video_time_sort(request):
                 'video_count': len(return_list),
                 'video_list': return_list
             })
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     else:
         return app.utils.gen_response(405)
 
@@ -66,7 +66,7 @@ def get_label_list(request):
             open_id = request.GET.get('open_id')
             try:
                 app.api.manage_data(open_id)
-            except:  # fake in test
+            except Exception as exception:  # fake in test
                 pass
             user = User.objects.get(open_id=open_id)
             labels = user.label.all().order_by('-num')
@@ -77,14 +77,14 @@ def get_label_list(request):
                     'num': label.num
                 })
             return app.utils.gen_response(200, {'label_list': return_list})
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     elif request.method == 'POST':
         ret = request.body
         try:
             ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
         try:
             open_id = ret['open_id']
             target_label = ret['label']
@@ -92,7 +92,7 @@ def get_label_list(request):
             add = ret['add']
             try:
                 app.api.manage_data(open_id)
-            except:  # fake in test
+            except Exception as exception:  # fake in test
                 pass
             user = User.objects.get(open_id=open_id)
             if add:
@@ -100,7 +100,7 @@ def get_label_list(request):
                     label = user.label.get(label_name=target_label)
                     label.num += 1
                     label.save()
-                except:
+                except Exception as exception:
                     label = Label(user=user, label_name=target_label)
                     label.num += 1
                     label.save()
@@ -118,7 +118,7 @@ def get_label_list(request):
                 video.labels = video.labels.replace(target_label + '_&_', '')
                 video.save()
             return app.utils.gen_response(201)
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     else:
         return app.utils.gen_response(405)

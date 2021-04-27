@@ -52,8 +52,8 @@ def operate_feedback_user(request):
                     'unsolved_feedbacks': unsolved_list,
                     'solved_feedbacks': solved_list
                 })
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     if request.method == 'POST':
         try:
             ret = request.body
@@ -65,8 +65,8 @@ def operate_feedback_user(request):
                 title=ret['title'])
             new_message.save()
             return app.utils.gen_response(200)
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)
 
 
@@ -115,8 +115,8 @@ def operate_feedback_admin(request):
                     'unsolved_feedbacks': unsolved_list,
                     'solved_feedbacks': solved_list
                 })
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     if request.method == 'POST':
         try:
             ret = request.body
@@ -139,6 +139,6 @@ def operate_feedback_admin(request):
                 return app.utils.gen_response(200)
             if message.status == 1:
                 return app.utils.gen_response(210)
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)

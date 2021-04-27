@@ -16,8 +16,7 @@ def get_fans_info(request):
             open_id = request.GET['open_id']
             begin_timestamp = int(request.GET['begin_timestamp'])
             term_timestamp = int(request.GET['term_timestamp'])
-            analyse_list = AnalyseHour.objects.filter(
-                user_id=open_id)
+            analyse_list = AnalyseHour.objects.filter(user_id=open_id)
 
             count_list = [[0 for i in range(3)] for j in range(25)]
             res_list = []
@@ -30,16 +29,20 @@ def get_fans_info(request):
                     count_list[idx][2] += analyse.total_view_count
 
             for idx in range(1, 25):
-                if count_list[idx][0] == 0 and count_list[idx][1] == 0 and count_list[idx][2] == 0:
+                if count_list[idx][0] == 0 and count_list[idx][
+                        1] == 0 and count_list[idx][2] == 0:
                     continue
                 else:
                     res_list.append({
-                            'like_count': count_list[idx][0] - count_list[idx-1][0],
-                            'comment_count': count_list[idx][1] - count_list[idx-1][1],
-                            'view_count': count_list[idx][2] - count_list[idx-1][2]
-                        })
+                        'like_count':
+                        count_list[idx][0] - count_list[idx - 1][0],
+                        'comment_count':
+                        count_list[idx][1] - count_list[idx - 1][1],
+                        'view_count':
+                        count_list[idx][2] - count_list[idx - 1][2]
+                    })
             res = {'count_list': res_list}
             return app.utils.gen_response(200, res)
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)
