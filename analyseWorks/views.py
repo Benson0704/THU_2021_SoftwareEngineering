@@ -79,7 +79,7 @@ def get_videos_info_by_time(request):
             res['length'] = len(analyse_list)
             return app.utils.gen_response(200, res)
         except Exception as exception:
-            return app.utils.gen_response(400, exception)
+            return app.utils.gen_response(400, str(exception))
     return app.utils.gen_response(405)
 
 
@@ -164,5 +164,5 @@ def get_all_videos_info(request):
                 'count_list': res_list
             })
         except Exception as exception:
-            return app.utils.gen_response(400, exception)
+            return app.utils.gen_response(400, str(exception))
     return app.utils.gen_response(405)
