@@ -219,19 +219,21 @@ def get_user_info_by_id(request):
     return app.utils.gen_response(405)
 
 
-def add_test():
+def add_test(request):
     """
     this is for test add function
     """
-    user = User.objects.create(
-        open_id="hello",
-        name="你好"
-    )
-    user.save()
+    if request.method == 'GET':
+        user = User.objects.create(
+            open_id="hello",
+            name="你好"
+        )
+        user.save()
 
 
-def delete_test():
+def delete_test(request):
     """
     this is for test delete function
     """
-    User.objects.filter(open_id="hello").delete()
+    if request.method == 'GET':
+        User.objects.filter(open_id="hello").delete()
