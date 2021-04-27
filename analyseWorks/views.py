@@ -1,13 +1,66 @@
 """
 this is a module for analyse the information of videos
+
+def test(request):
+    if request.method == 'GET':
+        try:
+            open_id = request.GET['open_id']
+            user = User.objects.get(open_id=open_id)
+            video_list = user.video.all()
+            for video in video_list:
+                try:
+                    a = Analyse.objects.get(
+                        sum_time=app.times.timestamp2datetime(1619539200),
+                        video=video)
+                except:
+                    ahs = AnalyseHour.objects.filter(video=video)
+                    for i, ah in enumerate(ahs):
+                        if (app.times.datetime2timestamp(ah.sum_time) <=
+                                1619539200) and (app.times.datetime2timestamp(
+                                    ahs[i + 1].sum_time) > 1619539200):
+                            analyse = Analyse(
+                                total_like_count=ah.total_like_count,
+                                total_comment_count=ah.total_comment_count,
+                                total_view_count=ah.total_view_count,
+                                video=video,
+                                user_id=open_id,
+                                sum_time=app.times.timestamp2datetime(
+                                    1619539200))
+                            analyse.save()
+                            break
+                    continue
+            res = {}
+            for video in video_list:
+                res[str(video.photo_id)] = []
+                analyses = video.analysis.all().order_by('sum_time')
+                for ana in analyses:
+                    res[str(video.photo_id)].append({
+                        'time':
+                        app.times.datetime2timestamp(ana.sum_time),
+                        'view':
+                        ana.total_view_count,
+                        'comment':
+                        ana.total_comment_count,
+                        'like':
+                        ana.total_like_count
+                    })
+            return app.utils.gen_response(200, res)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
+    else:
+        return app.utils.gen_response(405)
 """
 import time
 import app.utils
 import app.times
-from app.models import User, Video, Analyse, AnalyseHour
+from app.models import User, Video, Analyse
 
 
 def get_register_time(request):
+    '''
+    get the register time: the earliest time when analyse available
+    MAYBE FUTURE
+    '''
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
@@ -15,7 +68,7 @@ def get_register_time(request):
                 start = app.times.datetime2timestamp(
                     Analyse.objects.filter(
                         user_id=open_id).order_by('sum_time')[0].sum_time)
-            except Exception as exception:
+            except Exception:
                 start = app.times.string2timestamp(
                     app.times.timestamp2string(time.time() +
                                                86400).split(' ') + ' 00:00:00')
@@ -176,53 +229,3 @@ def get_all_videos_info(request):
         except Exception as exception:
             return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)
-
-
-def test(request):
-    if request.method == 'GET':
-        try:
-            open_id = request.GET['open_id']
-            user = User.objects.get(open_id=open_id)
-            video_list = user.video.all()
-            for video in video_list:
-                try:
-                    a = Analyse.objects.get(
-                        sum_time=app.times.timestamp2datetime(1619539200),
-                        video=video)
-                except:
-                    ahs = AnalyseHour.objects.filter(video=video)
-                    for i, ah in enumerate(ahs):
-                        if (app.times.datetime2timestamp(ah.sum_time) <=
-                                1619539200) and (app.times.datetime2timestamp(
-                                    ahs[i + 1].sum_time) > 1619539200):
-                            analyse = Analyse(
-                                total_like_count=ah.total_like_count,
-                                total_comment_count=ah.total_comment_count,
-                                total_view_count=ah.total_view_count,
-                                video=video,
-                                user_id=open_id,
-                                sum_time=app.times.timestamp2datetime(
-                                    1619539200))
-                            analyse.save()
-                            break
-                    continue
-            res = {}
-            for video in video_list:
-                res[str(video.photo_id)] = []
-                analyses = video.analysis.all().order_by('sum_time')
-                for ana in analyses:
-                    res[str(video.photo_id)].append({
-                        'time':
-                        app.times.datetime2timestamp(ana.sum_time),
-                        'view':
-                        ana.total_view_count,
-                        'comment':
-                        ana.total_comment_count,
-                        'like':
-                        ana.total_like_count
-                    })
-            return app.utils.gen_response(200, res)
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
-    else:
-        return app.utils.gen_response(405)

@@ -19,7 +19,7 @@ def get_video_time_sort(request):
             term_timestamp = request.GET.get('term_timestamp')
             try:
                 app.api.manage_data(open_id)
-            except Exception as exception:  # fake in test
+            except Exception:  # fake in test
                 pass
             video_list = app.utils.get_videos_by_timestamp(
                 open_id, begin_timestamp, term_timestamp)
@@ -66,7 +66,7 @@ def get_label_list(request):
             open_id = request.GET.get('open_id')
             try:
                 app.api.manage_data(open_id)
-            except Exception as exception:  # fake in test
+            except Exception:  # fake in test
                 pass
             user = User.objects.get(open_id=open_id)
             labels = user.label.all().order_by('-num')
@@ -92,7 +92,7 @@ def get_label_list(request):
             add = ret['add']
             try:
                 app.api.manage_data(open_id)
-            except Exception as exception:  # fake in test
+            except Exception:  # fake in test
                 pass
             user = User.objects.get(open_id=open_id)
             if add:
@@ -100,7 +100,7 @@ def get_label_list(request):
                     label = user.label.get(label_name=target_label)
                     label.num += 1
                     label.save()
-                except Exception as exception:
+                except Exception:
                     label = Label(user=user, label_name=target_label)
                     label.num += 1
                     label.save()

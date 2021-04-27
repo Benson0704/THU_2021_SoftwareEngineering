@@ -9,6 +9,5 @@ from . import views
 urlpatterns = [
     path('start_fetch', views.get_register_time),
     path('single', views.get_videos_info_by_time),
-    path('globalday', views.get_all_videos_info),
-    path('test', views.test)
+    path('globalday', views.get_all_videos_info)
 ]

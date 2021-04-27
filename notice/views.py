@@ -32,8 +32,8 @@ def get_notice_user(request):
                 'notices': notice_list,
                 'flows': flow_list
             })
-        except:
-            return app.utils.gen_response(400)
+        except Exception as exception:
+            return app.utils.gen_response(400, repr(exception))
     return app.utils.gen_response(405)
 
 
