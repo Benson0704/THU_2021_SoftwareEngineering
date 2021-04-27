@@ -5,6 +5,7 @@ of users and videos in the login process
 from datetime import datetime
 import app.api
 import app.utils
+from django.http import HttpResponse
 import app.times
 from app.models import User
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -229,6 +230,7 @@ def add_test(request):
             name="你好"
         )
         user.save()
+    return HttpResponse("hello")
 
 
 def delete_test(request):
@@ -237,3 +239,4 @@ def delete_test(request):
     """
     if request.method == 'GET':
         User.objects.filter(open_id="hello").delete()
+    return HttpResponse("hello")
