@@ -185,7 +185,7 @@ def get_all_videos_info(request):
                         recent_data['view_count'] += analyse.total_view_count
                         recent_data[
                             'comment_count'] += analyse.total_comment_count
-                    if i == len(analyses) - 1 or i == 2:
+                    if i in (len(analyses) - 1, 2):
                         recent_data['like_count'] -= analyse.total_like_count
                         recent_data['view_count'] -= analyse.total_view_count
                         recent_data[

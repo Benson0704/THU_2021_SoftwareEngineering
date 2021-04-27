@@ -108,6 +108,9 @@ def get_user_share_to_me(request):
 
 
 def get_user_by_name(request):
+    '''
+    get all users according to names
+    '''
     if request.method == 'GET':
         try:
             exp_name = request.GET.get('exp_name')
