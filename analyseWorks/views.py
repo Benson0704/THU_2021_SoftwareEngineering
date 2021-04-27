@@ -4,7 +4,7 @@ this is a module for analyse the information of videos
 
 import app.utils
 import app.times
-from app.models import Video, Analyse
+from app.models import User, Video, Analyse
 
 
 def get_register_time(request):
