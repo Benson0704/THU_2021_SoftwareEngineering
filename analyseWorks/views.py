@@ -115,7 +115,7 @@ def get_all_videos_info(request):
             user = User.objects.get(open_id=open_id)
             video_list = user.video.all()
             res_list = []
-            for _ in range((term_timestamp + 1 - begin_timestamp) / 86400):
+            for _ in range((term_timestamp + 1 - begin_timestamp) // 86400):
                 res_list.append({
                     'video_count': 0,
                     'like_count': 0,
@@ -129,19 +129,19 @@ def get_all_videos_info(request):
                             analyse.sum_time) < term_timestamp:
                         res_list[
                             (app.times.datetime2timestamp(analyse.sum_time) -
-                             begin_timestamp) / 86400 -
+                             begin_timestamp) // 86400 -
                             1]['like_count'] += analyses[
                                 i + 1].total_like_count - analyses[
                                     i].total_like_count
                         res_list[
                             (app.times.datetime2timestamp(analyse.sum_time) -
-                             begin_timestamp) / 86400 -
+                             begin_timestamp) // 86400 -
                             1]['comment_count'] += analyses[
                                 i + 1].total_comment_count - analyses[
                                     i].total_comment_count
                         res_list[
                             (app.times.datetime2timestamp(analyse.sum_time) -
-                             begin_timestamp) / 86400 -
+                             begin_timestamp) // 86400 -
                             1]['view_count'] += analyses[
                                 i + 1].total_view_count - analyses[
                                     i].total_view_count
@@ -150,7 +150,7 @@ def get_all_videos_info(request):
                 for video in video_list:
                     if begin <= app.times.datetime2timestamp(
                             video.create_time) < begin + 86400:
-                        res_list[(begin - begin_timestamp) /
+                        res_list[(begin - begin_timestamp) //
                                  86400]['video_count'] += 1
                 begin += 86400
             return app.utils.gen_response(200, {
@@ -166,7 +166,7 @@ def test(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
-            user = User.objects.filter(open_id=open_id)
+            user = User.objects.get(open_id=open_id)
             video_list = user.video.all()
             res = {}
             for video in video_list:
