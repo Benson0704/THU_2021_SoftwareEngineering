@@ -4,7 +4,7 @@ this is a module for analyse the information of videos
 
 import app.utils
 import app.times
-from app.models import User, Video, Analyse
+from app.models import User, Video, Analyse, AnalyseHour
 
 
 def get_register_time(request):
@@ -145,6 +145,12 @@ def get_all_videos_info(request):
                             1]['view_count'] += analyses[
                                 i + 1].total_view_count - analyses[
                                     i].total_view_count
+                    if term_timestamp + 1 - 86400 * 3 == app.times.datetime2timestamp(
+                            analyse.sum_time):
+                        recent_data['like_count'] += analyse.total_like_count
+                        recent_data['view_count'] += analyse.total_view_count
+                        recent_data[
+                            'comment_count'] += analyse.total_comment_count
             begin = begin_timestamp
             while begin <= term_timestamp:
                 for video in video_list:
@@ -153,6 +159,19 @@ def get_all_videos_info(request):
                         res_list[(begin - begin_timestamp) //
                                  86400]['video_count'] += 1
                 begin += 86400
+            if recent_data['like_count'] == 0 and recent_data[
+                    'view_count'] == 0 and recent_data['comment_count'] == 0:
+                for video in video_list:
+                    try:
+                        analyses = video.analysis.all().order_by('sum_time')
+                        recent_data['like_count'] += analyses[
+                            0].total_like_count
+                        recent_data['view_count'] += analyses[
+                            0].total_view_count
+                        recent_data['comment_count'] += analyses[
+                            0].total_comment_count
+                    except Exception as exception:
+                        continue
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
                 'count_list': res_list
@@ -168,6 +187,23 @@ def test(request):
             open_id = request.GET['open_id']
             user = User.objects.get(open_id=open_id)
             video_list = user.video.all()
+            for video in video_list:
+                if not Analyse.objects.exists(
+                        sum_time=app.times.timestamp2datetime(1619539200)):
+                    ahs = AnalyseHour.objects.filter(video=video)
+                    for i, ah in enumerate(ahs):
+                        if (app.times.datetime2timestamp(ah.sum_time) <
+                                1619539200) and (app.times.datetime2timestamp(
+                                    ahs[i + 1].sum_time) > 1619539200):
+                            analyse = Analyse(
+                                total_like_count=ah.total_like_count,
+                                total_comment_count=ah.total_comment_count,
+                                total_view_count=ah.total_view_count,
+                                video=video,
+                                user_id=open_id,
+                                sum_time=1619539200)
+                            analyse.save()
+                            break
             res = {}
             for video in video_list:
                 res[str(video.photo_id)] = []
