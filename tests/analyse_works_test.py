@@ -40,61 +40,54 @@ class TestAnalyseWorks(TestCase):
             pending=False,
             labels="")
         new_video.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-08 00:00:00',
-            total_view_count=5,
-            total_like_count=2,
-            total_comment_count=1)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-08 00:00:00',
+                                             total_view_count=5,
+                                             total_like_count=2,
+                                             total_comment_count=1)
         new_analyse.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-09 00:00:00',
-            total_view_count=12,
-            total_like_count=5,
-            total_comment_count=3)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-09 00:00:00',
+                                             total_view_count=12,
+                                             total_like_count=5,
+                                             total_comment_count=3)
         new_analyse.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-10 00:00:00',
-            total_view_count=16,
-            total_like_count=7,
-            total_comment_count=5)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-10 00:00:00',
+                                             total_view_count=16,
+                                             total_like_count=7,
+                                             total_comment_count=5)
         new_analyse.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-11 00:00:00',
-            total_view_count=22,
-            total_like_count=10,
-            total_comment_count=7)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-11 00:00:00',
+                                             total_view_count=22,
+                                             total_like_count=10,
+                                             total_comment_count=7)
         new_analyse.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-12 00:00:00',
-            total_view_count=27,
-            total_like_count=12,
-            total_comment_count=8)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-12 00:00:00',
+                                             total_view_count=27,
+                                             total_like_count=12,
+                                             total_comment_count=8)
         new_analyse.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-13 00:00:00',
-            total_view_count=32,
-            total_like_count=15,
-            total_comment_count=9)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-13 00:00:00',
+                                             total_view_count=32,
+                                             total_like_count=15,
+                                             total_comment_count=9)
         new_analyse.save()
-        new_analyse = Analyse.objects.create(
-            video=new_video,
-            user_id="justhavesomefun",
-            sum_time='2022-04-14 00:00:00',
-            total_view_count=40,
-            total_like_count=20,
-            total_comment_count=10)
+        new_analyse = Analyse.objects.create(video=new_video,
+                                             user_id="justhavesomefun",
+                                             sum_time='2022-04-14 00:00:00',
+                                             total_view_count=40,
+                                             total_like_count=20,
+                                             total_comment_count=10)
         new_analyse.save()
 
     def test_get_videos_info_by_time_photoid_lost(self):
@@ -126,17 +119,14 @@ class TestAnalyseWorks(TestCase):
         expected_res['caption'] = "World 1st university"
         expected_res['cover'] = "https://World1stuniversity"
         expected_res['play_url'] = "https://PlayWorld1stuniversity"
-        expected_res['create_time'] = '2022-04-07T12:13:15'
+        expected_res['create_time'] = app.times.datetime2timestamp(
+            datetime(2022, 4, 7, 12, 13, 15))
         expected_res['pending'] = False
         expected_res['like_count'] = 20
         expected_res['comment_count'] = 10
         expected_res['view_count'] = 40
         expected_count_list = []
-        temp = {
-            'like_count': 3,
-            'comment_count': 1,
-            'view_count': 5
-        }
+        temp = {'like_count': 3, 'comment_count': 1, 'view_count': 5}
         expected_count_list.append(temp)
         expected_res['count_list'] = expected_count_list
         response = self.client.get('/api/analysis/single',
