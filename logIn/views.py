@@ -6,7 +6,7 @@ from datetime import datetime
 import app.api
 import app.utils
 import app.times
-import app.models
+from app.models import User
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
@@ -219,7 +219,10 @@ def get_user_info_by_id(request):
     return app.utils.gen_response(405)
 
 
-def add_test(request):
+def add_test():
+    """
+    this is for test add function
+    """
     user = User.objects.create(
         open_id="hello",
         name="你好"
@@ -227,5 +230,8 @@ def add_test(request):
     user.save()
 
 
-def delete_test(request):
+def delete_test():
+    """
+    this is for test delete function
+    """
     User.objects.filter(open_id="hello").delete()
