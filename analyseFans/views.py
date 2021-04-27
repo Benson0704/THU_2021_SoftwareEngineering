@@ -1,6 +1,7 @@
 """
 this is a module for analyse the information of fans
 """
+import traceback
 import app.utils
 import app.times
 from app.models import AnalyseHour
@@ -43,6 +44,6 @@ def get_fans_info(request):
                     })
             res = {'count_list': res_list}
             return app.utils.gen_response(200, res)
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)

@@ -3,6 +3,7 @@ this is a module for getting notice information
 for user and admin
 """
 import json
+import traceback
 import app.utils
 import app.times
 from app.models import Notice
@@ -32,8 +33,8 @@ def get_notice_user(request):
                 'notices': notice_list,
                 'flows': flow_list
             })
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -56,8 +57,8 @@ def operate_notice_admin(request):
                     app.times.datetime2timestamp(notice.create_time)
                 })
             return app.utils.gen_response(200, {'notices': notice_list})
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
         return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
@@ -70,6 +71,6 @@ def operate_notice_admin(request):
                                 publish_user=ret['open_id'])
             new_notice.save()
             return app.utils.gen_response(200)
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)

@@ -2,6 +2,7 @@
 this is a module for getting the information shared users
 """
 import json
+import traceback
 import app.utils
 import app.times
 from app.models import User
@@ -25,8 +26,8 @@ def add_share(request):
             shared_user.authed_user += sharer_openid + '_&_'
             shared_user.save()
             return app.utils.gen_response(200)
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -48,8 +49,8 @@ def delete_share(request):
             shared_user.authed_user.replace(sharer_openid + '_&_', '')
             shared_user.save()
             return app.utils.gen_response(200)
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -75,8 +76,8 @@ def get_my_sharing_user(request):
                         'head': user.head
                     })
             return app.utils.gen_response(200, {'sharing_list': res_list})
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -102,8 +103,8 @@ def get_user_share_to_me(request):
                         'head': user.head
                     })
             return app.utils.gen_response(200, {'shared_list': res_list})
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -126,6 +127,6 @@ def get_user_by_name(request):
                     'video_count': user.video_count
                 })
             return app.utils.gen_response(200, res_list)
-        except Exception as exception:
-            return app.utils.gen_response(400, repr(exception))
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
