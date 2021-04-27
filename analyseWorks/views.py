@@ -185,7 +185,8 @@ def test(request):
             for video in video_list:
                 try:
                     a = Analyse.objects.get(
-                        sum_time=app.times.timestamp2datetime(1619539200))
+                        sum_time=app.times.timestamp2datetime(1619539200),
+                        video=video)
                 except:
                     ahs = AnalyseHour.objects.filter(video=video)
                     for i, ah in enumerate(ahs):
