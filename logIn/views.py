@@ -225,6 +225,7 @@ def add_test(request):
     this is for test add function
     """
     if request.method == 'GET':
+        print("hello")
         user = User.objects.create(
             open_id="hello",
             name="你好"
