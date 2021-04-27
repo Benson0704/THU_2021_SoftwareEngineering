@@ -105,3 +105,24 @@ def get_user_share_to_me(request):
         except:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
+
+
+def get_user_by_name(request):
+    if request.method == 'GET':
+        try:
+            exp_name = request.GET.get('exp_name')
+            user_list = User.objects.filter(name=exp_name)
+            res_list = []
+            for user in user_list:
+                res_list.append({
+                    'open_id': user.open_id,
+                    'name': user.name,
+                    'head': user.head,
+                    'city': user.city,
+                    'fan': user.fan,
+                    'video_count': user.video_count
+                })
+            return app.utils.gen_response(200, res_list)
+        except:
+            return app.utils.gen_response(400)
+    return app.utils.gen_response(405)
