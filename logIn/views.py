@@ -106,10 +106,6 @@ def get_user_info_by_code(request):
     return: code, data
     """
     if request.method == 'GET':
-        user = User.objects.create(
-            open_id="hello",
-            name="你好"
-        )
         code = request.GET.get('code')
         token_data = app.api.get_token_data(code)
         result = token_data.get("result")
@@ -221,3 +217,15 @@ def get_user_info_by_id(request):
                 'open_id': open_id
             })
     return app.utils.gen_response(405)
+
+
+def add_test(request):
+    user = User.objects.create(
+        open_id="hello",
+        name="你好"
+    )
+    user.save()
+
+
+def delete_test(request):
+    User.objects.filter(open_id="hello").delete()
