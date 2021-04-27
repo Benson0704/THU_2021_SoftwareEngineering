@@ -7,6 +7,22 @@ import app.times
 from app.models import Video, Analyse
 
 
+def get_register_time(request):
+    if request.method == 'GET':
+        try:
+            open_id = request.GET.get('open_id')
+            return app.utils.gen_response(
+                200, {
+                    'start_timestamp':
+                    app.times.datetime2timestamp(
+                        Analyse.objects.filter(
+                            user_id=open_id).order_by('sum_time')[0].sum_time)
+                })
+        except:
+            return app.utils.gen_response(400)
+    return app.utils.gen_response(405)
+
+
 def get_videos_info_by_time(request):
     '''
     returns the videos' comment etc infos
@@ -75,8 +91,6 @@ def get_videos_info_by_time(request):
                         count_list[i]['view_count']
                     })
             res['count_list'] = res_list
-            res['tmp'] = count_list
-            res['length'] = len(analyse_list)
             return app.utils.gen_response(200, res)
         except Exception as exception:
             return app.utils.gen_response(400, str(exception))
