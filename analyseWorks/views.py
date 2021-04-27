@@ -19,7 +19,7 @@ def get_register_time(request):
                             user_id=open_id).order_by('sum_time')[0].sum_time)
                 })
         except Exception as exception:
-            return app.utils.gen_response(400, str(exception))
+            return app.utils.gen_response(400, exception.message)
     return app.utils.gen_response(405)
 
 
@@ -93,7 +93,7 @@ def get_videos_info_by_time(request):
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
         except Exception as exception:
-            return app.utils.gen_response(400, str(exception))
+            return app.utils.gen_response(400, exception.message)
     return app.utils.gen_response(405)
 
 
@@ -158,7 +158,7 @@ def get_all_videos_info(request):
                 'count_list': res_list
             })
         except Exception as exception:
-            return app.utils.gen_response(400, str(exception))
+            return app.utils.gen_response(400, exception.message)
     return app.utils.gen_response(405)
 
 
@@ -170,7 +170,7 @@ def test(request):
             video_list = user.video.all()
             res = {}
             for video in video_list:
-                res[str(video.photo_id)]: []
+                res[str(video.photo_id)] = []
                 analyses = video.analysis.all().order_by('sum_time')
                 for ana in analyses:
                     res[str(video.photo_id)].append({
@@ -185,6 +185,6 @@ def test(request):
                     })
             return app.utils.gen_response(200, res)
         except Exception as exception:
-            return app.utils.gen_response(400, str(exception))
+            return app.utils.gen_response(400, exception.message)
     else:
         return app.utils.gen_response(405)
