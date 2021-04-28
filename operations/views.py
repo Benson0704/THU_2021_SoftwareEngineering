@@ -8,8 +8,16 @@ def operate_user(request):
         try:
             open_id = request.GET.get('open_id')
             name = request.GET.get('name')
+            head = 'https://tx2.a.yximgs.com/uhead/AB/2021/03/19/13/BMjAyMTAzMTkxMzU0MjRfMjMxMTc1MzAzNV8xX2hkMzEwXzk4OQ==_s.jpg'
             if int(request.GET.get('add')) == 1:
-                User(open_id=open_id, name=name).save()
+                User(open_id=open_id,
+                     name=name,
+                     head=head,
+                     bigHead=head,
+                     city='beijing',
+                     sex=1,
+                     access_token='access_token',
+                     refresh_token='refresh_token').save()
             else:
                 User.objects.get(open_id=open_id, name=name).delete()
             res = []
