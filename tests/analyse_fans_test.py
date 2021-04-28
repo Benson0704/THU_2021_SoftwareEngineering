@@ -122,11 +122,7 @@ class TestAnalyseFans(TestCase):
         response = self.client.get('/api/analysis/globalhour',
                                    data=payload,
                                    content_type="application/json")
-        expected_count_list = [{
-            'view_count': 12,
-            'comment_count': 3,
-            'like_count': 5
-        }]
+        expected_count_list = []
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
