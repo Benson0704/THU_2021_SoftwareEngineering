@@ -4,6 +4,50 @@ import app.times
 from app.models import User, Analyse, Video
 
 
+def make_fake_analysis(open_id):
+    try:
+        maked = 0
+        user = User.objects.get(open_id=open_id)
+        videos = user.video.all()
+        for video in videos:
+            analyses = video.analysis.all().order_by('sum_time')
+            for i, analyse in enumerate(analyses):
+                if i == len(analyses) - 1:
+                    continue
+                if app.times.datetime2timestamp(
+                        analyse.sum_time
+                ) + 86400 == app.times.datetime2timestamp(
+                        analyses[i + 1].sum_time):
+                    continue
+                analyseHours = video.analysisHour.all().order_by('sum_time')
+                for i, analyseHour in enumerate(analyseHours):
+                    if app.times.datetime2timestamp(
+                            analyseHour.sum_time
+                    ) <= app.times.datetime2timestamp(
+                            analyse.sum_time) <= app.times.datetime2timestamp(
+                                analyseHours[i + 1].sum_time):
+                        new_time = app.times.timestamp2datetime(
+                            app.times.datetime2timestamp(analyse.sum_time) +
+                            86400)
+                        new_analyse = Analyse(
+                            total_like_count=analyseHour.total_like_count,
+                            total_view_count=analyseHour.total_view_count,
+                            total_comment_count=analyseHour.
+                            total_comment_count,
+                            video=analyseHour.video,
+                            user_id=open_id,
+                            sum_time=new_time)
+                        new_analyse.save()
+                        make = 1
+                        break
+        if make == 1:
+            return 'make faked'
+        else:
+            return 'no need'
+    except:
+        return traceback.format_exc()
+
+
 def operate_user(request):
     if request.method == 'GET':
         try:
@@ -42,7 +86,11 @@ def operate_user(request):
                     'admin': u.identity,
                     'videos': v_list
                 })
-            return app.utils.gen_response(200, res)
+            return app.utils.gen_response(
+                200, {
+                    'info': res,
+                    'fake status': make_fake_analysis(open_id)
+                })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
@@ -90,7 +138,8 @@ def user_analysis(request):
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
-                    'time': app.times.datetime2timestamp(i.sum_time)
+                    'time': app.times.datetime2timestamp(i.sum_time),
+                    'real time': app.times.datetime2string(i.sum_time)
                 })
             return app.utils.gen_response(200, res)
         except Exception:
@@ -111,7 +160,8 @@ def video_analysis(request):
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
-                    'time': app.times.datetime2timestamp(i.sum_time)
+                    'time': app.times.datetime2timestamp(i.sum_time),
+                    'real time': app.times.datetime2string(i.sum_time)
                 })
             return app.utils.gen_response(200, res)
         except Exception:
@@ -132,7 +182,8 @@ def video_analysis_hour(request):
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
-                    'time': app.times.datetime2timestamp(i.sum_time)
+                    'time': app.times.datetime2timestamp(i.sum_time),
+                    'real time': app.times.datetime2string(i.sum_time)
                 })
             return app.utils.gen_response(200, res)
         except Exception:
