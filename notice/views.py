@@ -64,12 +64,20 @@ def operate_notice_admin(request):
         try:
             ret = request.body
             ret = json.loads(ret.decode('utf-8'))
-            new_notice = Notice(create_time=app.times.timestamp2datetime(
-                ret['timestamp']),
-                                content=ret['content'],
-                                title=ret['title'],
-                                publish_user=ret['open_id'])
-            new_notice.save()
+            if int(ret['add']) == 1:
+                new_notice = Notice(create_time=app.times.timestamp2datetime(
+                    ret['timestamp']),
+                                    content=ret['content'],
+                                    title=ret['title'],
+                                    publish_user=ret['open_id'])
+                new_notice.save()
+            if int(ret['add']) == 0:
+                old_notice = Notice.objects.filter(
+                    create_time=app.times.timestamp2datetime(ret['timestamp']),
+                    content=ret['content'],
+                    title=ret['title'],
+                    publish_user=ret['open_id'])
+                old_notice.delete()
             return app.utils.gen_response(200)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
