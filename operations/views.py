@@ -117,3 +117,24 @@ def video_analysis(request):
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
+
+
+def video_analysis_hour(request):
+    if request.method == 'GET':
+        try:
+            photo_id = request.GET.get('photo_id')
+            video = Video.objects.get(photo_id=photo_id)
+            ah_list = video.analysisHour.all().order_by('sum_time')
+            res = []
+            for i in ah_list:
+                res.append({
+                    'video': i.video.photo_id,
+                    'like': i.total_like_count,
+                    'comment': i.total_comment_count,
+                    'view': i.total_view_count,
+                    'time': app.times.datetime2timestamp(i.sum_time)
+                })
+            return app.utils.gen_response(200, res)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
+    return app.utils.gen_response(405)
