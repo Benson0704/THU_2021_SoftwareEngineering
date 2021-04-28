@@ -12,7 +12,15 @@ def operate_user(request):
                 User(open_id=open_id, name=name).save()
             else:
                 User.objects.get(open_id=open_id, name=name).delete()
-            return app.utils.gen_response(100)
+            res = []
+            users = User.objects.all()
+            for u in users:
+                res.append({
+                    'open_id': u.open_id,
+                    'name': u.name,
+                    'admin': u.identity
+                })
+            return app.utils.gen_response(100, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
@@ -24,7 +32,15 @@ def set_admin(request):
             open_id = request.GET.get('open_id')
             User.objects.get(open_id=open_id).identity = int(
                 request.GET.get('add'))
-            return app.utils.gen_response(100)
+            res = []
+            users = User.objects.all()
+            for u in users:
+                res.append({
+                    'open_id': u.open_id,
+                    'name': u.name,
+                    'admin': u.identity
+                })
+            return app.utils.gen_response(100, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
