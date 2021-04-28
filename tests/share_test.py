@@ -157,6 +157,48 @@ class TestShare(TestCase):
         self.assertEqual(expected_result,
                          response.json()['data']['shared_list'])
 
+    def test_get_user_by_name_name_lost(self):
+        """
+        this is a test for get_user_by_name
+        error: name lost
+        """
+        payload = {}
+        response = self.client.get('/api/share/find',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(400, response.json()['code'])
+
+    def test_get_user_by_name(self):
+        """
+        this is a test for get_user_by_name
+        error: none
+        """
+        new_user = User.objects.create(
+            open_id="test user",
+            name="test user",
+            head="test head",
+            city="beijing",
+        )
+        new_user.save()
+        payload = {
+            'exp_name': "test user"
+        }
+        expected_user = [{
+            'open_id': "test user",
+            'name': "test user",
+            'head': "test head",
+            'city': "beijing",
+            'fan': 0,
+            'video_count': 0
+        }]
+        response = self.client.get('/api/share/find',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_user,
+                         response.json()['data'])
+        User.objects.filter(open_id="test user").delete()
+
     def tearDown(self):
         """
         this is the deconstruction for share module
