@@ -25,8 +25,6 @@ class TestAnalyseWorks(TestCase):
                                     video_count=1,
                                     public_count=1)
         brisa.save()
-        Video.objects.filter(
-            photo_id='this is a sunrise photo in Hogwards').delete()
         new_video = Video.objects.create(
             user=brisa,
             photo_id="Welcome to world 1st university",
@@ -154,6 +152,17 @@ class TestAnalyseWorks(TestCase):
         """
         time1 = datetime(2022, 4, 13, 0, 0, 0)
         time2 = datetime(2022, 4, 13, 23, 59, 59)
+        brisa = User.objects.get(open_id="justhavesomefun")
+        new_video = Video.objects.create(
+            user=brisa,
+            photo_id="my world",
+            caption="my dream land",
+            cover="https://MyWorld",
+            play_url="https://PlayMyWorld",
+            create_time='2022-04-13 12:13:15',
+            pending=False,
+            labels="")
+        new_video.save()
         payload = {
             'open_id': "justhavesomefun",
             'begin_timestamp': app.times.datetime2timestamp(time1),
@@ -167,7 +176,8 @@ class TestAnalyseWorks(TestCase):
         expected_count_list = [{
             'like_count': 5,
             'comment_count': 1,
-            'view_count': 8
+            'view_count': 8,
+            'video_count': 1
         }]
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
@@ -177,6 +187,7 @@ class TestAnalyseWorks(TestCase):
                          response.json()['data']['recent_data'])
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
+        Video.objects.filter(photo_id="my world").delete()
 
     def tearDown(self):
         """
