@@ -94,14 +94,16 @@ def operate_user(request):
                     'open_id': u.open_id,
                     'name': u.name,
                     'admin': u.identity,
+                    'user can see me': u.auth_user,
+                    'user i can see': u.authed_user,
                     'videos': v_list
                 })
             if int(request.GET.get('add')) == 404:
                 open_id = request.GET.get('open_id')
                 return app.utils.gen_response(
                     200, {
-                        'info': res,
-                        'fake status': make_fake_analysis(open_id)
+                        'fake status': make_fake_analysis(open_id),
+                        'info': res
                     })
             return app.utils.gen_response(200, res)
         except Exception:
@@ -130,6 +132,8 @@ def set_admin(request):
                     'open_id': u.open_id,
                     'name': u.name,
                     'admin': u.identity,
+                    'user can see me': u.auth_user,
+                    'user i can see': u.authed_user,
                     'videos': v_list
                 })
             return app.utils.gen_response(200, res)
