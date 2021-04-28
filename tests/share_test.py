@@ -168,7 +168,7 @@ class TestShare(TestCase):
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
-    def test_get_user_by_name_name_lost(self):
+    def test_get_user_by_name(self):
         """
         this is a test for get_user_by_name
         error: none
