@@ -30,7 +30,7 @@ def operate_user(request):
                     'name': u.name,
                     'admin': u.identity
                 })
-            return app.utils.gen_response(100, res)
+            return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
@@ -51,7 +51,7 @@ def set_admin(request):
                     'name': u.name,
                     'admin': u.identity
                 })
-            return app.utils.gen_response(100, res)
+            return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
@@ -72,7 +72,7 @@ def user_analysis(request):
                     'view': i.total_view_count,
                     'time': app.times.datetime2timestamp(i.sum_time)
                 })
-            return app.utils.gen_response(100, res)
+            return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
@@ -93,7 +93,7 @@ def video_analysis(request):
                     'view': i.total_view_count,
                     'time': app.times.datetime2timestamp(i.sum_time)
                 })
-            return app.utils.gen_response(100, res)
+            return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
