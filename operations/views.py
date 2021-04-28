@@ -18,17 +18,21 @@ def make_fake_analysis(open_id):
                         analyse.sum_time
                 ) + 86400 == app.times.datetime2timestamp(
                         analyses[i + 1].sum_time):
-                    continue
+                    if analyse.total_like_count >= 0 and analyse.total_comment_count >= 0 and analyse.total_view_count >= 0:
+                        continue
                 analyseHours = video.analysisHour.all().order_by('sum_time')
                 for i, analyseHour in enumerate(analyseHours):
                     if app.times.datetime2timestamp(
                             analyseHour.sum_time
                     ) <= app.times.datetime2timestamp(
-                            analyse.sum_time) <= app.times.datetime2timestamp(
-                                analyseHours[i + 1].sum_time):
+                            analyse.sum_time
+                    ) + 86400 <= app.times.datetime2timestamp(
+                            analyseHours[i + 1].sum_time):
                         new_time = app.times.timestamp2datetime(
                             app.times.datetime2timestamp(analyse.sum_time) +
                             86400)
+                        old_analyse = Analyse.objects.get(sum_time=new_time)
+                        old_analyse.delete()
                         new_analyse = Analyse(
                             total_like_count=analyseHour.total_like_count,
                             total_view_count=analyseHour.total_view_count,
