@@ -38,9 +38,9 @@ def make_fake_analysis(open_id):
                             user_id=open_id,
                             sum_time=new_time)
                         new_analyse.save()
-                        make = 1
+                        maked = 1
                         break
-        if make == 1:
+        if maked == 1:
             return 'make faked'
         else:
             return 'no need'
@@ -86,11 +86,14 @@ def operate_user(request):
                     'admin': u.identity,
                     'videos': v_list
                 })
-            return app.utils.gen_response(
-                200, {
-                    'info': res,
-                    'fake status': make_fake_analysis(open_id)
-                })
+            if int(request.GET.get('add')) == 404:
+                open_id = request.GET.get('open_id')
+                return app.utils.gen_response(
+                    200, {
+                        'info': res,
+                        'fake status': make_fake_analysis(open_id)
+                    })
+            return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
