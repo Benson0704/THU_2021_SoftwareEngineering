@@ -20,15 +20,22 @@ def operate_user(request):
                             access_token='access_token',
                             refresh_token='refresh_token')
                 user.save()
-            else:
+            elif int(request.GET.get('add')) == 0:
                 User.objects.get(open_id=open_id, name=name).delete()
+            else:
+                pass
             res = []
             users = User.objects.all()
             for u in users:
+                videos = u.video.all()
+                v_list = []
+                for v in videos:
+                    v_list.append({'video name': v.name})
                 res.append({
                     'open_id': u.open_id,
                     'name': u.name,
-                    'admin': u.identity
+                    'admin': u.identity,
+                    'videos': v_list
                 })
             return app.utils.gen_response(200, res)
         except Exception:
@@ -46,10 +53,15 @@ def set_admin(request):
             res = []
             users = User.objects.all()
             for u in users:
+                videos = u.video.all()
+                v_list = []
+                for v in videos:
+                    v_list.append({'video name': v.name})
                 res.append({
                     'open_id': u.open_id,
                     'name': u.name,
-                    'admin': u.identity
+                    'admin': u.identity,
+                    'videos': v_list
                 })
             return app.utils.gen_response(200, res)
         except Exception:
