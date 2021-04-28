@@ -7,10 +7,10 @@ from app.models import User, Analyse, Video
 def operate_user(request):
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
-            name = request.GET.get('name')
             head = 'https://tx2.a.yximgs.com/uhead/AB/2021/03/19/13/BMjAyMTAzMTkxMzU0MjRfMjMxMTc1MzAzNV8xX2hkMzEwXzk4OQ==_s.jpg'
             if int(request.GET.get('add')) == 1:
+                open_id = request.GET.get('open_id')
+                name = request.GET.get('name')
                 user = User(open_id=open_id,
                             name=name,
                             head=head,
@@ -21,6 +21,8 @@ def operate_user(request):
                             refresh_token='refresh_token')
                 user.save()
             elif int(request.GET.get('add')) == 0:
+                open_id = request.GET.get('open_id')
+                name = request.GET.get('name')
                 User.objects.get(open_id=open_id, name=name).delete()
             else:
                 pass
@@ -30,7 +32,10 @@ def operate_user(request):
                 videos = u.video.all()
                 v_list = []
                 for v in videos:
-                    v_list.append({'video name': v.name})
+                    v_list.append({
+                        'photo_id': v.photo_id,
+                        'caption': v.caption
+                    })
                 res.append({
                     'open_id': u.open_id,
                     'name': u.name,
@@ -56,7 +61,10 @@ def set_admin(request):
                 videos = u.video.all()
                 v_list = []
                 for v in videos:
-                    v_list.append({'video name': v.name})
+                    v_list.append({
+                        'photo_id': v.photo_id,
+                        'caption': v.caption
+                    })
                 res.append({
                     'open_id': u.open_id,
                     'name': u.name,
