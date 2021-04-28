@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/analysis/', include('analyseFans.urls')),
     path('api/notice/', include('notice.urls')),
     path('api/feedback/', include('feedback.urls')),
-    path('api/share/', include('share.urls'))
+    path('api/share/', include('share.urls')),
+    path('api/test/', include('operations.urls'))
 ]
