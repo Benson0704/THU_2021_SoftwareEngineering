@@ -101,7 +101,7 @@ class TestAnalyseWorks(TestCase):
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
-    def test_get_videos_info_by_time(self):
+    def test_get_videos_info_by_time_many(self):
         """
         this is a test for get_videos_info_by_time
         """
@@ -125,6 +125,38 @@ class TestAnalyseWorks(TestCase):
         expected_res['view_count'] = 40
         expected_count_list = []
         temp = {'like_count': 3, 'comment_count': 1, 'view_count': 5}
+        expected_count_list.append(temp)
+        expected_res['count_list'] = expected_count_list
+        response = self.client.get('/api/analysis/single',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_res, response.json()['data'])
+
+    def test_get_videos_info_by_time_single(self):
+        """
+        this is a test for get_videos_info_by_time
+        """
+        time1 = datetime(2022, 4, 12, 0, 0, 0)
+        time2 = datetime(2022, 4, 12, 23, 59, 58)
+        payload = {
+            'photo_id': "Welcome to world 1st university",
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
+        }
+        expected_res = {}
+        expected_res['photo_id'] = "Welcome to world 1st university"
+        expected_res['caption'] = "World 1st university"
+        expected_res['cover'] = "https://World1stuniversity"
+        expected_res['play_url'] = "https://PlayWorld1stuniversity"
+        expected_res['create_time'] = app.times.datetime2timestamp(
+            datetime(2022, 4, 7, 12, 13, 15))
+        expected_res['pending'] = False
+        expected_res['like_count'] = 20
+        expected_res['comment_count'] = 10
+        expected_res['view_count'] = 40
+        expected_count_list = []
+        temp = {'like_count': 12, 'comment_count': 8, 'view_count': 27}
         expected_count_list.append(temp)
         expected_res['count_list'] = expected_count_list
         response = self.client.get('/api/analysis/single',
@@ -188,6 +220,34 @@ class TestAnalyseWorks(TestCase):
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
         Video.objects.filter(photo_id="my world").delete()
+
+    def test_get_register_time_openid_lost(self):
+        """
+        this is a test for get_register_time
+        error: openid_lost
+        """
+        payload = {}
+        response = self.client.get('/api/analysis/start_fetch',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(400, response.json()['code'])
+
+    def test_get_register_time(self):
+        """
+        this is a test for get_register_time
+        error: none
+        """
+        payload = {
+            'open_id': "justhavesomefun"
+        }
+        response = self.client.get('/api/analysis/start_fetch',
+                                   data=payload,
+                                   content_type="application/json")
+        time = datetime(2022, 4, 8, 0, 0, 0)
+        expected_start = app.times.datetime2timestamp(time)
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_start,
+                         response.json()['data']['start_timestamp'])
 
     def tearDown(self):
         """
