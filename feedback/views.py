@@ -42,7 +42,7 @@ def operate_feedback_user(request):
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time)),
                         'admin_name':
-                        feedback[0].manager,
+                        User.object.get(open_id=feedback[0].manager).name,
                         'response':
                         feedback[0].content,
                         'response_timestamp':
