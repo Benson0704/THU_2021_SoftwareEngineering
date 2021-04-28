@@ -115,7 +115,7 @@ def get_user_by_name(request):
     if request.method == 'GET':
         try:
             exp_name = request.GET.get('exp_name')
-            user_list = User.objects.filter(name=exp_name)
+            user_list = User.objects.filter(name__contains=exp_name)
             res_list = []
             for user in user_list:
                 res_list.append({
