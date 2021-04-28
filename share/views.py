@@ -126,7 +126,7 @@ def get_user_by_name(request):
                     'fan': user.fan,
                     'video_count': user.video_count
                 })
-            return app.utils.gen_response(200, res_list)
+            return app.utils.gen_response(200, {'exp_list': res_list})
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
