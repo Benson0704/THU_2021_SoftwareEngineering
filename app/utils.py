@@ -18,11 +18,11 @@ FUNCTION TEMPLATE for view:
             return app.utils.gen_response(400)
     return app.utils.gen_response(405)
 '''
+import json
+from django.http import JsonResponse
 import app.times
 import app.tokens
 from app.models import User, Video, Analyse, AnalyseHour, Warn
-import json
-from django.http import JsonResponse
 
 config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
@@ -376,12 +376,19 @@ def get_flow(open_id):
     flow_list = []
     for flow in flows:
         flow_list.append({
-            'like_change': flow.likes_change,
-            'comments_change': flow.comments_change,
-            'views_change': flow.views_change,
-            'likes_before': flow.likes_before,
-            'comments_before': flow.comments_before,
-            'views_before': flow.views_before,
-            'warn_time': app.times.datetime2timestamp(flow.warn_time)
+            'like_change':
+            flow.likes_change,
+            'comments_change':
+            flow.comments_change,
+            'views_change':
+            flow.views_change,
+            'likes_before':
+            flow.likes_before,
+            'comments_before':
+            flow.comments_before,
+            'views_before':
+            flow.views_before,
+            'warn_time':
+            app.times.datetime2timestamp(flow.warn_time)
         })
     return flow_list
