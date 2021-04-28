@@ -10,14 +10,15 @@ def operate_user(request):
             name = request.GET.get('name')
             head = 'https://tx2.a.yximgs.com/uhead/AB/2021/03/19/13/BMjAyMTAzMTkxMzU0MjRfMjMxMTc1MzAzNV8xX2hkMzEwXzk4OQ==_s.jpg'
             if int(request.GET.get('add')) == 1:
-                User(open_id=open_id,
-                     name=name,
-                     head=head,
-                     bigHead=head,
-                     city='beijing',
-                     sex=1,
-                     access_token='access_token',
-                     refresh_token='refresh_token').save()
+                user = User(open_id=open_id,
+                            name=name,
+                            head=head,
+                            bigHead=head,
+                            city='beijing',
+                            sex=1,
+                            access_token='access_token',
+                            refresh_token='refresh_token')
+                user.save()
             else:
                 User.objects.get(open_id=open_id, name=name).delete()
             res = []
@@ -38,8 +39,9 @@ def set_admin(request):
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
-            User.objects.get(open_id=open_id).identity = int(
-                request.GET.get('add'))
+            user = User.objects.get(open_id=open_id)
+            user.identity = int(request.GET.get('add'))
+            user.save()
             res = []
             users = User.objects.all()
             for u in users:
@@ -63,7 +65,7 @@ def user_analysis(request):
             res = []
             for i in a_list:
                 res.append({
-                    'video': i.video,
+                    'video': i.video.photo_id,
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
@@ -84,7 +86,7 @@ def video_analysis(request):
             res = []
             for i in a_list:
                 res.append({
-                    'video': i.video,
+                    'video': i.video.photo_id,
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
