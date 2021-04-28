@@ -126,7 +126,6 @@ def operate_feedback_admin(request):
                 user=User.objects.get(open_id=ret['user_open_id']),
                 create_time=app.times.timestamp2datetime(ret['timestamp']))
             message.save()
-            print(message.title)
             feedback = Feedback(user=ret['user_open_id'],
                                 create_time=app.times.timestamp2datetime(
                                     time.time()),
