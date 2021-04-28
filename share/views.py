@@ -43,10 +43,12 @@ def delete_share(request):
             sharer_openid = ret['sharer_open_id']
             shared_openid = ret['shared_open_id']
             sharer_user = User.objects.get(open_id=sharer_openid)
-            sharer_user.auth_user.replace(shared_openid + '_&_', '')
+            sharer_user.auth_user = sharer_user.auth_user.replace(
+                shared_openid + '_&_', '')
             sharer_user.save()
             shared_user = User.objects.get(open_id=shared_openid)
-            shared_user.authed_user.replace(sharer_openid + '_&_', '')
+            shared_user.authed_user = shared_user.authed_user.replace(
+                sharer_openid + '_&_', '')
             shared_user.save()
             return app.utils.gen_response(200)
         except Exception:
