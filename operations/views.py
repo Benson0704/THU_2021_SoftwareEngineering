@@ -1,5 +1,6 @@
 import traceback
 import app.utils
+import app.times
 from app.models import User, Analyse, Video
 
 
@@ -69,7 +70,7 @@ def user_analysis(request):
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
-                    'time': i.sum_time
+                    'time': app.times.datetime2timestamp(i.sum_time)
                 })
             return app.utils.gen_response(100, res)
         except Exception:
@@ -90,7 +91,7 @@ def video_analysis(request):
                     'like': i.total_like_count,
                     'comment': i.total_comment_count,
                     'view': i.total_view_count,
-                    'time': i.sum_time
+                    'time': app.times.datetime2timestamp(i.sum_time)
                 })
             return app.utils.gen_response(100, res)
         except Exception:
