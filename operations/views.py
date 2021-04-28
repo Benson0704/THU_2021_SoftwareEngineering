@@ -36,7 +36,8 @@ def make_fake_analysis(open_id):
                         new_time = app.times.timestamp2datetime(
                             app.times.datetime2timestamp(analyse.sum_time) +
                             86400)
-                        old_analyse = Analyse.objects.get(sum_time=new_time)
+                        old_analyse = Analyse.objects.get(sum_time=new_time,
+                                                          video=video)
                         old_analyse.delete()
                         new_analyse = Analyse(
                             total_like_count=analyseHour.total_like_count,
