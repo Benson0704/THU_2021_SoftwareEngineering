@@ -62,6 +62,7 @@ class TestFeedback(TestCase):
         """
         this is a test for operate_feedback_user
         method: get  error: none
+        """
         payload = {'open_id': "feedbackuser"}
         time1 = datetime(2021, 6, 6, 11, 11, 11)
         time2 = datetime(2021, 6, 5, 11, 11, 11)
@@ -85,7 +86,7 @@ class TestFeedback(TestCase):
             'timestamp':
             app.times.datetime2timestamp(time2),
             'admin_name':
-            "feedbackmanager",
+            "feedback_manager",
             'response':
             "feedback content",
             'response_timestamp':
@@ -96,7 +97,6 @@ class TestFeedback(TestCase):
                          response.json()['data']['unsolved_feedbacks'])
         self.assertEqual(expected_solved_list,
                          response.json()['data']['solved_feedbacks'])
-        """
 
     def test_operate_feedback_user_post_openid_lost(self):
         """
