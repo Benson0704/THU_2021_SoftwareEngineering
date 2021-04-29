@@ -43,7 +43,7 @@ try:
             app.utils.store_flow(open_id, one_day_before_time,
                                  one_hour_before_time, now_timestamp)
             request_dict = {}
-            for request in Request.objects.all:
+            for request in Request.objects.all():
                 timestamp = app.times.datetime2timestamp(
                         request.create_time)
                 if now_timestamp - 3600 <= timestamp <= now_timestamp:
@@ -56,7 +56,7 @@ try:
                         append(request.get('timecost'))
                     request_dict[request['request_type']]['qps'][
                         timestamp - now_timestamp + 3600] += 1
-            for request_type in request_dict.keys():
+            for request_type in iter(request_dict):
                 time_list = sorted(request_dict[request_type]['time_cost'])
                 P99 = time_list[len(time_list) * 100 // 99]
                 max_qps = max(request_dict[request_type]['qps'])
