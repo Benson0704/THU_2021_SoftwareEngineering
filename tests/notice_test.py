@@ -96,7 +96,7 @@ class TestNotice(TestCase):
         response = self.client.get('/api/notice/admin',
                                    data=payload,
                                    content_type="application/json")
-        self.assertEqual(400, response.json()['code']) 
+        self.assertEqual(400, response.json()['code'])
 
     def test_operate_notice_admin_post_id_lost(self):
         """
