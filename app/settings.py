@@ -27,7 +27,8 @@ SECRET_KEY = '$7z)6d^qie^0d%ji5#nhr5w_v-i%04wxd@jm00d^@j*2gn8m@0'
 DEBUG = bool(config['DEBUG'])
 
 ALLOWED_HOSTS = [
-    'backend-fullhouse.app.secoder.net', 'backend.fullhouse.secoder.local'
+    'backend-fullhouse.app.secoder.net', 'backend.fullhouse.secoder.local',
+    '127.0.0.1'
 ]
 
 # Application definition
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'logger.AppMiddleware'
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -77,8 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kuaishou',  # 数据库名称，
-        'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
-        'USER': 'root',  # 数据库用户
+        'HOST': '116.62.155.162',  # 主机地址
+        'USER': 'brisa',  # 数据库用户
         'PASSWORD': config['PASSWORD'],  # 密码
         'PORT': 3306,  # mysql的端口默认3306
         'OPTIONS': {

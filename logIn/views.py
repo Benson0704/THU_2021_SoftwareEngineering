@@ -7,7 +7,7 @@ from django.http import HttpResponse
 import app.api
 import app.utils
 import app.times
-from app.models import User
+from app.models import User, Request, Performance
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
@@ -36,13 +36,35 @@ try:
             app.api.store_data(open_id, data[0], data[1], data[2])
             now_time = app.times.datetime2string(datetime.now())
             time = now_time.split(':')[0] + ":00:00"
-            print(time)
             app.utils.analyse_hour_data(open_id, data[1], time)
             now_timestamp = app.times.string2timestamp(time)
             one_hour_before_time = now_timestamp - 60 * 60
             one_day_before_time = now_timestamp - 24 * 60 * 60
             app.utils.store_flow(open_id, one_day_before_time,
                                  one_hour_before_time, now_timestamp)
+            request_dict = {}
+            for request in Request.objects.all:
+                timestamp = app.times.datetime2timestamp(
+                        request.create_time)
+                if now_timestamp-3600 <= timestamp <= now_timestamp:
+                    if request.get('request_type') not in request_dict:
+                        request_dict[request['request_type']] = {
+                            'time_cost': [],
+                            'qps': [0 for i in range(3600)]
+                        }
+                    request_dict[request['request_type']]['time_cost'].append(request.get('timecost'))
+                    request_dict[request['request_type']]['qps'][timestamp-now_timestamp+3600] += 1
+            for request_type in request_dict.keys():
+                time_cost_list = sorted(request_dict['request_type']['time_cost'])
+                P99 = time_cost_list[len(time_cost_list)*100//99]
+                max_qps = max(request_dict[request_dict['request_type']]['qps'])
+                data = Performance.objects.create(
+                    api=request_type,
+                    P99=P99,
+                    qps=max_qps
+                )
+                data.save()
+
 
     @register_job(scheduler,
                   'cron',
