@@ -102,16 +102,16 @@ def operate_feedback_admin(request):
                         message.title,
                         'content':
                         message.content,
-                        'timestamp':
-                        app.times.datetime2timestamp((message.create_time)),
-                        'user_name':
-                        message.user.name,
                         'admin_name':
                         User.objects.get(open_id=feedback[0].manager).name,
                         'response':
                         feedback[0].content,
                         'response_timestamp':
-                        app.times.datetime2timestamp((feedback[0].create_time))
+                        app.times.datetime2timestamp((feedback[0].create_time)),
+                        'timestamp':
+                        app.times.datetime2timestamp((message.create_time)),
+                        'user_name':
+                        message.user.name,
                     })
             return app.utils.gen_response(
                 200, {
