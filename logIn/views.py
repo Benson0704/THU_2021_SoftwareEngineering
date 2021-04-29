@@ -55,7 +55,7 @@ try:
                     request_dict[request['request_type']]['time_cost'].\
                         append(request.get('timecost'))
                     request_dict[request['request_type']]['qps'][
-                        timestamp - now_timestamp+ 3 600] += 1
+                        timestamp - now_timestamp+ 3600] += 1
             for request_type in request_dict.keys():
                 time_list = sorted(request_dict[request_type]['time_cost'])
                 P99 = time_list[len(time_list) * 100 // 99]
