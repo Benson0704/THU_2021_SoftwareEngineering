@@ -50,7 +50,7 @@ try:
                     if request.get('request_type') not in request_dict:
                         request_dict[request['request_type']] = {
                             'time_cost': [],
-                            'qps': [0 for i in range(3600)]
+                            'qps': [0] * 3600
                         }
                     request_dict[request['request_type']]['time_cost'].\
                         append(request.get('timecost'))
