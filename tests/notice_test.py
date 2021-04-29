@@ -85,8 +85,7 @@ class TestNotice(TestCase):
         expected_title = "test title"
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_title, my_notices[0]['title'])
-        self.assertTrue(expected_title in notice_titles)
-        
+        self.assertTrue(expected_title in notice_titles)       
 
     def test_operate_notice_admin_post_id_lost(self):
         """
