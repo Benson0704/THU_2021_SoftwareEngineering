@@ -132,17 +132,16 @@ class TestFeedback(TestCase):
         """
         this is a test for operate_feedback_admin
         method: get  error: none
+        """
         response = self.client.get('/api/feedback/admin',
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        print(response)
         unsolved_lists = response.json()['data']['unsolved_feedbacks']
         unsolved_title = []
         for lists in unsolved_lists:
             unsolved_title.append(lists['title'])
         expected_unsolved = "untitle"
         self.assertTrue(expected_unsolved in unsolved_title)
-        """
 
     def test_operate_feedback_admin_post(self):
         """
