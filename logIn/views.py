@@ -46,7 +46,7 @@ try:
             for request in Request.objects.all:
                 timestamp = app.times.datetime2timestamp(
                         request.create_time)
-                if now_timestamp-3600 <= timestamp <= now_timestamp:
+                if now_timestamp - 3600 <= timestamp <= now_timestamp:
                     if request.get('request_type') not in request_dict:
                         request_dict[request['request_type']] = {
                             'time_cost': [],
@@ -55,10 +55,10 @@ try:
                     request_dict[request['request_type']]['time_cost'].\
                         append(request.get('timecost'))
                     request_dict[request['request_type']]['qps'][
-                        timestamp-now_timestamp+3600] += 1
+                        timestamp - now_timestamp+ 3 600] += 1
             for request_type in request_dict.keys():
                 time_list = sorted(request_dict[request_type]['time_cost'])
-                P99 = time_list[len(time_list)*100//99]
+                P99 = time_list[len(time_list) * 100 // 99]
                 max_qps = max(request_dict[request_type]['qps'])
                 data = Performance.objects.create(
                     api=request_type,
@@ -66,7 +66,6 @@ try:
                     qps=max_qps
                 )
                 data.save()
-
 
     @register_job(scheduler,
                   'cron',
