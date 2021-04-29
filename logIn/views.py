@@ -42,30 +42,6 @@ try:
             one_day_before_time = now_timestamp - 24 * 60 * 60
             app.utils.store_flow(open_id, one_day_before_time,
                                  one_hour_before_time, now_timestamp)
-            # request_dict = {}
-            # for request in Request.objects.all():
-            #     timestamp = app.times.datetime2timestamp(
-            #             request.create_time)
-            #     if now_timestamp - 3600 <= timestamp <= now_timestamp:
-            #         if request.get('request_type') not in request_dict:
-            #             request_dict[request['request_type']] = {
-            #                 'time_cost': [],
-            #                 'qps': [0] * 3600
-            #             }
-            #         request_dict[request['request_type']]['time_cost'].\
-            #             append(request.get('timecost'))
-            #         request_dict[request['request_type']]['qps'][
-            #             timestamp - now_timestamp + 3600] += 1
-            # for request_type in iter(request_dict):
-            #     time_list = sorted(request_dict[request_type]['time_cost'])
-            #     P99 = time_list[len(time_list) * 100 // 99]
-            #     max_qps = max(request_dict[request_type]['qps'])
-            #     data = Performance.objects.create(
-            #         api=request_type,
-            #         P99=P99,
-            #         qps=max_qps
-            #     )
-            #     data.save()
 
     @register_job(scheduler,
                   'cron',
