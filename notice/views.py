@@ -45,7 +45,7 @@ def operate_notice_admin(request):
     """
     if request.method == 'GET':
         try:
-            open_id = request.GET.get('open_id')
+            open_id = request.GET['open_id']
             notices = Notice.objects.all().order_by('-create_time')
             my_notices = []
             other_notices = []

@@ -20,9 +20,17 @@ class TestNotice(TestCase):
         """
         test_user = User.objects.create(open_id="test user", name="test user")
         test_user.save()
+        test_user = User.objects.create(open_id="another test user",
+                                        name="another test user")
+        test_user.save()
         test_notice = Notice.objects.create(publish_user="test user",
                                             title="test title",
                                             create_time='2022-04-07 12:13:14',
+                                            content="test content")
+        test_notice.save()
+        test_notice = Notice.objects.create(publish_user="another test user",
+                                            title="test title",
+                                            create_time='2022-04-09 12:13:14',
                                             content="test content")
         test_notice.save()
         test_warn = Warn.objects.create(user=test_user,
@@ -62,16 +70,33 @@ class TestNotice(TestCase):
         """
         this is a test for operate_notice_admin
         method: get
+        """
+        payload = {
+            "open_id": "test user"
+        }
         response = self.client.get('/api/notice/admin',
+                                   data=payload,
                                    content_type="application/json")
-        notices = response.json()['data']['notices']
+        my_notices = response.json()['data']['my_notices']
+        other_notices = response.json()['data']['other_notices']
         notice_titles = []
-        for notice in notices:
+        for notice in other_notices:
             notice_titles.append(notice['title'])
         expected_title = "test title"
         self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_title, my_notices[0]['title'])
         self.assertTrue(expected_title in notice_titles)
+
+    def test_operate_notice_admin_get_id_lost(self):
         """
+        this is a test for operate_notice_admin
+        method: get error: id_lost
+        """
+        payload = {}
+        response = self.client.get('/api/notice/admin',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(400, response.json()['code'])
 
     def test_operate_notice_admin_post_id_lost(self):
         """
@@ -84,7 +109,7 @@ class TestNotice(TestCase):
                                     content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
-    def test_operate_notice_admin_post(self):
+    def test_operate_notice_admin_post_add(self):
         """
         this is a test for operate_notice_admin
         method: post  error: none
@@ -103,6 +128,24 @@ class TestNotice(TestCase):
         self.assertEqual(200, response.json()['code'])
         notice = Notice.objects.get(content="new notice")
         self.assertTrue(notice)
+
+    def test_operate_notice_admin_post_delete(self):
+        """
+        this is a test for operate_notice_admin
+        method: post  error: none
+        """
+        time = datetime(2022, 4, 7, 12, 13, 14)
+        payload = {
+            'open_id': "test user",
+            'timestamp': app.times.datetime2timestamp(time),
+            'content': "test content",
+            'title': "test title",
+            'add': 0
+        }
+        response = self.client.post('/api/notice/admin',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
 
     def tearDown(self):
         """

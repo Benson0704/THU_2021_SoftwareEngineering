@@ -162,6 +162,32 @@ class TestShare(TestCase):
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
+    def test_get_my_sharing_user_none(self):
+        '''
+        This is a unittest for get_my_sharing_user
+        error: none result: none
+        '''
+        payload = {'open_id': "test sharer"}
+        response = self.client.get('/api/share/sharing',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual([],
+                         response.json()['data']['sharing_list'])
+
+    def test_get_user_share_to_me_none(self):
+        '''
+        This is a unittest for get_user_share_to_me
+        error: none result: none
+        '''
+        payload = {'open_id': "test shared"}
+        response = self.client.get('/api/share/shared',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual([],
+                         response.json()['data']['shared_list'])
+
     def test_get_user_by_name(self):
         """
         this is a test for get_user_by_name
