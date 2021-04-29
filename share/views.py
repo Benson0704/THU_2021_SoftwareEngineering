@@ -43,10 +43,12 @@ def delete_share(request):
             sharer_openid = ret['sharer_open_id']
             shared_openid = ret['shared_open_id']
             sharer_user = User.objects.get(open_id=sharer_openid)
-            sharer_user.auth_user.replace(shared_openid + '_&_', '')
+            sharer_user.auth_user = sharer_user.auth_user.replace(
+                shared_openid + '_&_', '')
             sharer_user.save()
             shared_user = User.objects.get(open_id=shared_openid)
-            shared_user.authed_user.replace(sharer_openid + '_&_', '')
+            shared_user.authed_user = shared_user.authed_user.replace(
+                sharer_openid + '_&_', '')
             shared_user.save()
             return app.utils.gen_response(200)
         except Exception:
@@ -114,8 +116,8 @@ def get_user_by_name(request):
     '''
     if request.method == 'GET':
         try:
-            exp_name = request.GET['exp_name']
-            user_list = User.objects.filter(name=exp_name)
+            exp_name = request.GET.get('exp_name')
+            user_list = User.objects.filter(name__contains=exp_name)
             res_list = []
             for user in user_list:
                 res_list.append({
@@ -126,7 +128,7 @@ def get_user_by_name(request):
                     'fan': user.fan,
                     'video_count': user.video_count
                 })
-            return app.utils.gen_response(200, res_list)
+            return app.utils.gen_response(200, {'exp_list': res_list})
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)

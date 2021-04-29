@@ -30,8 +30,10 @@ def get_fans_info(request):
                     count_list[idx][2] += analyse.total_view_count
 
             for idx in range(1, 25):
-                if count_list[idx][0] == 0 and count_list[idx][
-                        1] == 0 and count_list[idx][2] == 0:
+                if (count_list[idx-1][0] == 0 and count_list[idx-1][
+                        1] == 0 and count_list[idx-1][2] == 0) or \
+                        (count_list[idx][0] == 0 and count_list[idx][
+                        1] == 0 and count_list[idx][2] == 0):
                     continue
                 else:
                     res_list.append({
