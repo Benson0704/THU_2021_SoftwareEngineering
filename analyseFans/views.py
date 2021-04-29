@@ -19,21 +19,25 @@ def get_fans_info(request):
             term_timestamp = int(request.GET['term_timestamp'])
             analyse_list = AnalyseHour.objects.filter(user_id=open_id)
 
-            count_list = [[0 for i in range(3)] for j in range(25)]
+            count_list = [[-1 for i in range(3)] for j in range(25)]
             res_list = []
             for analyse in analyse_list:
                 timestamp = app.times.datetime2timestamp(analyse.sum_time)
                 if begin_timestamp <= timestamp <= term_timestamp:
                     idx = int((timestamp - begin_timestamp) / 3600)
+                    if count_list[idx][0] == -1:
+                        count_list[idx][0] = 0
+                        count_list[idx][1] = 0
+                        count_list[idx][2] = 0
                     count_list[idx][0] += analyse.total_like_count
                     count_list[idx][1] += analyse.total_comment_count
                     count_list[idx][2] += analyse.total_view_count
 
             for idx in range(1, 25):
-                if (count_list[idx-1][0] == 0 and count_list[idx-1][
-                        1] == 0 and count_list[idx-1][2] == 0) or \
-                        (count_list[idx][0] == 0 and count_list[idx][
-                        1] == 0 and count_list[idx][2] == 0):
+                if (count_list[idx-1][0] == -1 and count_list[idx-1][
+                        1] == -1 and count_list[idx-1][2] == -1) or \
+                        (count_list[idx][0] == -1 and count_list[idx][
+                        1] == -1 and count_list[idx][2] == -1):
                     continue
                 else:
                     res_list.append({
