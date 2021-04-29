@@ -97,7 +97,6 @@ def operate_feedback_admin(request):
                     })
                 if message.status == 1:
                     feedback = message.feedback.all()
-                    time = (feedback[0].create_time)
                     solved_list.append({
                         'title':
                         message.title,
@@ -108,7 +107,7 @@ def operate_feedback_admin(request):
                         'response':
                         feedback[0].content,
                         'response_timestamp':
-                        app.times.datetime2timestamp(time),
+                        app.times.datetime2timestamp(feedback[0].create_time),
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time)),
                         'user_name':
