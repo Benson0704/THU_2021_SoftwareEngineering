@@ -3,9 +3,10 @@ this is a module for getting notice information
 for user and admin
 """
 import json
+import traceback
 import app.utils
 import app.times
-from app.models import Notice
+from app.models import Notice, User
 
 
 def get_notice_user(request):
@@ -32,8 +33,8 @@ def get_notice_user(request):
                 'notices': notice_list,
                 'flows': flow_list
             })
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -44,32 +45,59 @@ def operate_notice_admin(request):
     """
     if request.method == 'GET':
         try:
+            open_id = request.GET['open_id']
             notices = Notice.objects.all().order_by('-create_time')
-            notice_list = []
+            my_notices = []
+            other_notices = []
             for notice in notices:
-                notice_list.append({
-                    'title':
-                    notice.title,
-                    'content':
-                    notice.content,
-                    'timestamp':
-                    app.times.datetime2timestamp(notice.create_time)
-                })
-            return app.utils.gen_response(200, {'notices': notice_list})
-        except:
-            return app.utils.gen_response(400)
+                if notice.publish_user == open_id:
+                    my_notices.append({
+                        'title':
+                        notice.title,
+                        'content':
+                        notice.content,
+                        'timestamp':
+                        app.times.datetime2timestamp(notice.create_time)
+                    })
+                else:
+                    other_notices.append({
+                        'title':
+                        notice.title,
+                        'content':
+                        notice.content,
+                        'timestamp':
+                        app.times.datetime2timestamp(notice.create_time),
+                        'admin_open_id':
+                        notice.publish_user,
+                        'admin_name':
+                        User.objects.get(open_id=notice.publish_user).name
+                    })
+            return app.utils.gen_response(200, {
+                'my_notices': my_notices,
+                'other_notices': other_notices
+            })
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
         return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
             ret = request.body
             ret = json.loads(ret.decode('utf-8'))
-            new_notice = Notice(create_time=app.times.timestamp2datetime(
-                ret['timestamp']),
-                content=ret['content'],
-                title=ret['title'],
-                publish_user=ret['open_id'])
-            new_notice.save()
+            if int(ret['add']) == 1:
+                new_notice = Notice(create_time=app.times.timestamp2datetime(
+                    ret['timestamp']),
+                                    content=ret['content'],
+                                    title=ret['title'],
+                                    publish_user=ret['open_id'])
+                new_notice.save()
+            if int(ret['add']) == 0:
+                old_notice = Notice.objects.filter(
+                    create_time=app.times.timestamp2datetime(ret['timestamp']),
+                    content=ret['content'],
+                    title=ret['title'],
+                    publish_user=ret['open_id'])
+                old_notice.delete()
             return app.utils.gen_response(200)
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)

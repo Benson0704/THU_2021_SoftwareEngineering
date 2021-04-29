@@ -4,6 +4,7 @@ finished: 4.21
 """
 import json
 import time
+import traceback
 import app.utils
 import app.times
 from app.models import User, Message, Feedback
@@ -31,7 +32,7 @@ def operate_feedback_user(request):
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time))
                     })
-                if message.status == 1 and len(solved_list) < 3:
+                if message.status == 1:
                     feedback = message.feedback.all()
                     solved_list.append({
                         'title':
@@ -41,7 +42,7 @@ def operate_feedback_user(request):
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time)),
                         'admin_name':
-                        feedback[0].manager,
+                        User.objects.get(open_id=feedback[0].manager).name,
                         'response':
                         feedback[0].content,
                         'response_timestamp':
@@ -52,8 +53,8 @@ def operate_feedback_user(request):
                     'unsolved_feedbacks': unsolved_list,
                     'solved_feedbacks': solved_list
                 })
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     if request.method == 'POST':
         try:
             ret = request.body
@@ -65,8 +66,8 @@ def operate_feedback_user(request):
                 title=ret['title'])
             new_message.save()
             return app.utils.gen_response(200)
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
 
@@ -94,29 +95,31 @@ def operate_feedback_admin(request):
                         'timestamp':
                         app.times.datetime2timestamp(message.create_time)
                     })
-                if message.status == 1 and len(solved_list) < 3:
+                if message.status == 1:
                     feedback = message.feedback.all()
                     solved_list.append({
                         'title':
                         message.title,
                         'content':
                         message.content,
+                        'admin_name':
+                        User.objects.get(open_id=feedback[0].manager).name,
+                        'response':
+                        feedback[0].content,
+                        'response_timestamp':
+                        app.times.datetime2timestamp(feedback[0].create_time),
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time)),
                         'user_name':
                         message.user.name,
-                        'response':
-                        feedback[0].content,
-                        'response_timestamp':
-                        app.times.datetime2timestamp((feedback[0].create_time))
                     })
             return app.utils.gen_response(
                 200, {
                     'unsolved_feedbacks': unsolved_list,
                     'solved_feedbacks': solved_list
                 })
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     if request.method == 'POST':
         try:
             ret = request.body
@@ -125,7 +128,6 @@ def operate_feedback_admin(request):
                 user=User.objects.get(open_id=ret['user_open_id']),
                 create_time=app.times.timestamp2datetime(ret['timestamp']))
             message.save()
-            print(message.title)
             feedback = Feedback(user=ret['user_open_id'],
                                 create_time=app.times.timestamp2datetime(
                                     time.time()),
@@ -139,6 +141,6 @@ def operate_feedback_admin(request):
                 return app.utils.gen_response(200)
             if message.status == 1:
                 return app.utils.gen_response(210)
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)

@@ -6,6 +6,13 @@ modified: 4.21
 from django.db import models
 
 
+def make_default(string):
+    '''
+    make defaults strings
+    '''
+    return 'default ' + string
+
+
 class User(models.Model):
     '''
     用户类
@@ -127,8 +134,9 @@ class Message(models.Model):
     消息类，有一个自增的id主键
     '''
     content = models.TextField(max_length=500000,
-                               default='default message')  # 消息内容
-    title = models.TextField(max_length=1000, default='default title')  # 消息标题
+                               default=make_default('message'))  # 消息内容
+    title = models.TextField(max_length=1000,
+                             default=make_default('message'))  # 消息标题
     create_time = models.DateTimeField(default=0)  # 创建时间
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
@@ -151,8 +159,9 @@ class Feedback(models.Model):
                                 on_delete=models.CASCADE,
                                 related_name='feedback')  # 外键绑定消息
     content = models.TextField(max_length=500000,
-                               default='default feedback')  # 反馈内容
-    title = models.TextField(max_length=1000, default='default title')  # 反馈标题
+                               default=make_default('feedback'))  # 反馈内容
+    title = models.TextField(max_length=1000,
+                             default=make_default('title'))  # 反馈标题
     create_time = models.DateTimeField(default=0)  # 创建时间
     manager = models.TextField(max_length=1000)  # 管理员
     user = models.TextField(max_length=1000)  # 反馈的用户
@@ -168,11 +177,8 @@ class Request(models.Model):
     """
     construct model request
     """
-    create_time = models.DateTimeField(default=0)  # 创建时间
+    create_time = models.DateTimeField()  # 创建时间
     timecost = models.IntegerField(default=0)  # 耗时情况
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             related_name='request')  # 外键绑定用户
     request_type = models.TextField(max_length=1000, null=True)  # 请求类型
 
     class Meta:
@@ -189,8 +195,9 @@ class Notice(models.Model):
     publish_user = models.TextField(max_length=1000)  # 发布者
     create_time = models.DateTimeField(default=0)  # 创建时间
     content = models.TextField(max_length=500000,
-                               default='default feedback')  # 公告内容
-    title = models.TextField(max_length=1000, default='default title')  # 公告标题
+                               default=make_default('feedback'))  # 公告内容
+    title = models.TextField(max_length=1000,
+                             default=make_default('title'))  # 公告标题
 
     class Meta:
         '''
@@ -219,3 +226,18 @@ class Warn(models.Model):
         double linking: warn
         '''
         db_table = 'warn'
+
+
+class Performance(models.Model):
+    """
+    construct model performance
+    """
+    api = models.CharField(max_length=500)
+    P99 = models.IntegerField(default=0)
+    qps = models.IntegerField(default=0)
+
+    class Meta:
+        '''
+        double linking: performance
+        '''
+        db_table = 'performance'

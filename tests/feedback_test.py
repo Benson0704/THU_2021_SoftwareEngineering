@@ -63,9 +63,7 @@ class TestFeedback(TestCase):
         this is a test for operate_feedback_user
         method: get  error: none
         """
-        payload = {
-            'open_id': "feedbackuser"
-        }
+        payload = {'open_id': "feedbackuser"}
         time1 = datetime(2021, 6, 6, 11, 11, 11)
         time2 = datetime(2021, 6, 5, 11, 11, 11)
         time3 = datetime(2021, 6, 5, 21, 11, 11)
@@ -73,17 +71,26 @@ class TestFeedback(TestCase):
                                    data=payload,
                                    content_type="application/json")
         expected_unsolved_list = [{
-            'title': 'untitle',
-            'content': "message unsolved",
-            'timestamp': app.times.datetime2timestamp(time1)
+            'title':
+            'untitle',
+            'content':
+            "message unsolved",
+            'timestamp':
+            app.times.datetime2timestamp(time1)
         }]
         expected_solved_list = [{
-            'title': 'title',
-            'content': "message solved",
-            'timestamp': app.times.datetime2timestamp(time2),
-            'admin_name': "feedbackmanager",
-            'response': "feedback content",
-            'response_timestamp': app.times.datetime2timestamp(time3)
+            'title':
+            'title',
+            'content':
+            "message solved",
+            'timestamp':
+            app.times.datetime2timestamp(time2),
+            'admin_name':
+            "feedback_manager",
+            'response':
+            "feedback content",
+            'response_timestamp':
+            app.times.datetime2timestamp(time3)
         }]
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_unsolved_list,
@@ -129,7 +136,6 @@ class TestFeedback(TestCase):
         response = self.client.get('/api/feedback/admin',
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        print(response)
         unsolved_lists = response.json()['data']['unsolved_feedbacks']
         unsolved_title = []
         for lists in unsolved_lists:
@@ -172,10 +178,7 @@ class TestFeedback(TestCase):
         this is a test for operate_feedback_admin
         method: post error: openid lost
         """
-        payload = {
-            'open_id': "feedbackmanager",
-            'response': "test response"
-        }
+        payload = {'open_id': "feedbackmanager", 'response': "test response"}
         response = self.client.post('/api/feedback/admin',
                                     data=payload,
                                     content_type="application/json")

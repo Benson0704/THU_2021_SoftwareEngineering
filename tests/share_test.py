@@ -63,9 +63,7 @@ class TestShare(TestCase):
         This is a unittest for delete_share
         error: id lost
         '''
-        payload = {
-            'open_id': "test"
-        }
+        payload = {'open_id': "test"}
         response = self.client.post('/api/share/delete',
                                     data=payload,
                                     content_type="application/json")
@@ -105,9 +103,7 @@ class TestShare(TestCase):
         This is a unittest for get_my_sharing_user
         error: none
         '''
-        payload = {
-            'open_id': "test sharer"
-        }
+        payload = {'open_id': "test sharer"}
         sharer = User.objects.get(open_id="test sharer")
         sharer.auth_user = "test shared_&_"
         sharer.save()
@@ -139,9 +135,7 @@ class TestShare(TestCase):
         This is a unittest for get_user_share_to_me
         error: none
         '''
-        payload = {
-            'open_id': "test shared"
-        }
+        payload = {'open_id': "test shared"}
         shared = User.objects.get(open_id="test shared")
         shared.authed_user = "test sharer_&_"
         shared.save()
@@ -156,6 +150,71 @@ class TestShare(TestCase):
         }]
         self.assertEqual(expected_result,
                          response.json()['data']['shared_list'])
+
+    def test_get_user_by_name_name_lost(self):
+        """
+        this is a test for get_user_by_name
+        error: name lost
+        """
+        payload = {}
+        response = self.client.get('/api/share/find',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(400, response.json()['code'])
+
+    def test_get_my_sharing_user_none(self):
+        '''
+        This is a unittest for get_my_sharing_user
+        error: none result: none
+        '''
+        payload = {'open_id': "test sharer"}
+        response = self.client.get('/api/share/sharing',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual([],
+                         response.json()['data']['sharing_list'])
+
+    def test_get_user_share_to_me_none(self):
+        '''
+        This is a unittest for get_user_share_to_me
+        error: none result: none
+        '''
+        payload = {'open_id': "test shared"}
+        response = self.client.get('/api/share/shared',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual([],
+                         response.json()['data']['shared_list'])
+
+    def test_get_user_by_name(self):
+        """
+        this is a test for get_user_by_name
+        error: none
+        """
+        new_user = User.objects.create(
+            open_id="test user",
+            name="test user",
+            head="test head",
+            city="beijing",
+        )
+        new_user.save()
+        payload = {'exp_name': "test user"}
+        expected_user = [{
+            'open_id': "test user",
+            'name': "test user",
+            'head': "test head",
+            'city': "beijing",
+            'fan': 0,
+            'video_count': 0
+        }]
+        response = self.client.get('/api/share/find',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_user, response.json()['data']['exp_list'])
+        User.objects.filter(open_id="test user").delete()
 
     def tearDown(self):
         """

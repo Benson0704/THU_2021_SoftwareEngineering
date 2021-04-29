@@ -3,10 +3,11 @@ this is a module for getting the information
 of users and videos in the login process
 """
 from datetime import datetime
+from django.http import HttpResponse
 import app.api
 import app.utils
 import app.times
-import app.models
+from app.models import User
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
@@ -19,7 +20,6 @@ try:
                   'cron',
                   day_of_week='mon-sun',
                   hour='0-23',
-                  minute='20',
                   id='hourly_task',
                   misfire_grace_time=3600,
                   replace_existing=True)
@@ -36,7 +36,6 @@ try:
             app.api.store_data(open_id, data[0], data[1], data[2])
             now_time = app.times.datetime2string(datetime.now())
             time = now_time.split(':')[0] + ":00:00"
-            print(time)
             app.utils.analyse_hour_data(open_id, data[1], time)
             now_timestamp = app.times.string2timestamp(time)
             one_hour_before_time = now_timestamp - 60 * 60
@@ -217,3 +216,27 @@ def get_user_info_by_id(request):
                 'open_id': open_id
             })
     return app.utils.gen_response(405)
+
+
+def add_test(request):
+    """
+    this is for test add function
+    """
+    if request.method == 'GET':
+        print("hello")
+        User.objects.filter(open_id="hello").delete()
+        user = User.objects.create(
+            open_id="hello",
+            name="你好"
+        )
+        user.save()
+    return HttpResponse("hello")
+
+
+def delete_test(request):
+    """
+    this is for test delete function
+    """
+    if request.method == 'GET':
+        User.objects.filter(open_id="hello").delete()
+    return HttpResponse("hello")

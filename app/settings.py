@@ -26,9 +26,10 @@ SECRET_KEY = '$7z)6d^qie^0d%ji5#nhr5w_v-i%04wxd@jm00d^@j*2gn8m@0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(config['DEBUG'])
 
-ALLOWED_HOSTS = ['backend-fullhouse.app.secoder.net',
-                 'backend.fullhouse.secoder.local',
-                 '127.0.0.1']
+ALLOWED_HOSTS = [
+    'backend-fullhouse.app.secoder.net', 'backend.fullhouse.secoder.local',
+    '127.0.0.1'
+]
 
 # Application definition
 
@@ -36,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'logIn', 'app',
-    'manageWorks', 'analyseWorks', 'analyseFans',
-    'django_apscheduler'
+    'manageWorks', 'analyseWorks', 'analyseFans', 'django_apscheduler',
+    'operations'
 ]
 
 MIDDLEWARE = [
@@ -47,7 +48,7 @@ MIDDLEWARE = [
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -77,11 +78,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kuaishou',  # 数据库名称，
-        'HOST': '116.62.155.162',  # 主机地址
-        'USER': 'brisa',  # 数据库用户
+        'HOST': 'mysql.FullHouse.secoder.local',  # 主机地址
+        'USER': 'root',  # 数据库用户
         'PASSWORD': config['PASSWORD'],  # 密码
         'PORT': 3306,  # mysql的端口默认3306
-        'OPTIONS': {'charset': 'utf8mb4'},
+        'OPTIONS': {
+            'charset': 'utf8mb4'
+        },
         'TEST': {
             'CHARSET': 'utf8mb4',
             'COLLATION': 'utf8mb4_unicode_ci'
@@ -115,6 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
+
 USE_TZ = False
 
 USE_I18N = True
