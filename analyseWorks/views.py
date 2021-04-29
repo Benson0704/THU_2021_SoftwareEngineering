@@ -197,24 +197,21 @@ def get_all_videos_info(request):
                 for i, analyse in enumerate(analyses):
                     if begin_timestamp <= app.times.datetime2timestamp(
                             analyse.sum_time) < term_timestamp:
-                        res_list[
-                            (app.times.datetime2timestamp(analyse.sum_time) -
-                             begin_timestamp) // 86400 -
-                            1]['like_count'] += analyses[
-                                i + 1].total_like_count - analyses[
-                                    i].total_like_count
-                        res_list[
-                            (app.times.datetime2timestamp(analyse.sum_time) -
-                             begin_timestamp) // 86400 -
-                            1]['comment_count'] += analyses[
-                                i + 1].total_comment_count - analyses[
-                                    i].total_comment_count
-                        res_list[
-                            (app.times.datetime2timestamp(analyse.sum_time) -
-                             begin_timestamp) // 86400 -
-                            1]['view_count'] += analyses[
-                                i + 1].total_view_count - analyses[
-                                    i].total_view_count
+                        res_list[(app.times.datetime2timestamp(
+                            analyse.sum_time) - begin_timestamp) //
+                                 86400]['like_count'] += analyses[
+                                     i + 1].total_like_count - analyses[
+                                         i].total_like_count
+                        res_list[(app.times.datetime2timestamp(
+                            analyse.sum_time) - begin_timestamp) //
+                                 86400]['comment_count'] += analyses[
+                                     i + 1].total_comment_count - analyses[
+                                         i].total_comment_count
+                        res_list[(app.times.datetime2timestamp(
+                            analyse.sum_time) - begin_timestamp) //
+                                 86400]['view_count'] += analyses[
+                                     i + 1].total_view_count - analyses[
+                                         i].total_view_count
             begin = begin_timestamp
             while begin <= term_timestamp:
                 for video in video_list:

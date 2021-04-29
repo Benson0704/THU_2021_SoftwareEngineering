@@ -32,7 +32,7 @@ def operate_feedback_user(request):
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time))
                     })
-                if message.status == 1 and len(solved_list) < 3:
+                if message.status == 1:
                     feedback = message.feedback.all()
                     solved_list.append({
                         'title':
@@ -42,7 +42,7 @@ def operate_feedback_user(request):
                         'timestamp':
                         app.times.datetime2timestamp((message.create_time)),
                         'admin_name':
-                        feedback[0].manager,
+                        User.objects.get(open_id=feedback[0].manager).name,
                         'response':
                         feedback[0].content,
                         'response_timestamp':
@@ -95,7 +95,7 @@ def operate_feedback_admin(request):
                         'timestamp':
                         app.times.datetime2timestamp(message.create_time)
                     })
-                if message.status == 1 and len(solved_list) < 3:
+                if message.status == 1:
                     feedback = message.feedback.all()
                     solved_list.append({
                         'title':
@@ -106,6 +106,8 @@ def operate_feedback_admin(request):
                         app.times.datetime2timestamp((message.create_time)),
                         'user_name':
                         message.user.name,
+                        'admin_name':
+                        User.objects.get(open_id=feedback[0].manager).name,
                         'response':
                         feedback[0].content,
                         'response_timestamp':

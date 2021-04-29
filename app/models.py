@@ -177,11 +177,8 @@ class Request(models.Model):
     """
     construct model request
     """
-    create_time = models.DateTimeField(default=0)  # 创建时间
+    create_time = models.DateTimeField()  # 创建时间
     timecost = models.IntegerField(default=0)  # 耗时情况
-    user = models.ForeignKey(User,
-                             on_delete=models.CASCADE,
-                             related_name='request')  # 外键绑定用户
     request_type = models.TextField(max_length=1000, null=True)  # 请求类型
 
     class Meta:
@@ -229,3 +226,18 @@ class Warn(models.Model):
         double linking: warn
         '''
         db_table = 'warn'
+
+
+class Performance(models.Model):
+    """
+    construct model performance
+    """
+    api = models.CharField(max_length=500)
+    P99 = models.IntegerField(default=0)
+    qps = models.IntegerField(default=0)
+
+    class Meta:
+        '''
+        double linking: performance
+        '''
+        db_table = 'performance'
