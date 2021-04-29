@@ -52,12 +52,14 @@ try:
                             'time_cost': [],
                             'qps': [0 for i in range(3600)]
                         }
-                    request_dict[request['request_type']]['time_cost'].append(request.get('timecost'))
-                    request_dict[request['request_type']]['qps'][timestamp-now_timestamp+3600] += 1
+                    request_dict[request['request_type']]['time_cost'].\
+                        append(request.get('timecost'))
+                    request_dict[request['request_type']]['qps'][
+                        timestamp-now_timestamp+3600] += 1
             for request_type in request_dict.keys():
-                time_cost_list = sorted(request_dict['request_type']['time_cost'])
-                P99 = time_cost_list[len(time_cost_list)*100//99]
-                max_qps = max(request_dict[request_dict['request_type']]['qps'])
+                time_list = sorted(request_dict[request_type]['time_cost'])
+                P99 = time_list[len(time_list)*100//99]
+                max_qps = max(request_dict[request_type]['qps'])
                 data = Performance.objects.create(
                     api=request_type,
                     P99=P99,
