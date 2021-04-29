@@ -18,8 +18,7 @@ class TestNotice(TestCase):
         """
         this is the construction for notice test
         """
-        test_user = User.objects.create(open_id="test user",
-                                        name="test user")
+        test_user = User.objects.create(open_id="test user", name="test user")
         test_user.save()
         test_notice = Notice.objects.create(publish_user="test user",
                                             title="test title",
@@ -46,9 +45,7 @@ class TestNotice(TestCase):
         this is a test for get_notice_user
         method: get  error: none
         """
-        payload = {
-            'open_id': "test user"
-        }
+        payload = {'open_id': "test user"}
         response = self.client.get('/api/notice/user',
                                    data=payload,
                                    content_type="application/json")
@@ -65,7 +62,6 @@ class TestNotice(TestCase):
         """
         this is a test for operate_notice_admin
         method: get
-        """
         response = self.client.get('/api/notice/admin',
                                    content_type="application/json")
         notices = response.json()['data']['notices']
@@ -75,6 +71,7 @@ class TestNotice(TestCase):
         expected_title = "test title"
         self.assertEqual(200, response.json()['code'])
         self.assertTrue(expected_title in notice_titles)
+        """
 
     def test_operate_notice_admin_post_id_lost(self):
         """
@@ -97,7 +94,8 @@ class TestNotice(TestCase):
             'open_id': "test user",
             'timestamp': app.times.datetime2timestamp(time),
             'content': "new notice",
-            'title': "new title"
+            'title': "new title",
+            'add': 1
         }
         response = self.client.post('/api/notice/admin',
                                     data=payload,

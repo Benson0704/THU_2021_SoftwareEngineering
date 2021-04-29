@@ -7,15 +7,15 @@ FUNCTION TEMPLATE for view:
     if request.method == 'GET':
         try:
             open_id = request.GET.get('open_id')
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
             ret = request.body
             ret = json.loads(ret.decode('utf-8'))
-        except:
-            return app.utils.gen_response(400)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 '''
 import json

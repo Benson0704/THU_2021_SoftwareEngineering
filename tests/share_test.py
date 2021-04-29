@@ -63,9 +63,7 @@ class TestShare(TestCase):
         This is a unittest for delete_share
         error: id lost
         '''
-        payload = {
-            'open_id': "test"
-        }
+        payload = {'open_id': "test"}
         response = self.client.post('/api/share/delete',
                                     data=payload,
                                     content_type="application/json")
@@ -105,9 +103,7 @@ class TestShare(TestCase):
         This is a unittest for get_my_sharing_user
         error: none
         '''
-        payload = {
-            'open_id': "test sharer"
-        }
+        payload = {'open_id': "test sharer"}
         sharer = User.objects.get(open_id="test sharer")
         sharer.auth_user = "test shared_&_"
         sharer.save()
@@ -139,9 +135,7 @@ class TestShare(TestCase):
         This is a unittest for get_user_share_to_me
         error: none
         '''
-        payload = {
-            'open_id': "test shared"
-        }
+        payload = {'open_id': "test shared"}
         shared = User.objects.get(open_id="test shared")
         shared.authed_user = "test sharer_&_"
         shared.save()
@@ -180,9 +174,7 @@ class TestShare(TestCase):
             city="beijing",
         )
         new_user.save()
-        payload = {
-            'exp_name': "test user"
-        }
+        payload = {'exp_name': "test user"}
         expected_user = [{
             'open_id': "test user",
             'name': "test user",
@@ -195,8 +187,7 @@ class TestShare(TestCase):
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        self.assertEqual(expected_user,
-                         response.json()['data'])
+        self.assertEqual(expected_user, response.json()['data']['exp_list'])
         User.objects.filter(open_id="test user").delete()
 
     def tearDown(self):
