@@ -107,7 +107,7 @@ def operate_feedback_admin(request):
                         'user_name':
                         message.user.name,
                         'admin_name':
-                        User.object.get(open_id=feedback[0].manager).name,
+                        User.objects.get(open_id=feedback[0].manager).name,
                         'response':
                         feedback[0].content,
                         'response_timestamp':
