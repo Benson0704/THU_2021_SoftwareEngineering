@@ -351,9 +351,9 @@ def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
         now_count["comment_count"] - one_day_count['comment_count']
     views_before = now_count["view_count"] - one_day_count['view_count']
 
-    if likes_change > 0.01 * likes_before \
-            or comments_change > 0.01 * comments_before \
-            or views_change > 0.01 * views_before:
+    if likes_change > 0.2 * likes_before \
+            or comments_change > 0.2 * comments_before \
+            or views_change > 0.2 * views_before:
         user = User.objects.get(open_id=open_id)
         data = Warn.objects.create(
             user=user,
