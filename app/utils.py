@@ -273,8 +273,6 @@ def analyse_hour_data(open_id, video_list, time):
     for vid in video_list:
         photo_id = vid.get("photo_id")
         video_object = Video.objects.get(photo_id=photo_id)
-        print(time)
-        print(type(time))
         data = AnalyseHour.objects.create(
             video=video_object,
             user_id=open_id,
