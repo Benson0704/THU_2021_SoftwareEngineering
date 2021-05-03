@@ -27,8 +27,7 @@ SECRET_KEY = '$7z)6d^qie^0d%ji5#nhr5w_v-i%04wxd@jm00d^@j*2gn8m@0'
 DEBUG = bool(config['DEBUG'])
 
 ALLOWED_HOSTS = [
-    'backend-fullhouse.app.secoder.net', 'backend.fullhouse.secoder.local',
-    '127.0.0.1'
+    'backend-fullhouse.app.secoder.net', 'backend.fullhouse.secoder.local'
 ]
 
 # Application definition
