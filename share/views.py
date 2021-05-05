@@ -77,7 +77,7 @@ def get_my_sharing_user(request):
             res_list = []
             for ids in id_list:
                 if ids != '':
-                    user = User.objects.get(open_id=ids)
+                    user = User.objects.get(open_id=ids.split('&')[0])
                     res_list.append({
                         'open_id': ids.split('&')[0],
                         'name': user.name,
@@ -105,7 +105,7 @@ def get_user_share_to_me(request):
             res_list = []
             for ids in id_list:
                 if ids != '':
-                    user = User.objects.get(open_id=ids)
+                    user = User.objects.get(open_id=ids.split('&')[0])
                     res_list.append({
                         'open_id': ids.split('&')[0],
                         'name': user.name,
