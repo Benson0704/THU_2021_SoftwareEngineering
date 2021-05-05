@@ -87,8 +87,12 @@ def operate_user(request):
                 v_list = []
                 for v in videos:
                     v_list.append({
-                        'photo_id': v.photo_id,
-                        'caption': v.caption
+                        'time':
+                        app.times.datetime2string(v.create_time),
+                        'photo_id':
+                        v.photo_id,
+                        'caption':
+                        v.caption
                     })
                 res.append({
                     'open_id': u.open_id,
@@ -125,8 +129,12 @@ def set_admin(request):
                 v_list = []
                 for v in videos:
                     v_list.append({
-                        'photo_id': v.photo_id,
-                        'caption': v.caption
+                        'time':
+                        app.times.datetime2string(v.create_time),
+                        'photo_id':
+                        v.photo_id,
+                        'caption':
+                        v.caption
                     })
                 res.append({
                     'open_id': u.open_id,
