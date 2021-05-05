@@ -2,6 +2,7 @@
 this is a module for getting the information shared users
 """
 import json
+import re
 import traceback
 import app.utils
 import app.times
@@ -19,11 +20,14 @@ def add_share(request):
             ret = json.loads(ret.decode('utf-8'))
             sharer_openid = ret['sharer_open_id']
             shared_openid = ret['shared_open_id']
+            timestamp = ret['timestamp']
             sharer_user = User.objects.get(open_id=sharer_openid)
-            sharer_user.auth_user += shared_openid + '_&_'
+            sharer_user.auth_user += shared_openid + '&' + str(
+                timestamp) + '_&_'
             sharer_user.save()
             shared_user = User.objects.get(open_id=shared_openid)
-            shared_user.authed_user += sharer_openid + '_&_'
+            shared_user.authed_user += sharer_openid + '&' + str(
+                timestamp) + '_&_'
             shared_user.save()
             return app.utils.gen_response(200)
         except Exception:
@@ -43,12 +47,14 @@ def delete_share(request):
             sharer_openid = ret['sharer_open_id']
             shared_openid = ret['shared_open_id']
             sharer_user = User.objects.get(open_id=sharer_openid)
-            sharer_user.auth_user = sharer_user.auth_user.replace(
-                shared_openid + '_&_', '')
+            sharer_user.auth_user = str(
+                re.sub(shared_openid + r'&[0-9]+_&_', '',
+                       sharer_user.auth_user))
             sharer_user.save()
             shared_user = User.objects.get(open_id=shared_openid)
-            shared_user.authed_user = shared_user.authed_user.replace(
-                sharer_openid + '_&_', '')
+            shared_user.authed_user = str(
+                re.sub(sharer_openid + r'&[0-9]+_&_', '',
+                       shared_user.auth_user))
             shared_user.save()
             return app.utils.gen_response(200)
         except Exception:
@@ -73,9 +79,10 @@ def get_my_sharing_user(request):
                 if ids != '':
                     user = User.objects.get(open_id=ids)
                     res_list.append({
-                        'open_id': ids,
+                        'open_id': ids.split('&')[0],
                         'name': user.name,
-                        'head': user.head
+                        'head': user.head,
+                        'timestamp': ids.split('&')[1]
                     })
             return app.utils.gen_response(200, {'sharing_list': res_list})
         except Exception:
@@ -100,9 +107,10 @@ def get_user_share_to_me(request):
                 if ids != '':
                     user = User.objects.get(open_id=ids)
                     res_list.append({
-                        'open_id': ids,
+                        'open_id': ids.split('&')[0],
                         'name': user.name,
-                        'head': user.head
+                        'head': user.head,
+                        'timestamp': ids.split('&')[1]
                     })
             return app.utils.gen_response(200, {'shared_list': res_list})
         except Exception:
