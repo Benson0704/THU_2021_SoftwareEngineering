@@ -57,7 +57,10 @@ try:
                 time_cost_dict[request.request_type].append(request.timecost)
             for request_type in iter(time_cost_dict):
                 time_list = sorted(time_cost_dict[request_type])
-                P99 = time_list[len(time_list) * 100 // 99 - 1]
+                idx = len(time_list) * 100 // 99
+                if idx == 0:
+                    idx = 1
+                P99 = time_list[idx - 1]
                 if request_type in qps_dict:
                     max_qps = max(qps_dict[request_type])
                 else:
