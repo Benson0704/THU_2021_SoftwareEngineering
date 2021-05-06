@@ -66,7 +66,7 @@ try:
                     if performance.api == request_type:
                         performance.P99 = P99
                         performance.qps = max(performance.qps, max_qps)
-                        return
+                        break
                 data = Performance.objects.create(
                     api=request_type,
                     P99=P99,
