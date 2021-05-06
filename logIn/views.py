@@ -42,24 +42,31 @@ try:
             one_day_before_time = now_timestamp - 24 * 60 * 60
             app.utils.store_flow(open_id, one_day_before_time,
                                  one_hour_before_time, now_timestamp)
-            request_dict = {}
+            qps_dict = {}
+            time_cost_dict = {}
             for request in Request.objects.all():
                 timestamp = app.times.datetime2timestamp(
                         request.create_time)
                 if now_timestamp - 3600 <= timestamp <= now_timestamp:
-                    if request.request_type not in request_dict:
-                        request_dict[request.request_type] = {
-                            'time_cost': [],
-                            'qps': [0] * 3600
-                        }
-                    request_dict[request.request_type]['time_cost'].\
-                        append(request.timecost)
-                    request_dict[request.request_type]['qps'][
+                    if request.request_type not in qps_dict:
+                        qps_dict[request.request_type] = [0] * 3600
+                    qps_dict[request.request_type][
                         int(timestamp - now_timestamp + 3600)] += 1
-            for request_type in iter(request_dict):
-                time_list = sorted(request_dict[request_type]['time_cost'])
+                if request.request_type not in time_cost_dict:
+                    time_cost_dict[request.request_type] = []
+                time_cost_dict[request.request_type].append(request.timecost)
+            for request_type in iter(time_cost_dict):
+                time_list = sorted(time_cost_dict[request_type])
                 P99 = time_list[len(time_list) * 100 // 99 - 1]
-                max_qps = max(request_dict[request_type]['qps'])
+                if request_type in qps_dict:
+                    max_qps = max(qps_dict[request_type])
+                else:
+                    max_qps = 0
+                for performance in Performance.objects.all():
+                    if performance.api == request_type:
+                        performance.P99 = P99
+                        performance.qps = max(performance.qps, max_qps)
+                        return
                 data = Performance.objects.create(
                     api=request_type,
                     P99=P99,
