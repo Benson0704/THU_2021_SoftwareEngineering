@@ -65,17 +65,20 @@ try:
                     max_qps = max(qps_dict[request_type])
                 else:
                     max_qps = 0
+                found = False
                 for performance in Performance.objects.all():
                     if performance.api == request_type:
                         performance.P99 = P99
                         performance.qps = max(performance.qps, max_qps)
+                        found = True
                         break
-                data = Performance.objects.create(
-                    api=request_type,
-                    P99=P99,
-                    qps=max_qps
-                )
-                data.save()
+                if not found:
+                    data = Performance.objects.create(
+                        api=request_type,
+                        P99=P99,
+                        qps=max_qps
+                    )
+                    data.save()
 
     @register_job(scheduler,
                   'cron',
