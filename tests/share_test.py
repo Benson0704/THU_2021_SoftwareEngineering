@@ -114,7 +114,7 @@ class TestShare(TestCase):
         time = datetime(2021, 3, 5, 11, 12, 13)
         timestamp = app.times.datetime2timestamp(time)
         sharer = User.objects.get(open_id="test sharer")
-        sharer.auth_user = "test shared"+ '&' + str(
+        sharer.auth_user = "test shared" + '&' + str(
             timestamp) + "_&_"
         sharer.save()
         response = self.client.get('/api/share/sharing',
