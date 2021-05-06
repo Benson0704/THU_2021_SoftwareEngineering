@@ -57,7 +57,7 @@ try:
                 time_cost_dict[request.request_type].append(request.timecost)
             for request_type in iter(time_cost_dict):
                 time_list = sorted(time_cost_dict[request_type])
-                idx = len(time_list) * 100 // 99
+                idx = len(time_list) * 99 // 100
                 if idx == 0:
                     idx = 1
                 P99 = time_list[idx - 1]
