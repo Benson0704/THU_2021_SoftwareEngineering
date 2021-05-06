@@ -57,22 +57,28 @@ try:
                 time_cost_dict[request.request_type].append(request.timecost)
             for request_type in iter(time_cost_dict):
                 time_list = sorted(time_cost_dict[request_type])
-                P99 = time_list[len(time_list) * 100 // 99 - 1]
+                idx = len(time_list) * 100 // 99
+                if idx == 0:
+                    idx = 1
+                P99 = time_list[idx - 1]
                 if request_type in qps_dict:
                     max_qps = max(qps_dict[request_type])
                 else:
                     max_qps = 0
+                found = False
                 for performance in Performance.objects.all():
                     if performance.api == request_type:
                         performance.P99 = P99
                         performance.qps = max(performance.qps, max_qps)
+                        found = True
                         break
-                data = Performance.objects.create(
-                    api=request_type,
-                    P99=P99,
-                    qps=max_qps
-                )
-                data.save()
+                if not found:
+                    data = Performance.objects.create(
+                        api=request_type,
+                        P99=P99,
+                        qps=max_qps
+                    )
+                    data.save()
 
     @register_job(scheduler,
                   'cron',
