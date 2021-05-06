@@ -5,6 +5,8 @@ finish: 4.22
 from django.test import TestCase
 from app.models import User
 import pytest
+import app.times
+from datetime import datetime
 
 
 @pytest.mark.django_db
@@ -43,19 +45,24 @@ class TestShare(TestCase):
         This is a unittest for add_share
         error: none
         '''
+        time = datetime(2021, 3, 4, 11, 12, 13)
         payload = {
             'sharer_open_id': "test sharer",
-            'shared_open_id': "test shared"
+            'shared_open_id': "test shared",
+            'timestamp': app.times.datetime2timestamp(time)
         }
         response = self.client.post('/api/share/add',
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        expected_result = "test shared_&_"
+        timestamp = app.times.datetime2timestamp(time)
+        expected_result = "test shared" + '&' + str(
+            timestamp) + "_&_"
         sharer = User.objects.get(open_id="test sharer")
         shared = User.objects.get(open_id="test shared")
         self.assertEqual(sharer.auth_user, expected_result)
-        expected_result = "test sharer_&_"
+        expected_result = "test sharer" + '&' + str(
+            timestamp) + "_&_"
         self.assertEqual(shared.authed_user, expected_result)
 
     def test_delete_share_id_lost(self):
@@ -104,8 +111,11 @@ class TestShare(TestCase):
         error: none
         '''
         payload = {'open_id': "test sharer"}
+        time = datetime(2021, 3, 5, 11, 12, 13)
+        timestamp = app.times.datetime2timestamp(time)
         sharer = User.objects.get(open_id="test sharer")
-        sharer.auth_user = "test shared_&_"
+        sharer.auth_user = "test shared"+ '&' + str(
+            timestamp) + "_&_"
         sharer.save()
         response = self.client.get('/api/share/sharing',
                                    data=payload,
@@ -114,7 +124,8 @@ class TestShare(TestCase):
         expected_result = [{
             'open_id': "test shared",
             'name': "test shared",
-            'head': "head"
+            'head': "head",
+            'timestamp': str(app.times.datetime2timestamp(time))
         }]
         self.assertEqual(expected_result,
                          response.json()['data']['sharing_list'])
@@ -137,7 +148,10 @@ class TestShare(TestCase):
         '''
         payload = {'open_id': "test shared"}
         shared = User.objects.get(open_id="test shared")
-        shared.authed_user = "test sharer_&_"
+        time = datetime(2021, 3, 5, 11, 12, 13)
+        timestamp = app.times.datetime2timestamp(time)
+        shared.authed_user = "test sharer" + '&' + str(
+            timestamp) + "_&_"
         shared.save()
         response = self.client.get('/api/share/shared',
                                    data=payload,
@@ -146,7 +160,8 @@ class TestShare(TestCase):
         expected_result = [{
             'open_id': "test sharer",
             'name': "test sharer",
-            'head': "head"
+            'head': "head",
+            'timestamp': str(app.times.datetime2timestamp(time))
         }]
         self.assertEqual(expected_result,
                          response.json()['data']['shared_list'])
