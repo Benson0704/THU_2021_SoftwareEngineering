@@ -16,7 +16,6 @@ def get_notice_user(request):
     """
     if request.method == 'GET':
         try:
-            open_id = request.GET['open_id']
             notices = Notice.objects.all().order_by('-create_time')
             notice_list = []
             for notice in notices:
@@ -33,6 +32,7 @@ def get_notice_user(request):
             })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
+    return app.utils.gen_response(405)
 
 
 def operate_notice_admin(request):
@@ -99,6 +99,7 @@ def operate_notice_admin(request):
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
 
+
 def get_flows(request):
     """
     this function get flows for users
@@ -108,8 +109,10 @@ def get_flows(request):
         try:
             open_id = request.GET['open_id']
             flow_list = app.utils.get_flow(open_id)
+            limit = app.utils.get_limit(open_id)
             return app.utils.gen_response(200, {
-                'flows': flow_list
+                'flows': flow_list,
+                'limit': limit
             })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())

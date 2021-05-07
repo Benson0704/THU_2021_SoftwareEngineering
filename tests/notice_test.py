@@ -53,13 +53,9 @@ class TestNotice(TestCase):
         this is a test for get_notice_user
         method: get  error: none
         """
-<<<<<<< HEAD
-        payload = {'open_id': "test user", 'limit': 10}
-=======
         payload = {
             'open_id': "test user"
         }
->>>>>>> noticeTest
         response = self.client.get('/api/notice/user',
                                    data=payload,
                                    content_type="application/json")
