@@ -143,7 +143,8 @@ def get_videos_info_by_time(request):
                         count_list[i]['view_count']
                     })
             if today == 1:
-                if term_timestamp + 1 - begin_timestamp == 86400:
+                if term_timestamp + 1 - int(
+                        request.GET['begin_timestamp']) == 86400:
                     res_list[-1]['like_count'] = video.like_count - res_list[
                         -1]['like_count']
                     res_list[-1]['view_count'] = video.view_count - res_list[
