@@ -263,14 +263,11 @@ def get_all_videos_info(request):
                                  86400]['video_count'] += 1
                 begin += 86400
             if today == 1:
-                res_list.append({
-                    'like_count': user.total_like_count,
-                    'view_count': user.total_view_count,
-                    'comment_count': user.total_comment_count,
-                    'video_count': 0
-                })
+                res_list[-1]['like_count'] = user.total_like_count
+                res_list[-1]['view_count'] = user.total_view_count
+                res_list[-1]['comment_count'] = user.total_comment_count
                 for video in video_list:
-                    analyses = video.analysis.all().order_by('sum_time')
+                    analyses = video.analysis.all().order_by('-sum_time')
                     for i, analyse in enumerate(analyses):
                         if app.times.datetime2timestamp(
                                 analyse.sum_time) == term_timestamp + 1:
