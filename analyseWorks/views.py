@@ -106,6 +106,13 @@ def get_videos_info_by_time(request):
             res['view_count'] = video.view_count
             count_list = []
             res_list = []
+            if begin_timestamp <= app.times.datetime2timestamp(
+                    analyse_list.sum_time[0]):
+                count_list.append({
+                    'like_count': 0,
+                    'comment_count': 0,
+                    'view_count': 0
+                })
             while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
