@@ -57,7 +57,6 @@ class TestNotice(TestCase):
         response = self.client.get('/api/notice/user',
                                    data=payload,
                                    content_type="application/json")
-        print(response.json()['code'])
         notices = response.json()['data']['notices']
         notice_titles = []
         for notice in notices:
