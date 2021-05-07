@@ -40,6 +40,7 @@ def get_notice_user(request):
         try:
             ret = request.body
             ret = json.loads(ret.decode('utf-8'))
+            print(ret)
             logIn.views.limit = ret['limit']
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
