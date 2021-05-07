@@ -28,23 +28,11 @@ def get_notice_user(request):
                     'timestamp':
                     app.times.datetime2timestamp(notice.create_time)
                 })
-            flow_list = app.utils.get_flow(open_id)
             return app.utils.gen_response(200, {
-                'notices': notice_list,
-                'flows': flow_list
+                'notices': notice_list
             })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
-    elif request.method == 'POST':
-        try:
-            ret = request.body
-            ret = json.loads(ret.decode('utf-8'))
-            open_id = ret['open_id']
-            limit = ret['limit']
-            app.utils.update_limit(open_id, limit)
-        except Exception:
-            return app.utils.gen_response(400, traceback.format_exc())
-    return app.utils.gen_response(405)
 
 
 def operate_notice_admin(request):
@@ -106,6 +94,32 @@ def operate_notice_admin(request):
                     title=ret['title'],
                     publish_user=ret['open_id'])
                 old_notice.delete()
+            return app.utils.gen_response(200)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
+    return app.utils.gen_response(405)
+
+def get_flows(request):
+    """
+    this function get flows for users
+    return: code, data
+    """
+    if request.method == 'GET':
+        try:
+            open_id = request.GET['open_id']
+            flow_list = app.utils.get_flow(open_id)
+            return app.utils.gen_response(200, {
+                'flows': flow_list
+            })
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
+    elif request.method == 'POST':
+        try:
+            ret = request.body
+            ret = json.loads(ret.decode('utf-8'))
+            open_id = ret['open_id']
+            limit = ret['limit']
+            app.utils.update_limit(open_id, limit)
             return app.utils.gen_response(200)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())

@@ -8,5 +8,6 @@ from . import views
 
 urlpatterns = [
     path('user', views.get_notice_user),
-    path('admin', views.operate_notice_admin)
+    path('admin', views.operate_notice_admin),
+    path('flows', views.get_flows)
 ]
