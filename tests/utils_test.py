@@ -100,7 +100,8 @@ class TestUtils(unittest.TestCase):
         app.utils.store_flow(open_id,
                              one_day_before_time,
                              one_hour_before_time,
-                             now_time)
+                             now_time,
+                             10)
         warn = Warn.objects.get(user=tuser)
         self.assertTrue(warn)
         Warn.objects.filter(user=tuser).delete()
