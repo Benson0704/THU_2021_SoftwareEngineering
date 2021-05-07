@@ -18,7 +18,6 @@ def get_notice_user(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
-            logIn.views.limit = request.GET['limit']
             notices = Notice.objects.all().order_by('-create_time')
             notice_list = []
             for notice in notices:
@@ -35,6 +34,13 @@ def get_notice_user(request):
                 'notices': notice_list,
                 'flows': flow_list
             })
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
+    elif request.method == 'POST':
+        try:
+            ret = request.body
+            ret = json.loads(ret.decode('utf-8'))
+            logIn.views.limit = ret['limit']
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
