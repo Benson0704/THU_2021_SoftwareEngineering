@@ -308,11 +308,12 @@ def is_administrator(open_id):
     return user.identity
 
 
-def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time, limit):
+def store_flow(open_id, one_day_before_time, one_hour_before_time,
+               now_time, limit):
     """
     本函数用于存储一个用户的流量预警变化
     """
-    limit = (int(limit))/100
+    limit = (int(limit)) / 100
     analyse_list = AnalyseHour.objects.filter(
         user_id=open_id).order_by('sum_time')
     one_day_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
