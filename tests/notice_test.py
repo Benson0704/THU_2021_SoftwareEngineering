@@ -37,36 +37,6 @@ class TestNotice(TestCase):
                                         warn_time='2022-04-09 12:13:15')
         test_warn.save()
 
-    def test_get_notice_user_openid_lost(self):
-        """
-        this is a test for get_notice_user
-        method: get  error: openid lost
-        """
-        payload = {}
-        response = self.client.get('/api/notice/user',
-                                   data=payload,
-                                   content_type="application/json")
-        self.assertEqual(400, response.json()['code'])
-
-    # def test_get_notice_user(self):
-    #     """
-    #     this is a test for get_notice_user
-    #     method: get  error: none
-    #     """
-    #     payload = {
-    #         'open_id': "test user"
-    #     }
-    #     response = self.client.get('/api/notice/user',
-    #                                data=payload,
-    #                                content_type="application/json")
-    #     notices = response.json()['data']['notices']
-    #     notice_titles = []
-    #     for notice in notices:
-    #         notice_titles.append(notice['title'])
-    #     expected_title = "test title"
-    #     self.assertEqual(200, response.json()['code'])
-    #     self.assertTrue(expected_title in notice_titles)
-
     def test_get_notice_user(self):
         """
         this is a test for get_notice_user
@@ -84,29 +54,55 @@ class TestNotice(TestCase):
         self.assertEqual(200, response.json()['code'])
         self.assertTrue(expected_title in notice_titles)
 
-    def test_get_notice_user_post(self):
+    def test_get_flows_post(self):
         """
-        this is a test for get_notice_user
+        this is a test for get_flows
         method: post
         """
         payload = {
             'open_id': "test user",
             'limit': 10
         }
-        response = self.client.post('/api/notice/user',
+        response = self.client.post('/api/notice/flows',
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(response.json()['code'], 200)
         user = User.objects.get(open_id="test user")
         self.assertEqual(10, user.limit)
 
-    def test_get_notice_user_post_limit_lost(self):
+    def test_get_flows_get(self):
         """
-        this is a test for get_notice_user
+        this is a test for get_flows
+        method: post
+        """
+        payload = {
+            'open_id': "test user",
+        }
+        response = self.client.get('/api/notice/flows',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(response.json()['code'], 200)
+        user = User.objects.get(open_id="test user")
+        self.assertEqual(20, user.limit)
+
+    def test_get_flows_post_limit_lost(self):
+        """
+        this is a test for get_flows
         method: post  error: limit lost
         """
         payload = {}
-        response = self.client.post('/api/notice/user',
+        response = self.client.post('/api/notice/flows',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(response.json()['code'], 400)
+
+    def test_get_flows_get_openid_lost(self):
+        """
+        this is a test for get_flows
+        method: get  error: openid lost
+        """
+        payload = {}
+        response = self.client.get('/api/notice/flows',
                                     data=payload,
                                     content_type="application/json")
         self.assertEqual(response.json()['code'], 400)

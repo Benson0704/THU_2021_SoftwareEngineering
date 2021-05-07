@@ -221,6 +221,7 @@ class Warn(models.Model):
     comments_before = models.IntegerField(default=0)
     views_before = models.IntegerField(default=0)
     warn_time = models.DateTimeField(default=0)  # 预警时间
+    limit = models.IntegerField(default=20)
 
     class Meta:
         '''
