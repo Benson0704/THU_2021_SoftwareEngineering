@@ -48,18 +48,31 @@ class TestNotice(TestCase):
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
+    # def test_get_notice_user(self):
+    #     """
+    #     this is a test for get_notice_user
+    #     method: get  error: none
+    #     """
+    #     payload = {
+    #         'open_id': "test user"
+    #     }
+    #     response = self.client.get('/api/notice/user',
+    #                                data=payload,
+    #                                content_type="application/json")
+    #     notices = response.json()['data']['notices']
+    #     notice_titles = []
+    #     for notice in notices:
+    #         notice_titles.append(notice['title'])
+    #     expected_title = "test title"
+    #     self.assertEqual(200, response.json()['code'])
+    #     self.assertTrue(expected_title in notice_titles)
+
     def test_get_notice_user(self):
         """
         this is a test for get_notice_user
         method: get  error: none
         """
-<<<<<<< HEAD
-        payload = {'open_id': "test user"}
-=======
-        payload = {
-            'open_id': "test user"
-        }
->>>>>>> 9cb158b4a9ad1186c1ce8e41caa822850c52d78d
+        payload = {}
         response = self.client.get('/api/notice/user',
                                    data=payload,
                                    content_type="application/json")
