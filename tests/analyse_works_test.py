@@ -178,9 +178,10 @@ class TestAnalyseWorks(TestCase):
                                    content_type="application/json")
         self.assertEqual(400, response.json()['code'])
 
-    def test_get_all_videos_info(self):
+    def test_get_all_videos_info_today0(self):
         """
         this is a test for get_all_videos_info
+        today:0
         """
         time1 = datetime(2022, 4, 13, 0, 0, 0)
         time2 = datetime(2022, 4, 13, 23, 59, 59)
@@ -198,6 +199,7 @@ class TestAnalyseWorks(TestCase):
             'open_id': "justhavesomefun",
             'begin_timestamp': app.times.datetime2timestamp(time1),
             'term_timestamp': app.times.datetime2timestamp(time2),
+            'today': 0
         }
         expected_recent_data = {
             'like_count': 10,
@@ -208,6 +210,41 @@ class TestAnalyseWorks(TestCase):
             'like_count': 5,
             'comment_count': 1,
             'view_count': 8,
+            'video_count': 1
+        }]
+        response = self.client.get('/api/analysis/globalday',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_recent_data,
+                         response.json()['data']['recent_data'])
+        self.assertEqual(expected_count_list,
+                         response.json()['data']['count_list'])
+        Video.objects.filter(photo_id="my world").delete()
+    
+    def test_get_all_videos_info_today1(self):
+        """
+        this is a test for get_all_videos_info
+        today:1
+        """
+        time1 = datetime(2022, 4, 13, 0, 0, 0)
+        time2 = datetime(2022, 4, 13, 23, 59, 59)
+        brisa = User.objects.get(open_id="justhavesomefun")
+        payload = {
+            'open_id': "justhavesomefun",
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
+            'today': 1
+        }
+        expected_recent_data = {
+            'like_count': 10,
+            'comment_count': 3,
+            'view_count': 18,
+        }
+        expected_count_list = [{
+            'like_count': 0,
+            'comment_count': 0,
+            'view_count': 0,
             'video_count': 1
         }]
         response = self.client.get('/api/analysis/globalday',
