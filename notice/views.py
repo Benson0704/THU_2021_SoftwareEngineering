@@ -108,8 +108,10 @@ def get_flows(request):
         try:
             open_id = request.GET['open_id']
             flow_list = app.utils.get_flow(open_id)
+            limit = app.utils.get_limit(open_id)
             return app.utils.gen_response(200, {
-                'flows': flow_list
+                'flows': flow_list,
+                'limit': limit
             })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
