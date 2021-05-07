@@ -106,10 +106,6 @@ def get_videos_info_by_time(request):
             res['view_count'] = video.view_count
             count_list = []
             res_list = []
-            if len(analyse_list) != 0:
-                begin_timestamp = max(
-                    begin_timestamp,
-                    app.times.datetime2timestamp(analyse_list[0].sum_time))
             while begin_timestamp <= term_timestamp + 1:
                 for analyse in analyse_list:
                     if begin_timestamp == app.times.datetime2timestamp(
@@ -124,7 +120,7 @@ def get_videos_info_by_time(request):
                         })
                 begin_timestamp += 86400
             for i, _ in enumerate(count_list):
-                if len(count_list) == 1:
+                if len(count_list) == 1 and today == 0:
                     res_list.append({
                         'like_count':
                         count_list[i]['like_count'],
@@ -147,21 +143,14 @@ def get_videos_info_by_time(request):
                         count_list[i]['view_count']
                     })
             if today == 1:
-                if count_list == []:
-                    res_list.append({
-                        'like_count': video.like_count,
-                        'view_count': video.view_count,
-                        'comment_count': video.comment_count
-                    })
-                else:
-                    res_list.append({
-                        'like_count':
-                        video.like_count - count_list[-1]['like_count'],
-                        'view_count':
-                        video.view_count - count_list[-1]['view_count'],
-                        'comment_count':
-                        video.comment_count - count_list[-1]['comment_count']
-                    })
+                res_list.append({
+                    'like_count':
+                    video.like_count - count_list[-1]['like_count'],
+                    'view_count':
+                    video.view_count - count_list[-1]['view_count'],
+                    'comment_count':
+                    video.comment_count - count_list[-1]['comment_count']
+                })
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
         except Exception:
