@@ -79,8 +79,8 @@ class TestNotice(TestCase):
             'open_id': "test user",
         }
         response = self.client.get('/api/notice/flows',
-                                    data=payload,
-                                    content_type="application/json")
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(response.json()['code'], 200)
         user = User.objects.get(open_id="test user")
         self.assertEqual(20, user.limit)
@@ -103,8 +103,8 @@ class TestNotice(TestCase):
         """
         payload = {}
         response = self.client.get('/api/notice/flows',
-                                    data=payload,
-                                    content_type="application/json")
+                                   data=payload,
+                                   content_type="application/json")
         self.assertEqual(response.json()['code'], 400)
 
     def test_operate_notice_admin_get(self):

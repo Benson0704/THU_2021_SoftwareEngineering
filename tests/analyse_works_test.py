@@ -270,7 +270,7 @@ class TestAnalyseWorks(TestCase):
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
         Video.objects.filter(photo_id="my world").delete()
-    
+
     def test_get_all_videos_info_today1_single(self):
         """
         this is a test for get_all_videos_info
@@ -303,8 +303,7 @@ class TestAnalyseWorks(TestCase):
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
                                    content_type="application/json")
-        print(response.json())                           
-        self.assertEqual(200, response.json()['code'])
+        print(response.json())
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
         Video.objects.filter(photo_id="my world").delete()
