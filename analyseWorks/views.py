@@ -124,7 +124,7 @@ def get_videos_info_by_time(request):
                         })
                 begin_timestamp += 86400
             for i, _ in enumerate(count_list):
-                if len(count_list) == 1 and today == 0:
+                if len(count_list) == 1:
                     res_list.append({
                         'like_count':
                         count_list[i]['like_count'],
