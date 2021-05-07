@@ -276,8 +276,8 @@ class TestAnalyseWorks(TestCase):
         this is a test for get_all_videos_info
         today:1  only 1 analyse
         """
-        time1 = datetime(2022, 4, 15, 0, 0, 0)
-        time2 = datetime(2022, 4, 15, 23, 59, 59)
+        time1 = datetime(2022, 4, 13, 0, 0, 0)
+        time2 = datetime(2022, 4, 13, 23, 59, 59)
         brisa = User.objects.get(open_id="justhavesomefun")
         payload = {
             'open_id': "justhavesomefun",
@@ -288,17 +288,17 @@ class TestAnalyseWorks(TestCase):
         brisa = User.objects.get(open_id="justhavesomefun")
         new_video = Video.objects.create(user=brisa,
                                          photo_id="my world",
-                                         create_time='2022-04-07 12:13:15',
+                                         create_time='2022-04-13 12:13:15',
                                          pending=False,
                                          comment_count=1,
                                          like_count=2,
                                          view_count=3)
         new_video.save()
         expected_count_list = [{
-            'like_count': 20,
-            'comment_count': 10,
-            'view_count': 40,
-            'video_count': 0
+            'like_count': 15,
+            'comment_count': 9,
+            'view_count': 32,
+            'video_count': 1
         }]
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
@@ -325,7 +325,7 @@ class TestAnalyseWorks(TestCase):
                                          labels="")
         new_video.save()
         time1 = datetime(2022, 4, 11, 0, 0, 0)
-        time2 = datetime(2022, 4, 13, 23, 59, 59)
+        time2 = datetime(2022, 4, 12, 23, 59, 59)
         brisa = User.objects.get(open_id="justhavesomefun")
         payload = {
             'open_id': "justhavesomefun",
@@ -338,12 +338,20 @@ class TestAnalyseWorks(TestCase):
             'comment_count': 3,
             'view_count': 18,
         }
-        expected_count_list = [{
-            'like_count': 5,
-            'comment_count': 1,
-            'view_count': 8,
-            'video_count': 1
-        }]
+        expected_count_list = [
+            {
+                'like_count': 2,
+                'comment_count': 1,
+                'view_count': 5,
+                'video_count': 1
+            },
+            {
+                'like_count': 12,
+                'comment_count': 8,
+                'view_count': 27,
+                'video_count': 0
+            },
+        ]
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
                                    content_type="application/json")
