@@ -1,8 +1,8 @@
 '''
 this file should be a .py file as tests for feedback module
 '''
-import pytest
 from datetime import datetime
+import pytest
 from django.test import TestCase
 from app.models import User, Message, Feedback
 import app.times

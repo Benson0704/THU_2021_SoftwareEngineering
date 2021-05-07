@@ -2,8 +2,8 @@
 this file should be a .py file as tests for share module
 finish: 4.22, add timestamp
 '''
-import pytest
 from datetime import datetime
+import pytest
 from django.test import TestCase
 from app.models import User
 import app.times
