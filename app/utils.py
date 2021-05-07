@@ -401,3 +401,11 @@ def update_limit(open_id, limit):
     user = User.objects.get(open_id=open_id)
     user.limit = int(limit)
     user.save()
+
+
+def get_limit(open_id):
+    """
+    本接口用于获取用户对应的流量预警阈值
+    """
+    user = User.objects.get(open_id=open_id)
+    return user.limit
