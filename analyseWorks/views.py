@@ -209,6 +209,25 @@ def get_all_videos_info(request):
                         recent_data[
                             'comment_count'] -= analyse.total_comment_count
                         break
+            if today == 1 and len(res_list) == 1:
+                res_list[0]['like_count'] = user.total_like_count
+                res_list[0]['view_count'] = user.total_view_count
+                res_list[0]['comment_count'] = user.total_comment_count
+                for video in video_list:
+                    analyses = video.analysis.all().order_by('sum_time')
+                    for i, analyse in enumerate(analyses):
+                        if app.times.datetime2timestamp(
+                                analyse.sum_time) == begin_timestamp:
+                            res_list[0]['like_count'] -= -analyse.like_count
+                            res_list[0]['view_count'] -= -analyse.view_count
+                            res_list[0][
+                                'comment_count'] -= -analyse.comment_count
+                return app.utils.gen_response(200, {
+                    'recent_data': recent_data,
+                    'count_list': res_list
+                })
+            if today == 1:
+                term_timestamp -= 86400
             for video in video_list:
                 analyses = video.analysis.all().order_by('sum_time')
                 for i, analyse in enumerate(analyses):
@@ -237,27 +256,25 @@ def get_all_videos_info(request):
                         res_list[(begin - begin_timestamp) //
                                  86400]['video_count'] += 1
                 begin += 86400
-            if request.GET['today'] == 1:
-                if len(res_list) == 1:
-                    tmp_dict = res_list[0]
-                    res_list[0] = {
-                        'like_count':
-                        user.total_like_count - tmp_dict['like_count'],
-                        'view_count':
-                        user.total_view_count - tmp_dict['view_count'],
-                        'comment_count':
-                        user.total_comment_count - tmp_dict['comment_count']
-                    }
-                else:
-                    tmp_dict = res_list[-1]
-                    res_list.append({
-                        'like_count':
-                        user.total_like_count - tmp_dict['like_count'],
-                        'view_count':
-                        user.total_view_count - tmp_dict['view_count'],
-                        'comment_count':
-                        user.total_comment_count - tmp_dict['comment_count']
-                    })
+            if today == 1:
+                res_list.append({
+                    'like_count': user.total_like_count,
+                    'view_count': user.total_view_count,
+                    'comment_count': user.total_comment_count,
+                    'video_count': 0
+                })
+                for video in video_list:
+                    analyses = video.analysis.all().order_by('sum_time')
+                    for i, analyse in enumerate(analyses):
+                        if app.times.datetime2timestamp(
+                                analyse.sum_time) == term_timestamp + 1:
+                            res_list[-1]['like_count'] -= -analyse.like_count
+                            res_list[-1]['view_count'] -= -analyse.view_count
+                            res_list[-1][
+                                'comment_count'] -= -analyse.comment_count
+                    if app.times.datetime2timestamp(
+                            video.create_time) > term_timestamp + 1:
+                        res_list[-1]['video_count'] += 1
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
                 'count_list': res_list
