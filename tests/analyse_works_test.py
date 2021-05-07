@@ -111,6 +111,7 @@ class TestAnalyseWorks(TestCase):
             'photo_id': "Welcome to world 1st university",
             'begin_timestamp': app.times.datetime2timestamp(time1),
             'term_timestamp': app.times.datetime2timestamp(time2),
+            'today': 0
         }
         expected_res = {}
         expected_res['photo_id'] = "Welcome to world 1st university"
@@ -143,6 +144,7 @@ class TestAnalyseWorks(TestCase):
             'photo_id': "Welcome to world 1st university",
             'begin_timestamp': app.times.datetime2timestamp(time1),
             'term_timestamp': app.times.datetime2timestamp(time2),
+            'today': 0
         }
         expected_res = {}
         expected_res['photo_id'] = "Welcome to world 1st university"
@@ -158,12 +160,60 @@ class TestAnalyseWorks(TestCase):
         expected_count_list = []
         temp = {'like_count': 12, 'comment_count': 8, 'view_count': 27}
         expected_count_list.append(temp)
+        temp = {'like_count': 8, 'comment_count': 2, 'view_count': 13}
+        expected_count_list.append(temp)
         expected_res['count_list'] = expected_count_list
         response = self.client.get('/api/analysis/single',
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_res, response.json()['data'])
+
+    def test_get_videos_info_by_time_today1(self):
+        """
+        this is a test for get_videos_info_by_time
+        today: 1
+        """
+        time1 = datetime(2022, 4, 12, 0, 0, 0)
+        time2 = datetime(2022, 4, 12, 23, 59, 58)
+        payload = {
+            'photo_id': "Welcome to world 1st university",
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
+            'today': 1
+        }
+        response = self.client.get('/api/analysis/single',
+                                   data=payload,
+                                   content_type="application/json")
+        expected_count_list = []
+        temp = {'like_count': 8, 'comment_count': 2, 'view_count': 13}
+        expected_count_list.append(temp)
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_count_list,
+                         response.json()['data']['count_list'])
+
+    def test_get_videos_info_by_time_today1_empty(self):
+        """
+        this is a test for get_videos_info_by_time
+        today: 1  empty list
+        """
+        time1 = datetime(2022, 4, 15, 0, 0, 0)
+        time2 = datetime(2022, 4, 15, 23, 59, 58)
+        payload = {
+            'photo_id': "Welcome to world 1st university",
+            'begin_timestamp': app.times.datetime2timestamp(time1),
+            'term_timestamp': app.times.datetime2timestamp(time2),
+            'today': 1
+        }
+        response = self.client.get('/api/analysis/single',
+                                   data=payload,
+                                   content_type="application/json")
+        expected_count_list = []
+        temp = {'like_count': 20, 'comment_count': 10, 'view_count': 40}
+        expected_count_list.append(temp)
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_count_list,
+                         response.json()['data']['count_list'])
 
     def test_get_all_videos_info_openid_lost(self):
         """
@@ -242,10 +292,10 @@ class TestAnalyseWorks(TestCase):
             'view_count': 18,
         }
         expected_count_list = [{
-            'like_count': 0,
-            'comment_count': 0,
-            'view_count': 0,
-            'video_count': 1
+            'like_count': 5,
+            'comment_count': 1,
+            'view_count': 8,
+            'video_count': 0
         }]
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
