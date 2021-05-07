@@ -308,10 +308,11 @@ def is_administrator(open_id):
     return user.identity
 
 
-def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
+def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time, limit):
     """
     本函数用于存储一个用户的流量预警变化
     """
+    limit = (int(limit))/100
     analyse_list = AnalyseHour.objects.filter(
         user_id=open_id).order_by('sum_time')
     one_day_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
@@ -349,9 +350,9 @@ def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
         now_count["comment_count"] - one_day_count['comment_count']
     views_before = now_count["view_count"] - one_day_count['view_count']
 
-    if likes_change > 0.2 * likes_before \
-            or comments_change > 0.2 * comments_before \
-            or views_change > 0.2 * views_before:
+    if likes_change > limit * likes_before \
+            or comments_change > limit * comments_before \
+            or views_change > limit * views_before:
         user = User.objects.get(open_id=open_id)
         data = Warn.objects.create(
             user=user,

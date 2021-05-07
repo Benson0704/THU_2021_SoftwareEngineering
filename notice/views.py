@@ -6,6 +6,7 @@ import json
 import traceback
 import app.utils
 import app.times
+import logIn.views
 from app.models import Notice, User
 
 
@@ -17,6 +18,7 @@ def get_notice_user(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
+            logIn.views.limit = request.GET['limit']
             notices = Notice.objects.all().order_by('-create_time')
             notice_list = []
             for notice in notices:

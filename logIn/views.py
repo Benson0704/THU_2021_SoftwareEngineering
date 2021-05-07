@@ -12,6 +12,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, \
     register_job, register_events
 
+limit = 20
+
 try:
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(DjangoJobStore(), "default")
@@ -41,7 +43,7 @@ try:
             one_hour_before_time = now_timestamp - 60 * 60
             one_day_before_time = now_timestamp - 24 * 60 * 60
             app.utils.store_flow(open_id, one_day_before_time,
-                                 one_hour_before_time, now_timestamp)
+                                 one_hour_before_time, now_timestamp, limit)
             qps_dict = {}
             time_cost_dict = {}
             for request in Request.objects.all():
