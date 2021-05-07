@@ -164,6 +164,7 @@ class TestAnalyseWorks(TestCase):
         response = self.client.get('/api/analysis/single',
                                    data=payload,
                                    content_type="application/json")
+        print(response.json())
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_res, response.json()['data'])
 
@@ -275,8 +276,8 @@ class TestAnalyseWorks(TestCase):
         this is a test for get_all_videos_info
         today:1  only 1 analyse
         """
-        time1 = datetime(2022, 4, 13, 0, 0, 0)
-        time2 = datetime(2022, 4, 13, 23, 59, 59)
+        time1 = datetime(2022, 4, 15, 0, 0, 0)
+        time2 = datetime(2022, 4, 15, 23, 59, 59)
         brisa = User.objects.get(open_id="justhavesomefun")
         payload = {
             'open_id': "justhavesomefun",
@@ -294,14 +295,15 @@ class TestAnalyseWorks(TestCase):
                                          view_count=3)
         new_video.save()
         expected_count_list = [{
-            'like_count': 2,
-            'comment_count': 1,
-            'view_count': 3,
+            'like_count': 20,
+            'comment_count': 10,
+            'view_count': 40,
             'video_count': 0
         }]
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
                                    content_type="application/json")
+        print(response.json())                           
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
@@ -345,6 +347,7 @@ class TestAnalyseWorks(TestCase):
         response = self.client.get('/api/analysis/globalday',
                                    data=payload,
                                    content_type="application/json")
+        print(response.json())
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_recent_data,
                          response.json()['data']['recent_data'])
