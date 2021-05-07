@@ -2,8 +2,8 @@
 this file should be a .py file as tests for analyseWorks module
 finished: 4.15
 '''
-import pytest
 from datetime import datetime
+import pytest
 from django.test import TestCase
 from app.models import User, Video, Analyse
 import app.times

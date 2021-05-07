@@ -6,7 +6,6 @@ import json
 import traceback
 import app.utils
 import app.times
-import logIn.views
 from app.models import Notice, User
 
 
@@ -40,8 +39,9 @@ def get_notice_user(request):
         try:
             ret = request.body
             ret = json.loads(ret.decode('utf-8'))
-            print(ret)
-            logIn.views.limit = ret['limit']
+            open_id = ret['open_id']
+            limit = ret['limit']
+            app.utils.update_limit(open_id, limit)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)

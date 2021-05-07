@@ -309,11 +309,12 @@ def is_administrator(open_id):
 
 
 def store_flow(open_id, one_day_before_time, one_hour_before_time,
-               now_time, limit):
+               now_time):
     """
     本函数用于存储一个用户的流量预警变化
     """
-    limit = (int(limit)) / 100
+    user = User.objects.get(open_id=open_id)
+    limit = user.limit / 100
     analyse_list = AnalyseHour.objects.filter(
         user_id=open_id).order_by('sum_time')
     one_day_count = {'like_count': 0, 'comment_count': 0, 'view_count': 0}
@@ -354,7 +355,6 @@ def store_flow(open_id, one_day_before_time, one_hour_before_time,
     if likes_change > limit * likes_before \
             or comments_change > limit * comments_before \
             or views_change > limit * views_before:
-        user = User.objects.get(open_id=open_id)
         data = Warn.objects.create(
             user=user,
             likes_change=likes_change,
@@ -377,18 +377,27 @@ def get_flow(open_id):
     for flow in flows:
         flow_list.append({
             'like_change':
-            flow.likes_change,
+                flow.likes_change,
             'comments_change':
-            flow.comments_change,
+                flow.comments_change,
             'views_change':
-            flow.views_change,
+                flow.views_change,
             'likes_before':
-            flow.likes_before,
+                flow.likes_before,
             'comments_before':
-            flow.comments_before,
+                flow.comments_before,
             'views_before':
-            flow.views_before,
+                flow.views_before,
             'warn_time':
-            app.times.datetime2timestamp(flow.warn_time)
+                app.times.datetime2timestamp(flow.warn_time)
         })
     return flow_list
+
+
+def update_limit(open_id, limit):
+    """
+    本接口用于更改用户设定的流量预警阈值
+    """
+    user = User.objects.get(open_id=open_id)
+    user.limit = int(limit)
+    user.save()

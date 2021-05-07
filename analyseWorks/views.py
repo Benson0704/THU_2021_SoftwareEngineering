@@ -88,6 +88,7 @@ def get_videos_info_by_time(request):
     if request.method == 'GET':
         try:
             photo_id = request.GET['photo_id']
+            today = int(request.GET['today'])
             begin_timestamp = int(request.GET['begin_timestamp'])
             term_timestamp = int(request.GET['term_timestamp'])
             video = Video.objects.get(photo_id=photo_id)
@@ -123,7 +124,7 @@ def get_videos_info_by_time(request):
                         })
                 begin_timestamp += 86400
             for i, _ in enumerate(count_list):
-                if len(count_list) == 1:
+                if len(count_list) == 1 and today == 0:
                     res_list.append({
                         'like_count':
                         count_list[i]['like_count'],
@@ -145,22 +146,21 @@ def get_videos_info_by_time(request):
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
                     })
-            if request.GET['today'] == 1:
-                if res_list == []:
+            if today == 1:
+                if count_list == []:
                     res_list.append({
                         'like_count': video.like_count,
                         'view_count': video.view_count,
                         'comment_count': video.comment_count
                     })
                 else:
-                    tmp_dict = res_list[-1]
                     res_list.append({
                         'like_count':
-                        video.like_count - tmp_dict['like_count'],
+                        video.like_count - count_list[-1]['like_count'],
                         'view_count':
-                        video.view_count - tmp_dict['view_count'],
+                        video.view_count - count_list[-1]['view_count'],
                         'comment_count':
-                        video.comment_count - tmp_dict['comment_count']
+                        video.comment_count - count_list[-1]['comment_count']
                     })
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
@@ -177,6 +177,7 @@ def get_all_videos_info(request):
     if request.method == 'GET':
         try:
             open_id = request.GET['open_id']
+            today = int(request.GET['today'])
             begin_timestamp = int(request.GET['begin_timestamp'])
             term_timestamp = int(request.GET['term_timestamp'])
             recent_data = {
@@ -237,12 +238,16 @@ def get_all_videos_info(request):
                                  86400]['video_count'] += 1
                 begin += 86400
             if request.GET['today'] == 1:
-                if res_list == []:
-                    res_list.append({
-                        'like_count': user.total_like_count,
-                        'view_count': user.total_view_count,
-                        'comment_count': user.total_comment_count
-                    })
+                if len(res_list) == 1:
+                    tmp_dict = res_list[0]
+                    res_list[0] = {
+                        'like_count':
+                        user.total_like_count - tmp_dict['like_count'],
+                        'view_count':
+                        user.total_view_count - tmp_dict['view_count'],
+                        'comment_count':
+                        user.total_comment_count - tmp_dict['comment_count']
+                    }
                 else:
                     tmp_dict = res_list[-1]
                     res_list.append({

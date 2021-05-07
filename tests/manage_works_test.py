@@ -2,8 +2,8 @@
 this file should be a .py file as tests for manageWorks module
 finished: 4.7
 '''
-import pytest
 from datetime import datetime
+import pytest
 from django.test import TestCase
 from app.models import User, Video, Label
 import app.times

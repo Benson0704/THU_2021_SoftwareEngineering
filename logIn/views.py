@@ -13,7 +13,6 @@ import app.utils
 import app.times
 from app.models import User, Performance, Request
 
-limit = 20
 
 try:
     scheduler = BackgroundScheduler()
@@ -44,7 +43,7 @@ try:
             one_hour_before_time = now_timestamp - 60 * 60
             one_day_before_time = now_timestamp - 24 * 60 * 60
             app.utils.store_flow(open_id, one_day_before_time,
-                                 one_hour_before_time, now_timestamp, limit)
+                                 one_hour_before_time, now_timestamp)
             qps_dict = {}
             time_cost_dict = {}
             for request in Request.objects.all():
@@ -74,6 +73,7 @@ try:
                         performance.P99 = P99
                         performance.qps = max(performance.qps, max_qps)
                         found = True
+                        performance.save()
                         break
                 if not found:
                     data = Performance.objects.create(api=request_type,
