@@ -32,19 +32,6 @@ def get_notice_user(request):
             })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
-<<<<<<< HEAD
-    elif request.method == 'POST':
-        try:
-            ret = request.body
-            ret = json.loads(ret.decode('utf-8'))
-            open_id = ret['open_id']
-            limit = ret['limit']
-            app.utils.update_limit(open_id, limit)
-            return app.utils.gen_response(200)
-        except Exception:
-            return app.utils.gen_response(400, traceback.format_exc())
-=======
->>>>>>> 9cb158b4a9ad1186c1ce8e41caa822850c52d78d
     return app.utils.gen_response(405)
 
 
@@ -88,7 +75,6 @@ def operate_notice_admin(request):
             })
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
-        return app.utils.gen_response(405)
     if request.method == 'POST':
         try:
             ret = request.body
