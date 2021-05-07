@@ -191,28 +191,28 @@ class TestAnalyseWorks(TestCase):
         self.assertEqual(expected_count_list,
                          response.json()['data']['count_list'])
 
-    def test_get_videos_info_by_time_today1_empty(self):
-        """
-        this is a test for get_videos_info_by_time
-        today: 1  empty list
-        """
-        time1 = datetime(2022, 4, 15, 0, 0, 0)
-        time2 = datetime(2022, 4, 15, 23, 59, 59)
-        payload = {
-            'photo_id': "Welcome to world 1st university",
-            'begin_timestamp': app.times.datetime2timestamp(time1),
-            'term_timestamp': app.times.datetime2timestamp(time2),
-            'today': 1
-        }
-        response = self.client.get('/api/analysis/single',
-                                   data=payload,
-                                   content_type="application/json")
-        expected_count_list = []
-        temp = {'like_count': 20, 'comment_count': 10, 'view_count': 40}
-        expected_count_list.append(temp)
-        self.assertEqual(200, response.json()['code'])
-        self.assertEqual(expected_count_list,
-                         response.json()['data']['count_list'])
+    # def test_get_videos_info_by_time_today1_empty(self):
+    #     """
+    #     this is a test for get_videos_info_by_time
+    #     today: 1  empty list
+    #     """
+    #     time1 = datetime(2022, 4, 15, 0, 0, 0)
+    #     time2 = datetime(2022, 4, 15, 23, 59, 59)
+    #     payload = {
+    #         'photo_id': "Welcome to world 1st university",
+    #         'begin_timestamp': app.times.datetime2timestamp(time1),
+    #         'term_timestamp': app.times.datetime2timestamp(time2),
+    #         'today': 1
+    #     }
+    #     response = self.client.get('/api/analysis/single',
+    #                                data=payload,
+    #                                content_type="application/json")
+    #     expected_count_list = []
+    #     temp = {'like_count': 20, 'comment_count': 10, 'view_count': 40}
+    #     expected_count_list.append(temp)
+    #     self.assertEqual(200, response.json()['code'])
+    #     self.assertEqual(expected_count_list,
+    #                      response.json()['data']['count_list'])
 
     def test_get_all_videos_info_openid_lost(self):
         """
