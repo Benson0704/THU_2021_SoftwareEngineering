@@ -92,6 +92,7 @@ def get_videos_info_by_time(request):
             begin_timestamp = int(request.GET['begin_timestamp'])
             term_timestamp = int(request.GET['term_timestamp'])
             video = Video.objects.get(photo_id=photo_id)
+            print(video)
             analyse_list = video.analysis.all().order_by('sum_time')
             res = {}
             res['photo_id'] = photo_id
