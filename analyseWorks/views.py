@@ -91,8 +91,7 @@ def get_videos_info_by_time(request):
             begin_timestamp = int(request.GET['begin_timestamp'])
             term_timestamp = int(request.GET['term_timestamp'])
             video = Video.objects.get(photo_id=photo_id)
-            analyse_list = (Analyse.objects.filter(
-                video=video).order_by('sum_time'))
+            analyse_list = video.analysis.all().order_by('sum_time')
             res = {}
             res['photo_id'] = photo_id
             res['caption'] = video.caption
@@ -145,6 +144,23 @@ def get_videos_info_by_time(request):
                         'view_count':
                         count_list[i + 1]['view_count'] -
                         count_list[i]['view_count']
+                    })
+            if request.GET['today'] == 1:
+                if res_list == []:
+                    res_list.append({
+                        'like_count': video.like_count,
+                        'view_count': video.view_count,
+                        'comment_count': video.comment_count
+                    })
+                else:
+                    tmp_dict = res_list[-1]
+                    res_list.append({
+                        'like_count':
+                        video.like_count - tmp_dict['like_count'],
+                        'view_count':
+                        video.view_count - tmp_dict['view_count'],
+                        'comment_count':
+                        video.comment_count - tmp_dict['comment_count']
                     })
             res['count_list'] = res_list
             return app.utils.gen_response(200, res)
@@ -220,6 +236,23 @@ def get_all_videos_info(request):
                         res_list[(begin - begin_timestamp) //
                                  86400]['video_count'] += 1
                 begin += 86400
+            if request.GET['today'] == 1:
+                if res_list == []:
+                    res_list.append({
+                        'like_count': user.total_like_count,
+                        'view_count': user.total_view_count,
+                        'comment_count': user.total_comment_count
+                    })
+                else:
+                    tmp_dict = res_list[-1]
+                    res_list.append({
+                        'like_count':
+                        user.total_like_count - tmp_dict['like_count'],
+                        'view_count':
+                        user.total_view_count - tmp_dict['view_count'],
+                        'comment_count':
+                        user.total_comment_count - tmp_dict['comment_count']
+                    })
             return app.utils.gen_response(200, {
                 'recent_data': recent_data,
                 'count_list': res_list
