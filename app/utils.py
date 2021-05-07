@@ -22,7 +22,7 @@ import json
 from django.http import JsonResponse
 import app.times
 import app.tokens
-from app.models import User, Video, Analyse, AnalyseHour, Warn
+from app.models import User, Video, Analyse, AnalyseHour, Warn, Label
 
 config = json.load(open('config.json', 'r'))
 SECRET_KEY = config['SECRET_KEY'].encode('utf-8')
@@ -103,6 +103,14 @@ def update_registered_user(open_id, user_data, video_list, count_dictionary):
         new_video_list.append(video['photo_id'])
     for video in old_video_list:
         if str(video.photo_id) not in new_video_list:
+            label_list = video.labels.split('_&_')
+            Labels = user.label.all()
+            for label in label_list:
+                for lbls in Labels:
+                    if lbls.label_name == label:
+                        lbls.num -= 1
+                    if lbls.num == 0:
+                        lbls.delete()
             video.delete()
     for i, _ in enumerate(new_video_list):
         if not bool(Video.objects.filter(photo_id=new_video_list[i])):
@@ -308,8 +316,7 @@ def is_administrator(open_id):
     return user.identity
 
 
-def store_flow(open_id, one_day_before_time, one_hour_before_time,
-               now_time):
+def store_flow(open_id, one_day_before_time, one_hour_before_time, now_time):
     """
     本函数用于存储一个用户的流量预警变化
     """
@@ -378,21 +385,21 @@ def get_flow(open_id):
     for flow in flows:
         flow_list.append({
             'like_change':
-                flow.likes_change,
+            flow.likes_change,
             'comments_change':
-                flow.comments_change,
+            flow.comments_change,
             'views_change':
-                flow.views_change,
+            flow.views_change,
             'likes_before':
-                flow.likes_before,
+            flow.likes_before,
             'comments_before':
-                flow.comments_before,
+            flow.comments_before,
             'views_before':
-                flow.views_before,
+            flow.views_before,
             'warn_time':
-                app.times.datetime2timestamp(flow.warn_time),
+            app.times.datetime2timestamp(flow.warn_time),
             'limit':
-                flow.limit
+            flow.limit
         })
     return flow_list
 
