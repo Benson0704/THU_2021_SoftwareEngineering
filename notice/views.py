@@ -42,6 +42,7 @@ def get_notice_user(request):
             open_id = ret['open_id']
             limit = ret['limit']
             app.utils.update_limit(open_id, limit)
+            return app.utils.gen_response(200)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
     return app.utils.gen_response(405)
