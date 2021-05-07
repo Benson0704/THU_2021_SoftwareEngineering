@@ -92,7 +92,6 @@ def get_videos_info_by_time(request):
             begin_timestamp = int(request.GET['begin_timestamp'])
             term_timestamp = int(request.GET['term_timestamp'])
             video = Video.objects.get(photo_id=photo_id)
-            print(video)
             analyse_list = video.analysis.all().order_by('sum_time')
             res = {}
             res['photo_id'] = photo_id
@@ -276,11 +275,11 @@ def get_all_videos_info(request):
                         if app.times.datetime2timestamp(
                                 analyse.sum_time) == term_timestamp + 1:
                             res_list[-1][
-                                'like_count'] -= -analyse.total_like_count
+                                'like_count'] -= analyse.total_like_count
                             res_list[-1][
-                                'view_count'] -= -analyse.total_view_count
+                                'view_count'] -= analyse.total_view_count
                             res_list[-1][
-                                'comment_count'] -= -analyse.total_comment_count
+                                'comment_count'] -= analyse.total_comment_count
                     if app.times.datetime2timestamp(
                             video.create_time) > term_timestamp + 1:
                         res_list[-1]['video_count'] += 1
