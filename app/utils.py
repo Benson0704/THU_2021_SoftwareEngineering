@@ -400,3 +400,4 @@ def update_limit(open_id, limit):
     """
     user = User.objects.get(open_id=open_id)
     user.limit = int(limit)
+    user.save()

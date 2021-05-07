@@ -73,6 +73,7 @@ try:
                         performance.P99 = P99
                         performance.qps = max(performance.qps, max_qps)
                         found = True
+                        performance.save()
                         break
                 if not found:
                     data = Performance.objects.create(api=request_type,
