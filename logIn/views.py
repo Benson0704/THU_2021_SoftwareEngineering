@@ -2,15 +2,16 @@
 this is a module for getting the information
 of users and videos in the login process
 """
+import traceback
 from datetime import datetime
 from django.http import HttpResponse
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, \
+    register_job, register_events
 import app.api
 import app.utils
 import app.times
 from app.models import User, Performance, Request
-from apscheduler.schedulers.background import BackgroundScheduler
-from django_apscheduler.jobstores import DjangoJobStore, \
-    register_job, register_events
 
 limit = 20
 
@@ -47,13 +48,13 @@ try:
             qps_dict = {}
             time_cost_dict = {}
             for request in Request.objects.all():
-                timestamp = app.times.datetime2timestamp(
-                        request.create_time)
+                timestamp = app.times.datetime2timestamp(request.create_time)
                 if now_timestamp - 3600 <= timestamp <= now_timestamp:
                     if request.request_type not in qps_dict:
                         qps_dict[request.request_type] = [0] * 3600
-                    qps_dict[request.request_type][
-                        int(timestamp - now_timestamp + 3600)] += 1
+                    qps_dict[request.request_type][int(timestamp -
+                                                       now_timestamp +
+                                                       3600)] += 1
                 if request.request_type not in time_cost_dict:
                     time_cost_dict[request.request_type] = []
                 time_cost_dict[request.request_type].append(request.timecost)
@@ -75,11 +76,9 @@ try:
                         found = True
                         break
                 if not found:
-                    data = Performance.objects.create(
-                        api=request_type,
-                        P99=P99,
-                        qps=max_qps
-                    )
+                    data = Performance.objects.create(api=request_type,
+                                                      P99=P99,
+                                                      qps=max_qps)
                     data.save()
 
     @register_job(scheduler,
@@ -104,9 +103,9 @@ try:
 
     register_events(scheduler)
     scheduler.start()
-except Exception as e:
-    print(e)
-    # scheduler.shutdown()
+except Exception:
+    print(traceback.format_exc())
+# scheduler.shutdown()
 
 
 def get_yesterday_change(open_id):
@@ -183,8 +182,7 @@ def get_user_info_by_code(request):
 
         total_like_count = app.utils.get_total_like_count(open_id)
         total_comment_count = app.utils.get_total_comment_count(open_id)
-        total_view_count = app.utils.get_total_view_count(
-            open_id)
+        total_view_count = app.utils.get_total_view_count(open_id)
         if app.utils.is_administrator(open_id):
             admin = 1
         else:
@@ -264,10 +262,7 @@ def add_test(request):
     if request.method == 'GET':
         print("hello")
         User.objects.filter(open_id="hello").delete()
-        user = User.objects.create(
-            open_id="hello",
-            name="你好"
-        )
+        user = User.objects.create(open_id="hello", name="你好")
         user.save()
     return HttpResponse("hello")
 

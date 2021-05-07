@@ -2,12 +2,12 @@
 this file should be a .py file as tests for login function
 finished: 4.22
 '''
+import pytest
 import unittest
 from datetime import datetime
 import app.utils
 import app.times
 from app.models import User, Video, AnalyseHour, Analyse, Warn
-import pytest
 
 
 @pytest.mark.django_db
@@ -19,15 +19,13 @@ class TestUtils(unittest.TestCase):
         """
         this is the constructin of tests for utils
         """
-        test_user = User.objects.create(open_id="utils",
-                                        name="test utils")
+        test_user = User.objects.create(open_id="utils", name="test utils")
         test_user.save()
-        test_video = Video.objects.create(
-            user=test_user,
-            photo_id="test utils videos",
-            play_url="test utils play_url",
-            pending=False,
-            create_time="2021-06-07 13:12:11")
+        test_video = Video.objects.create(user=test_user,
+                                          photo_id="test utils videos",
+                                          play_url="test utils play_url",
+                                          pending=False,
+                                          create_time="2021-06-07 13:12:11")
         test_video.save()
 
     def test_analyse_hour_data(self):
@@ -97,11 +95,8 @@ class TestUtils(unittest.TestCase):
                                               total_like_count=24,
                                               total_view_count=88)
         analyse3.save()
-        app.utils.store_flow(open_id,
-                             one_day_before_time,
-                             one_hour_before_time,
-                             now_time,
-                             10)
+        app.utils.store_flow(open_id, one_day_before_time,
+                             one_hour_before_time, now_time, 10)
         warn = Warn.objects.get(user=tuser)
         self.assertTrue(warn)
         Warn.objects.filter(user=tuser).delete()

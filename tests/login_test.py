@@ -1,12 +1,12 @@
 '''
 this file should be a .py file as tests for login function
 '''
+import pytest
 import unittest
 from datetime import datetime
 import app.utils
 import app.times
 from app.models import User, Video
-import pytest
 
 
 @pytest.mark.django_db

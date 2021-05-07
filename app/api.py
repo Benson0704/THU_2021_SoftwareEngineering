@@ -1,10 +1,9 @@
 """
 this module provides api connected to kuaishou api to fetch data
 """
-
+import json
 import requests
 import app.utils
-import json
 
 config = json.load(open('config.json', 'r'))
 
@@ -84,11 +83,11 @@ def store_data(open_id, user_data, video_data, count_data):
     """
     registered_state = app.utils.is_registered(open_id)
     if registered_state:
-        app.utils.update_registered_user(open_id, user_data,
-                                         video_data, count_data)
+        app.utils.update_registered_user(open_id, user_data, video_data,
+                                         count_data)
     else:
-        app.utils.initialize_new_user(open_id, user_data,
-                                      video_data, count_data)
+        app.utils.initialize_new_user(open_id, user_data, video_data,
+                                      count_data)
 
 
 def manage_data(open_id):

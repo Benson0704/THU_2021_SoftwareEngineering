@@ -2,12 +2,12 @@
 this file should be a .py file as tests for manageWorks module
 finished: 4.7
 '''
+import pytest
+from datetime import datetime
 from django.test import TestCase
 from app.models import User, Video, Label
-import pytest
 import app.times
 import app.utils
-from datetime import datetime
 
 
 @pytest.mark.django_db
@@ -68,7 +68,8 @@ class TestManageWorks(TestCase):
         new_video.save()
         Label.objects.filter(label_name='scene').delete()
         new_label = Label.objects.create(user=brisa2,
-                                         label_name="scene", num=0)
+                                         label_name="scene",
+                                         num=0)
         new_label.save()
 
     def test_get_video_time_openid_lost(self):
@@ -101,30 +102,47 @@ class TestManageWorks(TestCase):
         }
         time3 = datetime(2022, 4, 7, 12, 13, 17)
         time4 = datetime(2022, 4, 7, 12, 13, 15)
-        expected_vedioslists = [
-            {
-                "photo_id": "this is a photo on Earth",
-                "caption": "Earth view",
-                "cover": "https://EarthView",
-                "play_url": "https://PlayEarthView",
-                "create_time": app.times.datetime2timestamp(time3),
-                "like_count": 30,
-                "comment_count": 15,
-                "view_count": 60,
-                "pending": False,
-                "labels": [""]
-            }, {
-                "photo_id": "this is a sunrise photo in Hogwards",
-                "caption": "hogwards sunrise",
-                "cover": "https://HogwardsSunrise",
-                "play_url": "https://PlayHogwardsSunrise",
-                "create_time": app.times.datetime2timestamp(time4),
-                "like_count": 30,
-                "comment_count": 15,
-                "view_count": 60,
-                "pending": False,
-                "labels": [""]
-            }]
+        expected_vedioslists = [{
+            "photo_id":
+            "this is a photo on Earth",
+            "caption":
+            "Earth view",
+            "cover":
+            "https://EarthView",
+            "play_url":
+            "https://PlayEarthView",
+            "create_time":
+            app.times.datetime2timestamp(time3),
+            "like_count":
+            30,
+            "comment_count":
+            15,
+            "view_count":
+            60,
+            "pending":
+            False,
+            "labels": [""]
+        }, {
+            "photo_id":
+            "this is a sunrise photo in Hogwards",
+            "caption":
+            "hogwards sunrise",
+            "cover":
+            "https://HogwardsSunrise",
+            "play_url":
+            "https://PlayHogwardsSunrise",
+            "create_time":
+            app.times.datetime2timestamp(time4),
+            "like_count":
+            30,
+            "comment_count":
+            15,
+            "view_count":
+            60,
+            "pending":
+            False,
+            "labels": [""]
+        }]
         response = self.client.get('/api/video/time',
                                    data=payload,
                                    content_type="application/json")
@@ -185,8 +203,7 @@ class TestManageWorks(TestCase):
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
         label = Label.objects.get(
-            user=User.objects.get(open_id='todayissunny'),
-            label_name="scene")
+            user=User.objects.get(open_id='todayissunny'), label_name="scene")
         self.assertEqual(label.num, 2)
         payload = {
             "open_id": "todayissunny",
@@ -199,8 +216,7 @@ class TestManageWorks(TestCase):
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
         label = Label.objects.get(
-            user=User.objects.get(open_id='todayissunny'),
-            label_name="magic")
+            user=User.objects.get(open_id='todayissunny'), label_name="magic")
         self.assertEqual(label.num, 1)
         payload = {
             "open_id": "todayissunny",
@@ -222,8 +238,7 @@ class TestManageWorks(TestCase):
                                     content_type="application/json")
         self.assertEqual(201, response.json()['code'])
         label = Label.objects.filter(
-            user=User.objects.get(open_id='todayissunny'),
-            label_name="scene")
+            user=User.objects.get(open_id='todayissunny'), label_name="scene")
         self.assertFalse(label)
 
     def tearDown(self):

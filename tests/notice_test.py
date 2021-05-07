@@ -2,11 +2,11 @@
 this file should be a .py file as tests for notice module
 finished: 4.22
 '''
+import pytest
+from datetime import datetime
 from django.test import TestCase
 from app.models import User, Warn, Notice
 import app.times
-import pytest
-from datetime import datetime
 
 
 @pytest.mark.django_db
@@ -53,10 +53,7 @@ class TestNotice(TestCase):
         this is a test for get_notice_user
         method: get  error: none
         """
-        payload = {
-            'open_id': "test user",
-            'limit': 10
-        }
+        payload = {'open_id': "test user", 'limit': 10}
         response = self.client.get('/api/notice/user',
                                    data=payload,
                                    content_type="application/json")
@@ -73,9 +70,7 @@ class TestNotice(TestCase):
         this is a test for operate_notice_admin
         method: get
         """
-        payload = {
-            "open_id": "test user"
-        }
+        payload = {"open_id": "test user"}
         response = self.client.get('/api/notice/admin',
                                    data=payload,
                                    content_type="application/json")

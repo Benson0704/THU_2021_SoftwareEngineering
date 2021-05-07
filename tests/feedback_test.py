@@ -1,11 +1,11 @@
 '''
 this file should be a .py file as tests for feedback module
 '''
+import pytest
+from datetime import datetime
 from django.test import TestCase
 from app.models import User, Message, Feedback
 import app.times
-import pytest
-from datetime import datetime
 
 
 @pytest.mark.django_db

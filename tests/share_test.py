@@ -2,11 +2,11 @@
 this file should be a .py file as tests for share module
 finish: 4.22, add timestamp
 '''
+import pytest
+from datetime import datetime
 from django.test import TestCase
 from app.models import User
-import pytest
 import app.times
-from datetime import datetime
 
 
 @pytest.mark.django_db
@@ -56,13 +56,11 @@ class TestShare(TestCase):
                                     content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         timestamp = app.times.datetime2timestamp(time)
-        expected_result = "test shared" + '&' + str(
-            timestamp) + "_&_"
+        expected_result = "test shared" + '&' + str(timestamp) + "_&_"
         sharer = User.objects.get(open_id="test sharer")
         shared = User.objects.get(open_id="test shared")
         self.assertEqual(sharer.auth_user, expected_result)
-        expected_result = "test sharer" + '&' + str(
-            timestamp) + "_&_"
+        expected_result = "test sharer" + '&' + str(timestamp) + "_&_"
         self.assertEqual(shared.authed_user, expected_result)
 
     def test_delete_share_id_lost(self):
@@ -114,8 +112,7 @@ class TestShare(TestCase):
         time = datetime(2021, 3, 5, 11, 12, 13)
         timestamp = app.times.datetime2timestamp(time)
         sharer = User.objects.get(open_id="test sharer")
-        sharer.auth_user = "test shared" + '&' + str(
-            timestamp) + "_&_"
+        sharer.auth_user = "test shared" + '&' + str(timestamp) + "_&_"
         sharer.save()
         response = self.client.get('/api/share/sharing',
                                    data=payload,
@@ -150,8 +147,7 @@ class TestShare(TestCase):
         shared = User.objects.get(open_id="test shared")
         time = datetime(2021, 3, 5, 11, 12, 13)
         timestamp = app.times.datetime2timestamp(time)
-        shared.authed_user = "test sharer" + '&' + str(
-            timestamp) + "_&_"
+        shared.authed_user = "test sharer" + '&' + str(timestamp) + "_&_"
         shared.save()
         response = self.client.get('/api/share/shared',
                                    data=payload,
@@ -187,8 +183,7 @@ class TestShare(TestCase):
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        self.assertEqual([],
-                         response.json()['data']['sharing_list'])
+        self.assertEqual([], response.json()['data']['sharing_list'])
 
     def test_get_user_share_to_me_none(self):
         '''
@@ -200,8 +195,7 @@ class TestShare(TestCase):
                                    data=payload,
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
-        self.assertEqual([],
-                         response.json()['data']['shared_list'])
+        self.assertEqual([], response.json()['data']['shared_list'])
 
     def test_get_user_by_name(self):
         """

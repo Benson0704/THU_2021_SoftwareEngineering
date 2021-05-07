@@ -2,11 +2,11 @@
 this file should be a .py file as tests for analyseWorks module
 finished: 4.15
 '''
+import pytest
+from datetime import datetime
 from django.test import TestCase
 from app.models import User, Video, Analyse
-import pytest
 import app.times
-from datetime import datetime
 
 
 @pytest.mark.django_db
@@ -185,15 +185,14 @@ class TestAnalyseWorks(TestCase):
         time1 = datetime(2022, 4, 13, 0, 0, 0)
         time2 = datetime(2022, 4, 13, 23, 59, 59)
         brisa = User.objects.get(open_id="justhavesomefun")
-        new_video = Video.objects.create(
-            user=brisa,
-            photo_id="my world",
-            caption="my dream land",
-            cover="https://MyWorld",
-            play_url="https://PlayMyWorld",
-            create_time='2022-04-13 12:13:15',
-            pending=False,
-            labels="")
+        new_video = Video.objects.create(user=brisa,
+                                         photo_id="my world",
+                                         caption="my dream land",
+                                         cover="https://MyWorld",
+                                         play_url="https://PlayMyWorld",
+                                         create_time='2022-04-13 12:13:15',
+                                         pending=False,
+                                         labels="")
         new_video.save()
         payload = {
             'open_id': "justhavesomefun",
@@ -237,9 +236,7 @@ class TestAnalyseWorks(TestCase):
         this is a test for get_register_time
         error: none
         """
-        payload = {
-            'open_id': "justhavesomefun"
-        }
+        payload = {'open_id': "justhavesomefun"}
         response = self.client.get('/api/analysis/start_fetch',
                                    data=payload,
                                    content_type="application/json")
