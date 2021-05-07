@@ -363,7 +363,8 @@ def store_flow(open_id, one_day_before_time, one_hour_before_time,
             likes_before=likes_before,
             comments_before=comments_before,
             views_before=views_before,
-            warn_time=app.times.timestamp2datetime(now_time))
+            warn_time=app.times.timestamp2datetime(now_time),
+            limit=get_limit(open_id))
         data.save()
 
 
@@ -389,7 +390,9 @@ def get_flow(open_id):
             'views_before':
                 flow.views_before,
             'warn_time':
-                app.times.datetime2timestamp(flow.warn_time)
+                app.times.datetime2timestamp(flow.warn_time),
+            'limit':
+                flow.limit
         })
     return flow_list
 
