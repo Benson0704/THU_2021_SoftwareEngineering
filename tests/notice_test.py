@@ -4,9 +4,9 @@ finished: 4.22
 '''
 from datetime import datetime
 from django.test import TestCase
+import pytest
 from app.models import User, Warn, Notice
 import app.times
-import pytest
 
 
 @pytest.mark.django_db
