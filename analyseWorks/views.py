@@ -219,10 +219,12 @@ def get_all_videos_info(request):
                     for i, analyse in enumerate(analyses):
                         if app.times.datetime2timestamp(
                                 analyse.sum_time) == begin_timestamp:
-                            res_list[0]['like_count'] -= -analyse.like_count
-                            res_list[0]['view_count'] -= -analyse.view_count
                             res_list[0][
-                                'comment_count'] -= -analyse.comment_count
+                                'like_count'] -= -analyse.total_like_count
+                            res_list[0][
+                                'view_count'] -= -analyse.total_view_count
+                            res_list[0][
+                                'comment_count'] -= -analyse.total_comment_count
                     if app.times.datetime2timestamp(
                             video.create_time) > term_timestamp + 1 - 86400:
                         res_list[0]['video_count'] += 1
@@ -272,10 +274,12 @@ def get_all_videos_info(request):
                     for i, analyse in enumerate(analyses):
                         if app.times.datetime2timestamp(
                                 analyse.sum_time) == term_timestamp + 1:
-                            res_list[-1]['like_count'] -= -analyse.like_count
-                            res_list[-1]['view_count'] -= -analyse.view_count
                             res_list[-1][
-                                'comment_count'] -= -analyse.comment_count
+                                'like_count'] -= -analyse.total_like_count
+                            res_list[-1][
+                                'view_count'] -= -analyse.total_view_count
+                            res_list[-1][
+                                'comment_count'] -= -analyse.total_comment_count
                     if app.times.datetime2timestamp(
                             video.create_time) > term_timestamp + 1:
                         res_list[-1]['video_count'] += 1
