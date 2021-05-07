@@ -185,7 +185,7 @@ class TestAnalyseWorks(TestCase):
                                    data=payload,
                                    content_type="application/json")
         expected_count_list = []
-        temp = {'like_count':12, 'comment_count': 8, 'view_count': 27}
+        temp = {'like_count': 12, 'comment_count': 8, 'view_count': 27}
         expected_count_list.append(temp)
         temp = {'like_count': 8, 'comment_count': 2, 'view_count': 13}
         expected_count_list.append(temp)
