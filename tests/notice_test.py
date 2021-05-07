@@ -54,8 +54,7 @@ class TestNotice(TestCase):
         method: get  error: none
         """
         payload = {
-            'open_id': "test user",
-            'limit': 10
+            'open_id': "test user"
         }
         response = self.client.get('/api/notice/user',
                                    data=payload,
@@ -67,6 +66,30 @@ class TestNotice(TestCase):
         expected_title = "test title"
         self.assertEqual(200, response.json()['code'])
         self.assertTrue(expected_title in notice_titles)
+
+    def test_get_notice_user_post(self):
+        """
+        this is a test for get_notice_user
+        method: post
+        """
+        payload = {
+            'limit': 10
+        }
+        response = self.client.post('/api/notice/user',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(response.json()['code'], 200)
+
+    def test_get_notice_user_post_limit_lost(self):
+        """
+        this is a test for get_notice_user
+        method: post  error: limit lost
+        """
+        payload = {}
+        response = self.client.post('/api/notice/user',
+                                    data=payload,
+                                    content_type="application/json")
+        self.assertEqual(response.json()['code'], 400)
 
     def test_operate_notice_admin_get(self):
         """

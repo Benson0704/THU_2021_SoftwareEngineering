@@ -38,6 +38,7 @@ class User(models.Model):
     identity = models.BooleanField(default=False)  # 表示用户是否为管理员 1:是 0:否
     auth_user = models.TextField(max_length=500000, default="")  # 授权的用户
     authed_user = models.TextField(max_length=500000, default="")  # 谁授权给我
+    limit = models.IntegerField(default=20)
 
     class Meta:
         '''
