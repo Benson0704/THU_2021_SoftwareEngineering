@@ -197,10 +197,10 @@ class TestShare(TestCase):
         self.assertEqual(200, response.json()['code'])
         self.assertEqual([], response.json()['data']['shared_list'])
 
-    def test_get_user_by_name(self):
+    def test_get_user_by_name_noexist(self):
         """
         this is a test for get_user_by_name
-        error: none
+        error: none  name:not exist
         """
         new_user = User.objects.create(
             open_id="test user",
@@ -209,7 +209,10 @@ class TestShare(TestCase):
             city="beijing",
         )
         new_user.save()
-        payload = {'exp_name': "test user"}
+        payload = {
+            'open_id': "test sharer",
+            'exp_name': "test user"
+        }
         expected_user = [{
             'open_id': "test user",
             'name': "test user",
@@ -224,6 +227,27 @@ class TestShare(TestCase):
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_user, response.json()['data']['exp_list'])
         User.objects.filter(open_id="test user").delete()
+
+    def test_get_user_by_name_exist(self):
+        """
+        this is a test for get_user_by_name
+        error: none  name:exist
+        """
+        sharer = User.objects.get(open_id="test sharer")
+        sharer.auth_user="test user"
+        sharer.save()
+        payload = {
+            'open_id': "test sharer",
+            'exp_name': "test user"
+        }
+        expected_user = []
+        response = self.client.get('/api/share/find',
+                                   data=payload,
+                                   content_type="application/json")
+        self.assertEqual(200, response.json()['code'])
+        self.assertEqual(expected_user, response.json()['data']['exp_list'])
+        sharer.auth_user=""
+        sharer.save()
 
     def tearDown(self):
         """
