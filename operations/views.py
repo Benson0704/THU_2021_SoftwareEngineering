@@ -221,7 +221,7 @@ def video_label(request):
         try:
             open_id = request.GET.get('open_id')
             user = User.objects.get(open_id=open_id)
-            add = request.GET.get('add')
+            add = int(request.GET.get('add'))
             video_list = user.video.all()
             res = []
             for i in video_list:
