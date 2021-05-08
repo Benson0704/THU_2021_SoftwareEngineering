@@ -1,7 +1,7 @@
 import traceback
 import app.utils
 import app.times
-from app.models import User, Analyse, Video
+from app.models import User, Analyse, Video, Label
 
 
 def make_fake_analysis(open_id):
@@ -210,6 +210,34 @@ def video_analysis_hour(request):
                     'time': app.times.datetime2timestamp(i.sum_time),
                     'real time': app.times.datetime2string(i.sum_time)
                 })
+            return app.utils.gen_response(200, res)
+        except Exception:
+            return app.utils.gen_response(400, traceback.format_exc())
+    return app.utils.gen_response(405)
+
+
+def video_label(request):
+    if request.method == 'GET':
+        try:
+            open_id = request.GET.get('open_id')
+            user = User.objects.get(open_id=open_id)
+            add = request.GET.get('add')
+            video_list = user.video.all()
+            res = []
+            for i in video_list:
+                if add == 0:
+                    i.labels = ''
+                    i.save()
+                res.append({'video': i.photo_id, 'label': i.labels})
+            labels = Label.objects.all()
+            for label in labels:
+                res.append({
+                    'name': label.user.name,
+                    'label': label.label_name,
+                    'num': label.num
+                })
+                if add == 0:
+                    label.delete()
             return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
