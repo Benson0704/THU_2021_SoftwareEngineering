@@ -228,15 +228,7 @@ def video_label(request):
                 if add == 0:
                     i.labels = ''
                     i.save()
-                res.append({
-                    'video': i.video.photo_id,
-                    'like': i.total_like_count,
-                    'comment': i.total_comment_count,
-                    'view': i.total_view_count,
-                    'time': app.times.datetime2timestamp(i.sum_time),
-                    'real time': app.times.datetime2string(i.sum_time),
-                    'label': i.labels
-                })
+                res.append({'video': i.photo_id, 'label': i.labels})
             labels = Label.objects.all()
             for label in labels:
                 res.append({
