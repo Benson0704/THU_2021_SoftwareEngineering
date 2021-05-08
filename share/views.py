@@ -130,13 +130,10 @@ def get_user_by_name(request):
             user_list = User.objects.filter(name__contains=exp_name)
             res_list = []
             for user in user_list:
-                my_auth_user = me.auth_user.split('_&_')
                 my_authed_user = me.authed_user.split('_&_')
-                for i, auth_user in enumerate(my_auth_user):
-                    my_auth_user[i] = auth_user.split('&')[0]
                 for i, authed_user in enumerate(my_authed_user):
                     my_authed_user[i] = authed_user.split('&')[0]
-                if user.open_id in my_auth_user + my_authed_user:
+                if user.open_id in my_authed_user:
                     continue
                 res_list.append({
                     'open_id': user.open_id,
