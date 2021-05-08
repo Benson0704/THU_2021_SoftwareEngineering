@@ -236,6 +236,8 @@ def video_label(request):
                     'label': label.label_name,
                     'num': label.num
                 })
+                if add == 0:
+                    label.delete()
             return app.utils.gen_response(200, res)
         except Exception:
             return app.utils.gen_response(400, traceback.format_exc())
