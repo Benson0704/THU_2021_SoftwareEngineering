@@ -38,11 +38,20 @@ path('video_analysis_hour', views.video_analysis_hour)
         photo_id
     return:
         all analysisHour belonged
+
+path('video_label', views.video_label)
+    receive:
+        open_id
+        add=0/other
+    return:
+        user info
+        label
 '''
 urlpatterns = [
     path('user', views.operate_user),
     path('admin', views.set_admin),
     path('user_analysis', views.user_analysis),
     path('video_analysis', views.video_analysis),
-    path('video_analysis_hour', views.video_analysis_hour)
+    path('video_analysis_hour', views.video_analysis_hour),
+    path('video_label', views.video_label)
 ]
