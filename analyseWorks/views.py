@@ -106,7 +106,7 @@ def get_videos_info_by_time(request):
             res['view_count'] = video.view_count
             count_list = []
             res_list = []
-            if analyse_list == []:
+            if not analyse_list:
                 res['like_count'] = video.like_count
                 res['view_count'] = video.view_count
                 res['comment_count'] = video.comment_count
