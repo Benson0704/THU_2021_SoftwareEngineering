@@ -112,7 +112,7 @@ def get_videos_info_by_time(request):
                     'comment_count': video.view_count,
                     'view_count': video.comment_count
                 })
-                res_list['count_list'] = res_list
+                res['count_list'] = res_list
                 return app.utils.gen_response(200, res)
             if begin_timestamp < app.times.datetime2timestamp(
                     analyse_list[0].sum_time):
