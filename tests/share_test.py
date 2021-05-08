@@ -234,7 +234,7 @@ class TestShare(TestCase):
         error: none  name:exist
         """
         sharer = User.objects.get(open_id="test sharer")
-        sharer.auth_user="test user"
+        sharer.auth_user = "test user"
         sharer.save()
         payload = {
             'open_id': "test sharer",
@@ -246,7 +246,7 @@ class TestShare(TestCase):
                                    content_type="application/json")
         self.assertEqual(200, response.json()['code'])
         self.assertEqual(expected_user, response.json()['data']['exp_list'])
-        sharer.auth_user=""
+        sharer.auth_user = ""
         sharer.save()
 
     def tearDown(self):
